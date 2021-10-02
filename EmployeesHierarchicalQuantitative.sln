@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesHierarchicalQuantitative", "EmployeesHierarchicalQuantitative\EmployeesHierarchicalQuantitative.csproj", "{1F6D81F9-BE7D-4C3B-8FFD-0581DA71530E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{4EEFF557-7D53-4FEF-984E-C4D37E4A393C}"
+ProjectSection(SolutionItems) = preProject
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F6D81F9-BE7D-4C3B-8FFD-0581DA71530E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6D81F9-BE7D-4C3B-8FFD-0581DA71530E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6D81F9-BE7D-4C3B-8FFD-0581DA71530E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6D81F9-BE7D-4C3B-8FFD-0581DA71530E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
