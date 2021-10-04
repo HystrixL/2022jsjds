@@ -207,9 +207,9 @@ namespace EmployeesHierarchicalQuantitative
         {
             double rateScore = Rate[0] switch
             {
-                'S' => 0.85 + (new Random().NextDouble()) * 0.05,
-                'A' => 0.9 + (new Random().NextDouble()) * 0.05,
-                'B' => 0.95 + (new Random().NextDouble()) * 0.05,
+                'S' => new Random().NextDouble(0.85,0.90),
+                'A' => new Random().NextDouble(0.90,0.95),
+                'B' => new Random().NextDouble(0.95,1.00),
                 'C' => 1,
                 _ => 1
             };
@@ -246,6 +246,14 @@ namespace EmployeesHierarchicalQuantitative
             Time = time;
             PeopleNumber = peopleNumber;
             ProspectiveEarnings = prospectiveEarnings;
+        }
+    }
+
+    static class RandomExtension
+    {
+        public static double NextDouble(this Random random,double minValue,double maxValue)
+        {
+            return minValue + (random.NextDouble()) * (maxValue - minValue);
         }
     }
 }
