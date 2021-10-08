@@ -70,7 +70,7 @@
                 
 
             </Grid>
-            <ContentControl Name="Change_Page" Margin="118,0,0,0"/>
+            <ContentControl Name="Change_Page" Margin="113,0,0,0"/>
         </Grid>
     </Grid>
 </Window>

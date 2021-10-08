@@ -8,17 +8,23 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page_Project">
 
-    <Grid HorizontalAlignment="Left"
-          VerticalAlignment="Top"
-          Name="Grid1">
+    <Grid Name="Grid1"
+          Background="#FFE8E8ED">
 
-        <Button Margin="0,0,572,260"
+        <Button Margin="20,20,572,260"
                 Name="Btn_AddProject"
-                Click="Btn_AddProject_Click">
-            <Label Content ="添加项目" FontSize="20"
+                Click="Btn_AddProject_Click"
+                Height="185"
+                Width="200"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                BorderThickness="0,0,0,0"
+                Background="White">
+            <Label Content ="+添加项目" FontSize="20"
                    Height="185" Width="200"
                    VerticalContentAlignment="Center"
-                   HorizontalContentAlignment="Center"/>
+                   HorizontalContentAlignment="Center" Foreground="#FF6E6E6E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-10,0,0,0">
+            </Label>
         </Button>
 
     </Grid>

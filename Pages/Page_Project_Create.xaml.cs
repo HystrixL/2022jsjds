@@ -34,6 +34,8 @@ namespace Co_work.Pages
                 if (newProjectIntro.Text == "")
                     newProjectIntro.Text = "无";
                 (this.Owner as Page_Project).newProjectIntro = newProjectIntro.Text;
+                if (newProjectDeadline.Text == "")
+                    newProjectDeadline.Text = "无";
                 (this.Owner as Page_Project).newProjectDeadline = newProjectDeadline.Text;
                 ChangePageProject();
                 (this.Owner as Page_Project).CreatProject();

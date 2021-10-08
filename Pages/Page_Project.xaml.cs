@@ -49,13 +49,15 @@ namespace Co_work.Pages
             ProjectBtn.Margin = Mov;
             ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
             ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
+            ProjectBtn.BorderThickness = new Thickness(0);
+            ProjectBtn.Background = new SolidColorBrush(Colors.White);
             Grid1.Children.Add(ProjectBtn);
 
             TextBlock ProjectInfo = new TextBlock();
             ProjectInfo.Width = 200;
             ProjectInfo.Height = 100;
             ProjectInfo.FontSize = 12;
-            ProjectInfo.Text = "项目名称：" + newProjectName + Environment.NewLine + "项目简介：" + newProjectIntro + Environment.NewLine + "开始日期：" + System.DateTime.Now + Environment.NewLine + "截止日期：" + newProjectDeadline;
+            ProjectInfo.Text = "项目名称：" + newProjectName + Environment.NewLine + Environment.NewLine + "简介：" + newProjectIntro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + DateTime.Today.ToLongDateString() + Environment.NewLine + "截止日期：" + newProjectDeadline;
             ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
             ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
             ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
@@ -64,6 +66,10 @@ namespace Co_work.Pages
             ProjectInfo.TextWrapping = TextWrapping.Wrap;
 
             ProjectBtn.Content = ProjectInfo;
+
+            page_ProjectInstance = new Page_ProjectInstance();
+            page_ProjectInstance.Owner = this;
+            ProjectBtn.Click += ProjectBtn_Click;
 
             Thickness Mov2;
             Mov2 = Mov;
@@ -85,6 +91,16 @@ namespace Co_work.Pages
             (this.Owner as MainWindow).Change_Page.Content = new Frame()
             {
                 Content = page_ProjectCreate
+            };
+        }
+
+        public Page_ProjectInstance page_ProjectInstance;
+
+        private void ProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            (this.Owner as MainWindow).Change_Page.Content = new Frame()
+            {
+                Content = page_ProjectInstance
             };
         }
     }

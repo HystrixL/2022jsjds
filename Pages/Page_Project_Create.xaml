@@ -8,47 +8,49 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page_Project_Create">
 
-    <Grid>
+    <Grid  Background="#FFE8E8ED">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="11*"/>
+        </Grid.ColumnDefinitions>
         <Label Content="项目名称："
-               FontSize="20"/>
+               FontSize="16" Margin="24,37,-24,-37" Grid.ColumnSpan="2"/>
         <TextBox Name="newProjectName"
-                 Margin="100,5,0,0"
-                 Width="250"
-                 Height="30"
-                 HorizontalAlignment="Left"
+                 Margin="132,42,0,0"
+                 Height="24"
                  VerticalAlignment="Top"
-                 FontSize="20"/>
+                 FontSize="16" HorizontalAlignment="Left" Width="250"/>
         <Label Content="项目简介："
-               FontSize="20" Margin="0,40,0,-40"/>
+               FontSize="16" Margin="24,68,-24,-68" Grid.ColumnSpan="2"/>
         <TextBox Name="newProjectIntro"
-                 Margin="100,45,0,0"
+                 Margin="132,74,0,0"
                  Width="250"
-                 Height="155"
+                 Height="150"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 FontSize="20"
+                 FontSize="16"
                  MaxWidth="250"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"/>
         <Label Content="截止时间："
-               FontSize="20" Margin="0,205,0,-205"/>
+               FontSize="16" Margin="24,227,-24,-227" Grid.ColumnSpan="2"/>
         <TextBox Name="newProjectDeadline"
-                 Margin="100,210,0,0"
+                 Margin="132,232,0,0"
                  Width="250"
-                 Height="30"
+                 Height="25"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 FontSize="20"/>
+                 FontSize="16"/>
 
         <Button Name="Btn_Save" 
-                Margin="250,248,0,0"
+                Margin="282,291,0,0"
                 Width="100"
                 Height="34"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="Btn_Save_Click">
             <Label Content="保存"
-                   FontSize="15"
+                   FontSize="14"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
         </Button>
