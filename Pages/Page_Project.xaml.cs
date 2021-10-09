@@ -35,6 +35,7 @@ namespace Co_work.Pages
             public string Creator;
             public string StartTime;
             public string Deadline;
+            public float Progress;
         }
 
         public Projects[] project;
@@ -43,7 +44,6 @@ namespace Co_work.Pages
         private void Btn_AddProject_Click(object sender, RoutedEventArgs e)
         {
             ChangePageProjectCreate();
-            projectIndex++;
         }
 
         public void CreatProject()
@@ -61,13 +61,14 @@ namespace Co_work.Pages
             ProjectBtn.BorderThickness = new Thickness(0);
             ProjectBtn.Background = new SolidColorBrush(Colors.White);
             Grid1.Children.Add(ProjectBtn);
+            Grid1.RegisterName("Btn_Project_"+ projectIndex.ToString(), ProjectBtn);
 
             TextBlock ProjectInfo = new TextBlock();
             ProjectInfo.Width = 200;
             ProjectInfo.Height = 100;
             ProjectInfo.FontSize = 12;
             project[projectIndex].StartTime = DateTime.Today.ToLongDateString();
-            ProjectInfo.Text = "项目名称：" + project[projectIndex].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[projectIndex].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + DateTime.Today.ToLongDateString() + Environment.NewLine + "截止日期：" + project[projectIndex].Deadline;
+            ProjectInfo.Text = "项目名称：" + project[projectIndex].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[projectIndex].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[projectIndex].StartTime + Environment.NewLine + "截止日期：" + project[projectIndex].Deadline;
             ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
             ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
             ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
@@ -77,8 +78,8 @@ namespace Co_work.Pages
 
             ProjectBtn.Content = ProjectInfo;
 
-            page_ProjectInstance = new Page_ProjectInstance();
-            page_ProjectInstance.Lb_ProjectName.Content = project[projectIndex].Name;
+            if(page_ProjectInstance == null)
+                page_ProjectInstance = new Page_ProjectInstance();
             page_ProjectInstance.Owner = this;
             ProjectBtn.Click += ProjectBtn_Click;
 
@@ -86,6 +87,58 @@ namespace Co_work.Pages
             Mov2 = Mov;
             Mov2.Left += 220;
             Btn_AddProject.Margin = Mov2;
+        }
+
+        public void RefreshProject()
+        {
+            //清空已有按钮
+            for (int i = 0; i <= projectIndex; i++)
+            {
+                Button btn = Grid1.FindName("Btn_Project_" + i) as Button;
+                Grid1.Children.Remove(btn);
+                Grid1.UnregisterName("Btn_Project_" + i);
+            }
+            Btn_AddProject.Margin = new Thickness(20, 20, 572, 260);
+            //重新创建按钮
+            for (int i = 0; i <= projectIndex; i++)
+            {
+                Thickness Mov;
+
+                Mov = Btn_AddProject.Margin;
+
+                Button ProjectBtn = new Button();
+                ProjectBtn.Width = 200;
+                ProjectBtn.Height = 185;
+                ProjectBtn.Margin = Mov;
+                ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
+                ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
+                ProjectBtn.BorderThickness = new Thickness(0);
+                ProjectBtn.Background = new SolidColorBrush(Colors.White);
+                Grid1.Children.Add(ProjectBtn);
+                Grid1.RegisterName("Btn_Project_" + i.ToString(), ProjectBtn);
+
+                TextBlock ProjectInfo = new TextBlock();
+                ProjectInfo.Width = 200;
+                ProjectInfo.Height = 100;
+                ProjectInfo.FontSize = 12;
+                project[projectIndex].StartTime = DateTime.Today.ToLongDateString();
+                ProjectInfo.Text = "项目名称：" + project[i].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[i].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[i].StartTime + Environment.NewLine + "截止日期：" + project[i].Deadline;
+                ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
+                ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
+                ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
+                ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
+                ProjectInfo.MaxWidth = 195;
+                ProjectInfo.TextWrapping = TextWrapping.Wrap;
+
+                ProjectBtn.Content = ProjectInfo;
+
+                ProjectBtn.Click += ProjectBtn_Click;
+
+                Thickness Mov2;
+                Mov2 = Mov;
+                Mov2.Left += 220;
+                Btn_AddProject.Margin = Mov2;
+            }
         }
 
         public MainWindow Owner;

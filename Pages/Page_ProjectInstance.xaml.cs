@@ -92,6 +92,11 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectInstance_Setting
             };
+
+            page_ProjectInstance_Setting.Tb_Name.Text = this.Owner.project[this.Owner.projectIndex].Name;
+            page_ProjectInstance_Setting.Tb_Intro.Text = this.Owner.project[this.Owner.projectIndex].Intro;
+            page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.projectIndex].Deadline;
+            page_ProjectInstance_Setting.Tb_Progress.Text = this.Owner.project[this.Owner.projectIndex].Progress.ToString();
         }
     }
 }

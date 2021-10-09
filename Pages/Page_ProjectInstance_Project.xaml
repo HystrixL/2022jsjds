@@ -45,5 +45,26 @@
                VerticalAlignment="Top"
                HorizontalAlignment="Left"/>
 
+        <Label Content="进度：" Margin="10,185,0,0"
+               Width="250"
+               Height="25"
+               FontSize="12"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"/>
+        <Label Name="Lb_Progress" 
+               Content="0%" Margin="53,185,0,0"
+               Width="207"
+               Height="25"
+               FontSize="12"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left" HorizontalContentAlignment="Right"/>
+        <ProgressBar Name="Pb_Progress" 
+                     Margin="10,210,540,230"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Left"
+                     Height="10"
+                     Width="250"
+                     Value="0"/>
+
     </Grid>
 </Page>

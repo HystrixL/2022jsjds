@@ -59,6 +59,7 @@ namespace Co_work
             Tg_Btn_Project.IsChecked = true;
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = false;
+            page_Project.RefreshProject();
         }
 
         private void ChangePageUser()

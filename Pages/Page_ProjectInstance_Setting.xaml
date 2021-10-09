@@ -9,6 +9,70 @@
       Title="Page_ProjectInstance_Setting">
 
     <Grid Background="White">
-        
+
+        <Label Content="项目名称:"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               FontSize="12" Margin="10,10,0,0"/>
+        <TextBox Name="Tb_Name" Margin="76,13,524,415"
+                 FontSize="12"
+                 Height="22"
+                 Width="200"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"/>
+
+        <Label Content="项目简介:"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               FontSize="12" Margin="10,35,0,0"/>
+        <TextBox Name="Tb_Intro" Margin="76,40,0,0"
+                 FontSize="12"
+                 Height="120"
+                 MaxWidth="200"
+                 TextWrapping="Wrap"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top" Width="200"/>
+
+        <Label Content="截止日期:"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               FontSize="12" Margin="10,163,0,0"/>
+        <DatePicker x:Name="Dp_Deadline" 
+                    FontSize="12"
+                    Height="22"
+                    Width="200"
+            SelectedDateFormat="Long" FirstDayOfWeek="Monday"
+            IsTodayHighlighted="False" Margin="76,165,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center">
+        </DatePicker>
+
+        <Label Content="进度:"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               FontSize="12" Margin="10,189,0,0"/>
+        <TextBox Name="Tb_Progress" Margin="76,191,0,0"
+                 FontSize="12"
+                 Height="22"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top" Width="100"/>
+        <Label Content="%"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               FontSize="12" Margin="176,189,0,0"/>
+
+
+        <Button Name="Btn_Save" Margin="196,264,0,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Width="80"
+                Height="25"
+                Click="Btn_Save_Click">
+            <Label Content="保存"
+                   FontSize="10"/>
+        </Button>
+
+
     </Grid>
 </Page>
