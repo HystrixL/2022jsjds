@@ -45,7 +45,7 @@ namespace Co_work
             ChangePageSetting();
         }
 
-        private void ChangePageProject()
+        public void ChangePageProject()
         {
             if (page_Project == null)
             {

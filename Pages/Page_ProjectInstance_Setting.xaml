@@ -63,13 +63,23 @@
                FontSize="12" Margin="176,189,0,0"/>
 
 
-        <Button Name="Btn_Save" Margin="196,264,0,0"
+        <Button Margin="196,264,0,0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 Width="80"
                 Height="25"
                 Click="Btn_Save_Click">
             <Label Content="保存"
+                   FontSize="10"/>
+        </Button>
+
+        <Button Margin="10,403,0,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Width="80"
+                Height="25"
+                Click="Btn_Delete_Click">
+            <Label Content="删除项目"
                    FontSize="10"/>
         </Button>
 

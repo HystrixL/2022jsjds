@@ -30,25 +30,47 @@ namespace Co_work.Pages
         private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
             if (!float.TryParse(Tb_Progress.Text, out float progress))
-            { }
-            else if (Tb_Name.Text != "" && Convert.ToSingle(Tb_Progress.Text) >= 0 && Convert.ToSingle(Tb_Progress.Text) <= 100)
             {
-                this.Owner.Owner.project[this.Owner.Owner.projectIndex].Name = Tb_Name.Text;
-                this.Owner.Owner.project[this.Owner.Owner.projectIndex].Intro = Tb_Intro.Text;
+                MessageBox.Show("进度只能为数字", "错误", MessageBoxButton.OK);
+            }
+            else if (!(Convert.ToSingle(Tb_Progress.Text) >= 0 && Convert.ToSingle(Tb_Progress.Text) <= 100))
+            {
+                MessageBox.Show("进度只能在0%到100%之间", "错误", MessageBoxButton.OK);
+            }
+            else if (Tb_Name.Text == "")
+            {
+                MessageBox.Show("请填写项目名称", "错误", MessageBoxButton.OK);
+            }
+            else
+            {
+                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = Tb_Name.Text;
+                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Intro = Tb_Intro.Text;
                 if (Dp_Deadline.SelectedDate == null)
-                    this.Owner.Owner.project[this.Owner.Owner.projectIndex].Deadline = "无";
+                    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = "无";
                 else
-                    this.Owner.Owner.project[this.Owner.Owner.projectIndex].Deadline = Dp_Deadline.Text;
-                this.Owner.Owner.project[this.Owner.Owner.projectIndex].Progress = progress;
+                    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = Dp_Deadline.Text;
+                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Progress = progress;
 
                 this.Owner.Lb_ProjectName.Content = Tb_Name.Text;
-                this.Owner.page_ProjectInstance_Project.Lb_Intro.Text = "简介："  + Environment.NewLine + Tb_Intro.Text;
+                this.Owner.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + Tb_Intro.Text;
                 if (Dp_Deadline.SelectedDate == null)
                     this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：无";
                 else
                     this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + Dp_Deadline.Text;
                 this.Owner.page_ProjectInstance_Project.Pb_Progress.Value = progress;
                 this.Owner.page_ProjectInstance_Project.Lb_Progress.Content = Tb_Progress.Text + "%";
+
+                MessageBox.Show("保存成功", "", MessageBoxButton.OK);
+            }
+        }
+
+        private void Btn_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("确定要删除“" + this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name + "”项目吗？", "删除项目", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = "";
+                this.Owner.Owner.RefreshProject();
+                this.Owner.Owner.Owner.ChangePageProject();
             }
         }
 

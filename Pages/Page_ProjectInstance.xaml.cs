@@ -41,7 +41,12 @@ namespace Co_work.Pages
         public Page_ProjectInstance_Setting page_ProjectInstance_Setting;
 
         private void Btn_Project_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            ChangePageProject();
+        }
+
+        public void ChangePageProject()
+        {
             Lb_Project.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 21, 255));
             Lb_Member.Foreground = new SolidColorBrush(Colors.Black);
             Lb_Setting.Foreground = new SolidColorBrush(Colors.Black);
@@ -93,10 +98,13 @@ namespace Co_work.Pages
                 Content = page_ProjectInstance_Setting
             };
 
-            page_ProjectInstance_Setting.Tb_Name.Text = this.Owner.project[this.Owner.projectIndex].Name;
-            page_ProjectInstance_Setting.Tb_Intro.Text = this.Owner.project[this.Owner.projectIndex].Intro;
-            page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.projectIndex].Deadline;
-            page_ProjectInstance_Setting.Tb_Progress.Text = this.Owner.project[this.Owner.projectIndex].Progress.ToString();
+            page_ProjectInstance_Setting.Tb_Name.Text = this.Owner.project[this.Owner.selectIndex].Name;
+            page_ProjectInstance_Setting.Tb_Intro.Text = this.Owner.project[this.Owner.selectIndex].Intro;
+            if (this.Owner.project[this.Owner.selectIndex].Deadline == "无")
+                page_ProjectInstance_Setting.Dp_Deadline.Text = "";
+            else
+                page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.selectIndex].Deadline;
+            page_ProjectInstance_Setting.Tb_Progress.Text = this.Owner.project[this.Owner.selectIndex].Progress.ToString();
         }
     }
 }

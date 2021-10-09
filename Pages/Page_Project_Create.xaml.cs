@@ -28,7 +28,11 @@ namespace Co_work.Pages
 
         private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            if (newProjectName.Text != "")
+            if (newProjectName.Text == "")
+            {
+                MessageBox.Show("请填写项目名称", "错误", MessageBoxButton.OK);
+            }
+            else
             {
                 (this.Owner as Page_Project).projectIndex++;
                 (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name = newProjectName.Text;
