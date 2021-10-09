@@ -9,13 +9,24 @@
       Title="Page_ProjectInstance">
 
     <Grid Background="#FFE8E8ED">
-        <Grid VerticalAlignment="top"
-              Height="10"
-              Background="#FFE8E8ED"/>
+
+        <Grid VerticalAlignment="Top"
+              Height="38"
+              Background="White">
+
+            <Label Name="Lb_ProjectName"
+                   Width="130"
+                   Height="40"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Content="项目名称" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                   FontSize="14"/>
+
+        </Grid>
 
         <Grid VerticalAlignment="Top"
               Height="40"
-              Background="White" Margin="0,10,0,0">
+              Background="White" Margin="0,50,0,0">
 
             <Button Margin="25,0,0,0"
                           Width="80"
@@ -61,6 +72,7 @@
             </Button>
 
 
+
             <Grid Name="Select_Effect"
                   Background="#FF001FFF" 
                   Margin="25, 38, 0, 0"
@@ -70,5 +82,8 @@
                   HorizontalAlignment="Left"/>
 
         </Grid>
+
+        <ContentControl Name="Change_Page" Margin="10,100,10,0"/>
+
     </Grid>
 </Page>

@@ -30,13 +30,14 @@ namespace Co_work.Pages
         {
             if (newProjectName.Text != "")
             {
-                (this.Owner as Page_Project).newProjectName = newProjectName.Text;
+                (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name = newProjectName.Text;
                 if (newProjectIntro.Text == "")
                     newProjectIntro.Text = "无";
-                (this.Owner as Page_Project).newProjectIntro = newProjectIntro.Text;
-                if (newProjectDeadline.Text == "")
-                    newProjectDeadline.Text = "无";
-                (this.Owner as Page_Project).newProjectDeadline = newProjectDeadline.Text;
+                (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Intro = newProjectIntro.Text;
+                if (newProjectDeadline.SelectedDate == null)
+                    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = "无";
+                else
+                    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = newProjectDeadline.Text;
                 ChangePageProject();
                 (this.Owner as Page_Project).CreatProject();
                 newProjectName.Text = "";

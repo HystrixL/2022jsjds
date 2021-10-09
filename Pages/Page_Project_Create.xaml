@@ -20,6 +20,7 @@
                  Height="24"
                  VerticalAlignment="Top"
                  FontSize="16" HorizontalAlignment="Left" Width="250"/>
+        
         <Label Content="项目简介："
                FontSize="16" Margin="24,68,-24,-68" Grid.ColumnSpan="2"/>
         <TextBox Name="newProjectIntro"
@@ -32,15 +33,17 @@
                  MaxWidth="250"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"/>
+        
         <Label Content="截止时间："
                FontSize="16" Margin="24,227,-24,-227" Grid.ColumnSpan="2"/>
-        <TextBox Name="newProjectDeadline"
-                 Margin="132,232,0,0"
-                 Width="250"
-                 Height="25"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
-                 FontSize="16"/>
+        <DatePicker x:Name="newProjectDeadline" 
+                    Height="24"
+                    Width="250"
+            SelectedDateFormat="Long" FirstDayOfWeek="Monday"
+            IsTodayHighlighted="False" Margin="132,232,143,193"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+        </DatePicker>
 
         <Button Name="Btn_Save" 
                 Margin="282,291,0,0"
@@ -48,7 +51,9 @@
                 Height="34"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Btn_Save_Click">
+                Click="Btn_Save_Click"
+                BorderThickness="1,1,1,1" 
+                Background="White">
             <Label Content="保存"
                    FontSize="14"
                    HorizontalAlignment="Center"

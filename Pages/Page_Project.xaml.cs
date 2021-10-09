@@ -25,16 +25,25 @@ namespace Co_work.Pages
         public Page_Project()
         {
             InitializeComponent();
+            project = new Projects[255];
         }
 
-        public string newProjectName;
-        public string newProjectIntro;
-        public string newProjectStartTime;
-        public string newProjectDeadline;
+        public struct Projects
+        {
+            public string Name;
+            public string Intro;
+            public string Creator;
+            public string StartTime;
+            public string Deadline;
+        }
+
+        public Projects[] project;
+        public int projectIndex = -1;
 
         private void Btn_AddProject_Click(object sender, RoutedEventArgs e)
         {
             ChangePageProjectCreate();
+            projectIndex++;
         }
 
         public void CreatProject()
@@ -57,7 +66,8 @@ namespace Co_work.Pages
             ProjectInfo.Width = 200;
             ProjectInfo.Height = 100;
             ProjectInfo.FontSize = 12;
-            ProjectInfo.Text = "项目名称：" + newProjectName + Environment.NewLine + Environment.NewLine + "简介：" + newProjectIntro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + DateTime.Today.ToLongDateString() + Environment.NewLine + "截止日期：" + newProjectDeadline;
+            project[projectIndex].StartTime = DateTime.Today.ToLongDateString();
+            ProjectInfo.Text = "项目名称：" + project[projectIndex].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[projectIndex].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + DateTime.Today.ToLongDateString() + Environment.NewLine + "截止日期：" + project[projectIndex].Deadline;
             ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
             ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
             ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
@@ -68,6 +78,7 @@ namespace Co_work.Pages
             ProjectBtn.Content = ProjectInfo;
 
             page_ProjectInstance = new Page_ProjectInstance();
+            page_ProjectInstance.Lb_ProjectName.Content = project[projectIndex].Name;
             page_ProjectInstance.Owner = this;
             ProjectBtn.Click += ProjectBtn_Click;
 
@@ -102,6 +113,14 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectInstance
             };
+            page_ProjectInstance.Owner = this;
+            Button btn = sender as Button;
+            int index = ((int)btn.Margin.Left + 10) / 220;
+            page_ProjectInstance.Lb_ProjectName.Content = project[index].Name;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + project[index].Intro;
+            //page_ProjectInstance.page_ProjectInstance_Project.Lb_Creator.Content = "创建者：" + project[index].Creator;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_StartTime.Content = "创建日期：" + project[index].StartTime;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + project[index].Deadline;
         }
     }
 }

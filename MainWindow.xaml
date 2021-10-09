@@ -68,9 +68,13 @@
 
                 </StackPanel>
                 
-
             </Grid>
-            <ContentControl Name="Change_Page" Margin="113,0,0,0"/>
+            
         </Grid>
+
+        <ContentControl Name="Change_Page" Margin="113,0,0,0"
+                        Width="1920"
+                        Height="1080"/>
+
     </Grid>
 </Window>
