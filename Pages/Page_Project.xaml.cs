@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using Co_work;
-using System.Diagnostics;
 
 namespace Co_work.Pages
 {

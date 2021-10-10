@@ -15,12 +15,12 @@
               Background="White">
 
             <Label Name="Lb_ProjectName"
-                   Width="130"
+                   Width="763"
                    Height="40"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   Content="项目名称" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                   FontSize="14"/>
+                   Content="项目名称" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                   FontSize="14" Margin="27,0,0,0"/>
 
         </Grid>
 

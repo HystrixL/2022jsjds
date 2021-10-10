@@ -66,5 +66,48 @@
                      Width="250"
                      Value="0"/>
 
+
+        <Button Margin="300,10,400,410"
+                Width="80"
+                Height="30"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Click="Btn_Upload_Click">
+            <Label Content="上传文件"
+                   FontSize="12"/>
+        </Button>
+
+        <Button Margin="400,10,0,0"
+                Width="80"
+                Height="30"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Click="Btn_NewFolder_Click">
+            <Label Content="新建文件夹"
+                   FontSize="12"/>
+        </Button>
+
+
+        <ListView Name="Lv_File" Margin="300,45,0,0"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Left"
+                 MaxWidth="800" Height="500"
+                  MinWidth="800"
+                  ItemsSource="{Binding}" SelectionMode="Single" Foreground="Black">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="名称" Width="300"
+                                    DisplayMemberBinding="{Binding name}"/>
+                    <GridViewColumn Header="上传者" Width="200"
+                                    DisplayMemberBinding="{Binding uper}"/>
+                    <GridViewColumn Header="日期" Width="200"
+                                    DisplayMemberBinding="{Binding date}"/>
+                    <GridViewColumn Header="大小" Width="100"
+                                    DisplayMemberBinding="{Binding size}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
     </Grid>
 </Page>
