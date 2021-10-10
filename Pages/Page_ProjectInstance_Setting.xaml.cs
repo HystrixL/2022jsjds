@@ -43,13 +43,24 @@ namespace Co_work.Pages
             }
             else
             {
-                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = Tb_Name.Text;
-                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Intro = Tb_Intro.Text;
+                Owner.Owner.newProject.Name = Tb_Name.Text;
+                Owner.Owner.newProject.Intro = Tb_Intro.Text;
                 if (Dp_Deadline.SelectedDate == null)
-                    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = "无";
+                    Owner.Owner.newProject.Deadline = "无";
                 else
-                    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = Dp_Deadline.Text;
-                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Progress = progress;
+                    Owner.Owner.newProject.Deadline = Dp_Deadline.Text;
+                Owner.Owner.newProject.Progress = progress;
+
+                Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
+                Owner.Owner.project.Insert(Owner.Owner.selectIndex, Owner.Owner.newProject);
+
+                //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = Tb_Name.Text;
+                //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Intro = Tb_Intro.Text;
+                //if (Dp_Deadline.SelectedDate == null)
+                //    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = "无";
+                //else
+                //    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = Dp_Deadline.Text;
+                //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Progress = progress;
 
                 this.Owner.Lb_ProjectName.Content = Tb_Name.Text;
                 this.Owner.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + Tb_Intro.Text;
@@ -68,7 +79,7 @@ namespace Co_work.Pages
         {
             if (MessageBox.Show("确定要删除“" + this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name + "”项目吗？", "删除项目", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = "";
+                Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
                 this.Owner.Owner.RefreshProject();
                 this.Owner.Owner.Owner.ChangePageProject();
             }

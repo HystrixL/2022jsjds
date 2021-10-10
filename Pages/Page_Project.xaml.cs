@@ -26,7 +26,7 @@ namespace Co_work.Pages
         public Page_Project()
         {
             InitializeComponent();
-            project = new Projects[255];
+            //project = new Projects[255];
         }
 
         public struct Projects
@@ -39,62 +39,69 @@ namespace Co_work.Pages
             public float Progress;
         }
 
-        public Projects[] project;
-        public int projectIndex = -1;
+        public List<Projects> project = new List<Projects>();
+        public Projects newProject = new Projects();
+
+        //public Projects[] project;
+        //public int projectIndex = -1;
 
         private void Btn_AddProject_Click(object sender, RoutedEventArgs e)
         {
+            newProject = new Projects();
             ChangePageProjectCreate();
         }
 
         public void CreatProject()
         {
-            Thickness Mov;
+            //Thickness Mov;
 
-            Mov = Btn_AddProject.Margin;
+            //Mov = Btn_AddProject.Margin;
 
-            Button ProjectBtn = new Button();
-            ProjectBtn.Width = 200;
-            ProjectBtn.Height = 185;
-            ProjectBtn.Margin = Mov;
-            ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
-            ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
-            ProjectBtn.BorderThickness = new Thickness(0);
-            ProjectBtn.Background = new SolidColorBrush(Colors.White);
-            Grid1.Children.Add(ProjectBtn);
-            Grid1.RegisterName("Btn_Project_"+ projectIndex.ToString(), ProjectBtn);
-            ProjectBtn.Name = "Btn_Project_" + projectIndex.ToString();
+            //Button ProjectBtn = new Button();
+            //ProjectBtn.Width = 200;
+            //ProjectBtn.Height = 185;
+            //ProjectBtn.Margin = Mov;
+            //ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
+            //ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
+            //ProjectBtn.BorderThickness = new Thickness(0);
+            //ProjectBtn.Background = new SolidColorBrush(Colors.White);
+            //Grid1.Children.Add(ProjectBtn);
+            //Grid1.RegisterName("Btn_Project_"+ (project.Count-1).ToString(), ProjectBtn);
+            //ProjectBtn.Name = "Btn_Project_" + (project.Count-1).ToString();
 
-            TextBlock ProjectInfo = new TextBlock();
-            ProjectInfo.Width = 200;
-            ProjectInfo.Height = 100;
-            ProjectInfo.FontSize = 12;
-            project[projectIndex].StartTime = DateTime.Today.ToLongDateString();
-            ProjectInfo.Text = "项目名称：" + project[projectIndex].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[projectIndex].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[projectIndex].StartTime + Environment.NewLine + "截止日期：" + project[projectIndex].Deadline;
-            ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
-            ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
-            ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
-            ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
-            ProjectInfo.MaxWidth = 195;
-            ProjectInfo.TextWrapping = TextWrapping.Wrap;
+            //TextBlock ProjectInfo = new TextBlock();
+            //ProjectInfo.Width = 200;
+            //ProjectInfo.Height = 185;
+            //ProjectInfo.FontSize = 12;
 
-            ProjectBtn.Content = ProjectInfo;
+
+            //ProjectInfo.Text = "项目名称：" + project[project.Count-1].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[project.Count-1].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[project.Count-1].StartTime + Environment.NewLine + "截止日期：" + project[project.Count-1].Deadline + Environment.NewLine + "进度：" + project[project.Count-1].Progress + "%";
+            //ProjectInfo.Margin = new Thickness(5, 5, 0, 0);
+            //ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
+            //ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
+            //ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
+            //ProjectInfo.MaxWidth = 195;
+            //ProjectInfo.TextWrapping = TextWrapping.Wrap;
+
+            //ProjectBtn.Content = ProjectInfo;
 
             if(page_ProjectInstance == null)
                 page_ProjectInstance = new Page_ProjectInstance();
             page_ProjectInstance.Owner = this;
-            ProjectBtn.Click += ProjectBtn_Click;
+            //ProjectBtn.Click += ProjectBtn_Click;
 
-            Thickness Mov2;
-            Mov2 = Mov;
-            Mov2.Left += 220;
-            Btn_AddProject.Margin = Mov2;
+            //Thickness Mov2;
+            //Mov2 = Mov;
+            //Mov2.Left += 220;
+            //Btn_AddProject.Margin = Mov2;
+
+            RefreshProject();
         }
 
         public void RefreshProject()
         {
             //清空已有按钮
-            for (int i = 0; i <= projectIndex; i++)
+            for (int i = 0; i <= project.Count; i++)
             {
                 Button btn = Grid1.FindName("Btn_Project_" + i.ToString()) as Button;
                 if (btn != null)
@@ -105,48 +112,44 @@ namespace Co_work.Pages
             }
             Btn_AddProject.Margin = new Thickness(20, 20, 572, 260);
             //重新创建按钮
-            for (int i = 0; i <= projectIndex; i++)
+            for (int i = 0; i <= project.Count-1; i++)
             {
-                if (project[i].Name != "")
-                {
-                    Thickness Mov;
+                Thickness Mov;
 
-                    Mov = Btn_AddProject.Margin;
+                Mov = Btn_AddProject.Margin;
 
-                    Button ProjectBtn = new Button();
-                    ProjectBtn.Width = 200;
-                    ProjectBtn.Height = 185;
-                    ProjectBtn.Margin = Mov;
-                    ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
-                    ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
-                    ProjectBtn.BorderThickness = new Thickness(0);
-                    ProjectBtn.Background = new SolidColorBrush(Colors.White);
-                    Grid1.Children.Add(ProjectBtn);
-                    Grid1.RegisterName("Btn_Project_" + i.ToString(), ProjectBtn);
-                    ProjectBtn.Name = "Btn_Project_" + i.ToString();
+                Button ProjectBtn = new Button();
+                ProjectBtn.Width = 200;
+                ProjectBtn.Height = 185;
+                ProjectBtn.Margin = Mov;
+                ProjectBtn.VerticalAlignment = VerticalAlignment.Top;
+                ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
+                ProjectBtn.BorderThickness = new Thickness(0);
+                ProjectBtn.Background = new SolidColorBrush(Colors.White);
+                Grid1.Children.Add(ProjectBtn);
+                Grid1.RegisterName("Btn_Project_" + i.ToString(), ProjectBtn);
+                ProjectBtn.Name = "Btn_Project_" + i.ToString();
 
-                    TextBlock ProjectInfo = new TextBlock();
-                    ProjectInfo.Width = 200;
-                    ProjectInfo.Height = 100;
-                    ProjectInfo.FontSize = 12;
-                    project[projectIndex].StartTime = DateTime.Today.ToLongDateString();
-                    ProjectInfo.Text = "项目名称：" + project[i].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[i].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[i].StartTime + Environment.NewLine + "截止日期：" + project[i].Deadline;
-                    ProjectInfo.Margin = new Thickness(5, -60, 0, 0);
-                    ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
-                    ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
-                    ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
-                    ProjectInfo.MaxWidth = 195;
-                    ProjectInfo.TextWrapping = TextWrapping.Wrap;
+                TextBlock ProjectInfo = new TextBlock();
+                ProjectInfo.Width = 200;
+                ProjectInfo.Height = 185;
+                ProjectInfo.FontSize = 12;
+                ProjectInfo.Text = "项目名称：" + project[i].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[i].Intro + Environment.NewLine + "创建者：" + Environment.NewLine + "创建日期：" + project[i].StartTime + Environment.NewLine + "截止日期：" + project[i].Deadline + Environment.NewLine + "进度：" + project[i].Progress + "%";
+                ProjectInfo.Margin = new Thickness(5, 5, 0, 0);
+                ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
+                ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
+                ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
+                ProjectInfo.MaxWidth = 195;
+                ProjectInfo.TextWrapping = TextWrapping.Wrap;
 
-                    ProjectBtn.Content = ProjectInfo;
+                ProjectBtn.Content = ProjectInfo;
 
-                    ProjectBtn.Click += ProjectBtn_Click;
+                ProjectBtn.Click += ProjectBtn_Click;
 
-                    Thickness Mov2;
-                    Mov2 = Mov;
-                    Mov2.Left += 220;
-                    Btn_AddProject.Margin = Mov2;
-                } 
+                Thickness Mov2;
+                Mov2 = Mov;
+                Mov2.Left += 220;
+                Btn_AddProject.Margin = Mov2;
             }
         }
 
@@ -184,6 +187,8 @@ namespace Co_work.Pages
             //page_ProjectInstance.page_ProjectInstance_Project.Lb_Creator.Content = "创建者：" + project[index].Creator;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_StartTime.Content = "创建日期：" + project[selectIndex].StartTime;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + project[selectIndex].Deadline;
+            page_ProjectInstance.page_ProjectInstance_Project.Pb_Progress.Value = project[selectIndex].Progress;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_Progress.Content = project[selectIndex].Progress + "%";
         }
     }
 }

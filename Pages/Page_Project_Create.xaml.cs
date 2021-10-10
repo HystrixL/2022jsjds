@@ -34,18 +34,31 @@ namespace Co_work.Pages
             }
             else
             {
-                (this.Owner as Page_Project).projectIndex++;
-                (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name = newProjectName.Text;
+                Owner.newProject.Name = newProjectName.Text;
                 if (newProjectIntro.Text == "")
                     newProjectIntro.Text = "无";
-                (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Intro = newProjectIntro.Text;
-                (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].StartTime = DateTime.Today.ToLongDateString();
+                Owner.newProject.Intro = newProjectIntro.Text;
+                Owner.newProject.StartTime = DateTime.Today.ToLongDateString();
                 if (newProjectDeadline.SelectedDate == null)
-                    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = "无";
+                    Owner.newProject.Deadline = "无";
                 else
-                    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = newProjectDeadline.Text;
+                    Owner.newProject.Deadline = newProjectDeadline.Text;
+                Owner.project.Add(Owner.newProject);
+
+                ////if((this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name != "")
+                //(this.Owner as Page_Project).projectIndex++;
+                //(this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name = newProjectName.Text;
+                //if (newProjectIntro.Text == "")
+                //    newProjectIntro.Text = "无";
+                //(this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Intro = newProjectIntro.Text;
+                //(this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].StartTime = DateTime.Today.ToLongDateString();
+                //if (newProjectDeadline.SelectedDate == null)
+                //    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = "无";
+                //else
+                //    (this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Deadline = newProjectDeadline.Text;
+
                 ChangePageProject();
-                (this.Owner as Page_Project).CreatProject();
+                Owner.CreatProject();
                 newProjectName.Text = "";
                 newProjectIntro.Text = "";
                 newProjectDeadline.Text = "";

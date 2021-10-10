@@ -53,7 +53,8 @@
                 VerticalAlignment="Top"
                 Click="Btn_Save_Click"
                 BorderThickness="1,1,1,1" 
-                Background="White">
+                Background="White"
+                IsDefault="True">
             <Label Content="保存"
                    FontSize="14"
                    HorizontalAlignment="Center"

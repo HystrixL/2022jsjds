@@ -31,7 +31,8 @@
                  MaxWidth="200"
                  TextWrapping="Wrap"
                  HorizontalAlignment="Left"
-                 VerticalAlignment="Top" Width="200"/>
+                 VerticalAlignment="Top" Width="200"
+                 AcceptsReturn="True"/>
 
         <Label Content="截止日期:"
                VerticalAlignment="Top"
@@ -68,7 +69,8 @@
                 HorizontalAlignment="Left"
                 Width="80"
                 Height="25"
-                Click="Btn_Save_Click">
+                Click="Btn_Save_Click"
+                IsDefault="True">
             <Label Content="保存"
                    FontSize="10"/>
         </Button>
