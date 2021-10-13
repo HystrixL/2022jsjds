@@ -6,9 +6,13 @@
       xmlns:local="clr-namespace:Co_work.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Page_ProjectInstance_Setting">
+      Title="Page_ProjectInstance_Setting"
+      MouseDown="Page_MouseDown">
 
     <Grid Background="White">
+        <TextBox Name="DefaultFocus"
+                 Width="0"
+                 Height="0"/>
 
         <Label Content="项目名称:"
                VerticalAlignment="Top"
@@ -53,15 +57,15 @@
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                FontSize="12" Margin="10,189,0,0"/>
-        <TextBox Name="Tb_Progress" Margin="76,191,0,0"
+        <TextBox Name="Tb_Progress" Margin="219,191,0,0"
                  FontSize="12"
                  Height="22"
                  HorizontalAlignment="Left"
-                 VerticalAlignment="Top" Width="100"/>
+                 VerticalAlignment="Top" Width="41" LostFocus="Tb_Progress_LostFocus"/>
         <Label Content="%"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
-               FontSize="12" Margin="176,189,0,0"/>
+               FontSize="12" Margin="260,189,0,0"/>
 
 
         <Button Margin="196,264,0,0"
@@ -84,6 +88,11 @@
             <Label Content="删除项目"
                    FontSize="10"/>
         </Button>
+        <Slider HorizontalAlignment="Left" 
+                Margin="76,193,0,0" 
+                VerticalAlignment="Top" 
+                Width="143" Maximum="100"
+                Name="Sl_Progress" ValueChanged="Sl_Progress_ValueChanged"/>
 
 
     </Grid>

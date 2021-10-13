@@ -105,6 +105,7 @@ namespace Co_work.Pages
             else
                 page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.selectIndex].Deadline;
             page_ProjectInstance_Setting.Tb_Progress.Text = this.Owner.project[this.Owner.selectIndex].Progress.ToString();
+            page_ProjectInstance_Setting.Sl_Progress.Value = (double)this.Owner.project[this.Owner.selectIndex].Progress;
         }
     }
 }

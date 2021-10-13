@@ -9,24 +9,30 @@
       Title="Page_User_Register">
 
     <Grid Background="White" Margin="0,0,0,-94">
-        <Label Content="注册" Margin="180,26,0,0"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="249*"/>
+            <ColumnDefinition Width="151*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="注册" Margin="204,27,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                FontSize="25"
                FontWeight="Bold"/>
 
         <Label Content="用户名" 
-               Margin="31,105,640,281"
+               Margin="31,105,0,0"
                FontSize="16"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
         <TextBox Name="Tb_Id" 
-                 Margin="109,105,441,315"
+                 Margin="109,105,0,0"
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
-        <Label Content="用户名唯一且不可改，只能使用英文数字下划线" 
+               VerticalAlignment="Top"
+                 FontSize="20"/>
+        <Label Name="Lb_Id_Instru"
+               Content="用户名唯一且不可改，只能使用字母数字下划线" 
                Margin="103,135,0,0"
                FontSize="12" Foreground="Gray"
                HorizontalAlignment="Left"
@@ -43,8 +49,10 @@
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
-        <Label Content="昵称注册后可改" 
+               VerticalAlignment="Top"
+                 FontSize="20"/>
+        <Label Name="Lb_Name_Instru"
+               Content="昵称注册后可改" 
                Margin="103,240,0,0"
                FontSize="12" Foreground="Gray"
                HorizontalAlignment="Left"
@@ -56,13 +64,15 @@
                FontSize="16"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
-        <TextBox Name="Tb_Password"
+        <PasswordBox Name="Tb_Password"
                  Margin="109,315,0,0"
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
-        <Label Content="密码应在8字符以上" 
+               VerticalAlignment="Top"
+                 FontSize="20"/>
+        <Label Name="Lb_Password_Instru"
+               Content="密码长度在8-20之间，只能使用字母数字" 
                Margin="103,346,0,0"
                FontSize="12" Foreground="Gray"
                HorizontalAlignment="Left"
@@ -74,17 +84,30 @@
                FontSize="16"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
-        <TextBox Name="Tb_Passport_Repeat"
+        <PasswordBox Name="Tb_Password_Repeat"
                  Margin="109,420,0,0"
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
-        <Label Content="与所设密码相同" 
+               VerticalAlignment="Top"
+                 FontSize="20"/>
+        <Label Name="Lb_RePassword_Instru"
+               Content="与所设密码相同" 
                Margin="103,450,0,0"
                FontSize="12" Foreground="Gray"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
+
+        <Button Margin="160,514,0,0"
+                Click="Btn_Register_Click"
+                Width="150"
+                Height="30"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                IsDefault="True">
+            <Label Content="注册"
+                   FontSize="15"/>
+        </Button>
 
     </Grid>
 </Page>

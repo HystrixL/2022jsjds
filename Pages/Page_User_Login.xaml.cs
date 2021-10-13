@@ -30,8 +30,12 @@ namespace Co_work.Pages
         public Page_User_Register page_User_Register;
 
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
-        { 
-        
+        {
+            if (Tb_Id.Text == "" || Tb_Password.Text == "")
+            {
+                MessageBox.Show("请填写用户名或密码", "错误", MessageBoxButton.OK);
+            }
+
         }
         
         private void Btn_Register_Click(object sender, RoutedEventArgs e)
@@ -45,6 +49,17 @@ namespace Co_work.Pages
             {
                 Content = page_User_Register
             };
+
+            page_User_Register.Tb_Id.Text = "";
+            page_User_Register.Tb_Name.Text = "";
+            page_User_Register.Tb_Password.Password = "";
+            page_User_Register.Tb_Password_Repeat.Password = "";
+            page_User_Register.Lb_Id_Instru.Foreground = new SolidColorBrush(Colors.Gray);
+            page_User_Register.Lb_Name_Instru.Foreground = new SolidColorBrush(Colors.Gray);
+            page_User_Register.Lb_Password_Instru.Foreground = new SolidColorBrush(Colors.Gray);
+            page_User_Register.Lb_RePassword_Instru.Foreground = new SolidColorBrush(Colors.Gray);
+
+            page_User_Register.Tb_Id.Focus();
         }
     }
 }

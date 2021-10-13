@@ -85,5 +85,20 @@ namespace Co_work.Pages
             }
         }
 
+        private void Sl_Progress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Tb_Progress.Text = e.NewValue.ToString("f1");
+        }
+
+        private void Tb_Progress_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(Tb_Progress.Text, out double d))
+                Sl_Progress.Value = double.Parse(Tb_Progress.Text);
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DefaultFocus.Focus();
+        }
     }
 }

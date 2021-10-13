@@ -167,6 +167,7 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectCreate
             };
+            page_ProjectCreate.newProjectName.Focus();
         }
 
         public Page_ProjectInstance page_ProjectInstance;

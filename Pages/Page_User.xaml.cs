@@ -44,6 +44,7 @@ namespace Co_work.Pages
                 {
                     Content = page_User_Login
                 };
+                page_User_Login.Tb_Id.Focus();
             }
         }
 

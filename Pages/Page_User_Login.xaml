@@ -25,7 +25,8 @@
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
+               VerticalAlignment="Top"
+                 FontSize="20"/>
 
 
         <Label Content="密码" 
@@ -33,18 +34,20 @@
                FontSize="16"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
-        <TextBox Name="Tb_Passport"
+        <TextBox Name="Tb_Password"
                  Margin="109,210,0,0"
                  Width="250"
                  Height="30"
                  HorizontalAlignment="Left"
-               VerticalAlignment="Top"/>
+               VerticalAlignment="Top"
+                 FontSize="20"/>
 
         <Button Click="Btn_Login_Click" Margin="184,316,0,0"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 Width="100"
-                Height="30">
+                Height="30"
+                IsDefault="True">
             <Label Content="登录"
                    FontSize="12"/>
         </Button>
@@ -56,6 +59,13 @@
                 HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}">
             <Label Content="注册新账号"/>
         </Button>
+
+        <CheckBox Content="记住密码" Margin="109,257,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"/>
+        <CheckBox Content="自动登录" Margin="210,257,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"/>
 
     </Grid>
 </Page>
