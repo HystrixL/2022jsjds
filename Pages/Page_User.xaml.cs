@@ -20,9 +20,33 @@ namespace Co_work.Pages
     /// </summary>
     public partial class Page_User : Page
     {
+        public MainWindow Owner = new MainWindow();
+
+        public Page_User_Login page_User_Login;
+
+        public bool isLogined = false;
+
         public Page_User()
         {
             InitializeComponent();
         }
+
+        public void CheckLoginState()
+        {
+            if (!isLogined)
+            {
+                if (page_User_Login == null)
+                {
+                    page_User_Login = new Page_User_Login();
+                    page_User_Login.Owner = this;
+                }
+                Owner.Change_Page.Content = new Frame()
+                {
+                    Content = page_User_Login
+                };
+            }
+        }
+
+        
     }
 }

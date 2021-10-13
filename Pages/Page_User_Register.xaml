@@ -1,0 +1,90 @@
+﻿<Page x:Class="Co_work.Pages.Page_User_Register"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Co_work.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Page_User_Register">
+
+    <Grid Background="White" Margin="0,0,0,-94">
+        <Label Content="注册" Margin="180,26,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               FontSize="25"
+               FontWeight="Bold"/>
+
+        <Label Content="用户名" 
+               Margin="31,105,640,281"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Id" 
+                 Margin="109,105,441,315"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <Label Content="用户名唯一且不可改，只能使用英文数字下划线" 
+               Margin="103,135,0,0"
+               FontSize="12" Foreground="Gray"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+
+        <Label Content="昵称" 
+               Margin="31,210,0,0"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Name"
+                 Margin="109,210,0,0"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <Label Content="昵称注册后可改" 
+               Margin="103,240,0,0"
+               FontSize="12" Foreground="Gray"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+
+        <Label Content="密码" 
+               Margin="31,315,0,0"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Password"
+                 Margin="109,315,0,0"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <Label Content="密码应在8字符以上" 
+               Margin="103,346,0,0"
+               FontSize="12" Foreground="Gray"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+
+        <Label Content="重复密码" 
+               Margin="31,420,0,0"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Passport_Repeat"
+                 Margin="109,420,0,0"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <Label Content="与所设密码相同" 
+               Margin="103,450,0,0"
+               FontSize="12" Foreground="Gray"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+    </Grid>
+</Page>

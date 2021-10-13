@@ -67,6 +67,7 @@ namespace Co_work
             if (page_User == null)
             {
                 page_User = new Page_User();
+                page_User.Owner = this;
             }
             Change_Page.Content = new Frame()
             {
@@ -75,6 +76,7 @@ namespace Co_work
             Tg_Btn_Project.IsChecked = false;
             Tg_Btn_User.IsChecked = true;
             Tg_Btn_Setting.IsChecked = false;
+            page_User.CheckLoginState();
         }
 
         private void ChangePageSetting()

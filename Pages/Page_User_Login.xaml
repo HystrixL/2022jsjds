@@ -1,0 +1,61 @@
+﻿<Page x:Class="Co_work.Pages.Page_User_Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Co_work.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Page_User_Login">
+
+    <Grid Background="White">
+        <Label Content="登录" Margin="204,45,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               FontSize="25"
+               FontWeight="Bold"/>
+
+        <Label Content="用户名" 
+               Margin="31,134,0,0"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Id"
+                 Margin="109,134,0,0"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+
+        <Label Content="密码" 
+               Margin="31,210,0,0"
+               FontSize="16"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+        <TextBox Name="Tb_Passport"
+                 Margin="109,210,0,0"
+                 Width="250"
+                 Height="30"
+                 HorizontalAlignment="Left"
+               VerticalAlignment="Top"/>
+
+        <Button Click="Btn_Login_Click" Margin="184,316,0,0"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Width="100"
+                Height="30">
+            <Label Content="登录"
+                   FontSize="12"/>
+        </Button>
+
+        <Button Click="Btn_Register_Click" Margin="289,316,0,0"
+                Width="80"
+                Height="30"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Label Content="注册新账号"/>
+        </Button>
+
+    </Grid>
+</Page>
