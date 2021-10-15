@@ -161,6 +161,13 @@
             return result;
         }
 
+        private string UrlCombine(string host, string remotePath)
+        {
+            string result = new Uri(new Uri(host.TrimEnd('/')), remotePath).ToString();
+            ;
+            return result;
+        }
+
         /// <summary>
         /// 创建连接
         /// </summary>
@@ -187,13 +194,18 @@
         /// <param name="localFile">本地文件</param>
         /// <param name="remoteFileName">上传文件名</param>
         /// <returns>上传成功返回 true</returns>
-        public bool Upload(FileInfo localFile, string remoteFileName)
+        public bool Upload(FileInfo localFile, string remoteFileName, ref float persent)
         {
             bool result = false;
             if (localFile.Exists)
             {
                 try
                 {
+                    persent = 0;
+                    long current = 0;
+                    long total = 1;
+                    total = localFile.Length;
+
                     string url = UrlCombine(Host, RemotePath, remoteFileName); //统一资源定位符
                     FtpWebRequest
                         request = CreateConnection(url, WebRequestMethods.Ftp.UploadFile); //用FtpWebRequest创建连接
@@ -206,6 +218,9 @@
                         int count = fs.Read(buffer, 0, buffer.Length);
                         while (count > 0)
                         {
+                            current += count;
+                            persent = float.Parse((100 * (double)current / total).ToString());
+
                             rs.Write(buffer, 0, count);
                             count = fs.Read(buffer, 0, buffer.Length);
                         }
@@ -302,6 +317,106 @@
             catch (Exception ex)
             {
                 throw new Exception("FtpHelper Delete Error --> " + ex.Message + "  文件名:" + fileName);
+            }
+        }
+
+        /// <summary>
+        /// 从ftp服务器上获得文件夹列表
+        /// </summary>
+        /// <param name="RequedstPath">服务器下的相对路径</param>
+        /// <returns></returns>
+        public List<string> GetDirctory(string remotePath)
+        {
+            List<string> strs = new List<string>();
+            try
+            {
+                string uri = UrlCombine(host, remotePath);   //目标路径 path为服务器地址
+                FtpWebRequest reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                // ftp用户名和密码
+                reqFTP.Credentials = new NetworkCredential(username, password);
+                reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                WebResponse response = reqFTP.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());//中文文件名
+
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    if (line.Contains("<DIR>"))
+                    {
+                        string msg = line.Substring(line.LastIndexOf("<DIR>") + 5).Trim();
+                        strs.Add(msg);
+                    }
+                    line = reader.ReadLine();
+                }
+                reader.Close();
+                response.Close();
+                return strs;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("获取目录出错：" + ex.Message);
+            }
+            return strs;
+        }
+
+
+        /// <summary>
+        /// 从ftp服务器上获得文件列表
+        /// </summary>
+        /// <param name="RequedstPath">服务器下的相对路径</param>
+        /// <returns></returns>
+        public List<string> GetFile(string remotePath)
+        {
+            List<string> strs = new List<string>();
+            try
+            {
+                string uri = UrlCombine(host, remotePath);   //目标路径 path为服务器地址
+                FtpWebRequest reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                // ftp用户名和密码
+                reqFTP.Credentials = new NetworkCredential(username, password);
+                reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                WebResponse response = reqFTP.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());//中文文件名
+
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    if (!line.Contains("<DIR>"))
+                    {
+                        string msg = line.Substring(39).Trim();
+                        strs.Add(msg);
+                    }
+                    line = reader.ReadLine();
+                }
+                reader.Close();
+                response.Close();
+                return strs;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("获取文件出错：" + ex.Message);
+            }
+            return strs;
+        }
+
+
+        public void CreateDir(string dirName)
+        {
+            try
+            {
+                string uri = UrlCombine(host, dirName);
+                FtpWebRequest reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                // 指定数据传输类型
+                reqFTP.UseBinary = true;
+                // ftp用户名和密码
+                reqFTP.Credentials = new NetworkCredential(username, password);
+                reqFTP.Method = WebRequestMethods.Ftp.MakeDirectory;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("创建目录出错：" + ex.Message);
             }
         }
     }

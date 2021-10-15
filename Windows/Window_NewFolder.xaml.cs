@@ -31,8 +31,7 @@ namespace Co_work.Windows
         {
             if (Lb_FolderName.Text != "")
             {
-                Owner1.newFolderName = Lb_FolderName.Text;
-                Owner1.CreateNewFolder();
+                Owner1.CreateNewFolder(Lb_FolderName.Text);
                 this.Close();
             }
         }

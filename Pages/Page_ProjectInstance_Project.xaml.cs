@@ -47,22 +47,46 @@ namespace Co_work.Pages
             {
                 string fileAddress = dialog.FileName;
                 string fileName = System.IO.Path.GetFileName(fileAddress);
-               
+
                 FileUploadAsync(fileAddress, fileName);
+                //FileUpload(fileAddress, fileName);
             }
             
         }
 
         private async Task FileUploadAsync(string fileAddress, string fileName)
         {
-            await Task.Run(() => FileUpload(fileAddress, fileName));
-            FileItemCreate(fileName);
+            await Task.Run(() => FileUploadPlusAsync(fileAddress, fileName));
+            RefreshListView();
         }
 
-        private void FileUpload(string fileAddress, string fileName)
+        public float persent;
+
+        private void FileUploadPlusAsync(string fileAddress, string fileName)
+        {
+            Task.Run(() => FileUpload(fileAddress, fileName, ref persent));
+            while (true)
+            {
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    Pb_test.Value = persent;
+                }));
+
+                if (persent == 100)
+                {
+                    Dispatcher.Invoke(new Action(delegate
+                    {
+                        Pb_test.Value = 100;
+                    }));
+                    break;
+                }
+            }
+        }
+
+        private void FileUpload(string fileAddress, string fileName, ref float persent)
         {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileAddress);
-            ftpHelper.Upload(fileInfo, "/Test/" + fileName);
+            ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref persent);
         }
 
         private void FileItemCreate(string fileName)
@@ -96,6 +120,7 @@ namespace Co_work.Pages
         private void DeleteFile_Click(object sender, RoutedEventArgs e)
         {
             ftpHelper.Delete("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+            RefreshListView();
         }
 
         private void DeleteFolder_Click(object sender, RoutedEventArgs e)
@@ -110,10 +135,40 @@ namespace Co_work.Pages
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            RefreshListView();
         }
 
-        public string newFolderName;
+        public void RefreshListView()
+        {
+            Task.Run(() => RefreshListViewAsync());
+        }
+
+        private async void RefreshListViewAsync()
+        {
+            List<string> listFolder = ftpHelper.GetDirctory("/Test/");
+            List<string> listFile = ftpHelper.GetFile("/Test/");
+
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Lv_File.Items.Clear();
+            }));
+            
+            foreach (var itemFolder in listFolder)
+            {
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    FileItemCreate(itemFolder);
+                }));
+            }
+            foreach (var itemFile in listFile)
+            {
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    CreateNewFolderItem(itemFile);
+                }));
+            }
+        }
+
 
         private void Btn_NewFolder_Click(object sender, RoutedEventArgs e)
         {
@@ -122,7 +177,13 @@ namespace Co_work.Pages
             window.ShowDialog();
         }
 
-        public void CreateNewFolder()
+        public void CreateNewFolder(string newFolderName)
+        {
+            ftpHelper.CreateDir("/Test/" + newFolderName);
+            RefreshListView();
+        }
+
+        public void CreateNewFolderItem(string newFolderName)
         {
             FileItem file = new FileItem { name = newFolderName };
             ListViewItem item = new ListViewItem();

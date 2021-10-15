@@ -29,12 +29,17 @@ namespace Co_work
 
         #region 导航栏
         public Page_Project page_Project;
+        public Page_Transmisson page_Transmisson;
         public Page_User page_User;
         public Page_Setting page_Setting;
 
         private void Tg_Btn_Project_Click(object sender, RoutedEventArgs e)
         {
             ChangePageProject();
+        }
+        private void Tg_Btn_Transmission_Click(object sender, RoutedEventArgs e)
+        {
+            ChangePageTransmisson();
         }
         private void Tg_Btn_User_Click(object sender, RoutedEventArgs e)
         {
@@ -57,9 +62,25 @@ namespace Co_work
                 Content = page_Project
             };
             Tg_Btn_Project.IsChecked = true;
+            Tg_Btn_Transmission.IsChecked = false;
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = false;
             page_Project.RefreshProject();
+        }
+        private void ChangePageTransmisson()
+        {
+            if (page_Transmisson == null)
+            {
+                page_Transmisson = new Page_Transmisson();
+            }
+            Change_Page.Content = new Frame()
+            {
+                Content = page_Transmisson
+            };
+            Tg_Btn_Project.IsChecked = false;
+            Tg_Btn_Transmission.IsChecked = true;
+            Tg_Btn_User.IsChecked = false;
+            Tg_Btn_Setting.IsChecked = false;
         }
 
         private void ChangePageUser()
@@ -74,6 +95,7 @@ namespace Co_work
                 Content = page_User
             };
             Tg_Btn_Project.IsChecked = false;
+            Tg_Btn_Transmission.IsChecked = false;
             Tg_Btn_User.IsChecked = true;
             Tg_Btn_Setting.IsChecked = false;
             page_User.CheckLoginState();
@@ -90,6 +112,7 @@ namespace Co_work
                 Content = page_Setting
             };
             Tg_Btn_Project.IsChecked = false;
+            Tg_Btn_Transmission.IsChecked = false;
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = true;
         }

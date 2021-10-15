@@ -20,7 +20,6 @@
                     <Grid Height="1080">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="193*"/>
-                            <RowDefinition Height="887*"/>
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Tg_Btn_Project"
                                       VerticalAlignment="Top"
@@ -36,13 +35,28 @@
                                    VerticalContentAlignment="Center" Width="180" Height="83"/>
 
                         </ToggleButton>
-                        <ToggleButton x:Name="Tg_Btn_User"
+
+                        <ToggleButton x:Name="Tg_Btn_Transmission"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Center"
                             Height="88"
                             Width="180"
                             BorderThickness="0" Margin="0,134,0,0" Background="{x:Null}" Grid.RowSpan="2"
-                                       Click="Tg_Btn_User_Click">
+                                       Click="Tg_Btn_Transmission_Click">
+
+                            <Label Content="传输" 
+                               FontSize="19" Foreground="White" Width="170" Height="90"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"></Label>
+                        </ToggleButton>
+
+                        <ToggleButton x:Name="Tg_Btn_User"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center"
+                            Height="88"
+                            Width="180"
+                            BorderThickness="0" Margin="0,222,0,0" Background="{x:Null}"
+                                       Click="Tg_Btn_User_Click" Grid.Row="1" Grid.RowSpan="2">
 
                             <Label Content="个人" 
                                FontSize="19" Foreground="White" Width="170" Height="90"
@@ -55,7 +69,7 @@
                             HorizontalAlignment="Center"
                             Height="88"
                             Width="180"
-                            BorderThickness="0" Margin="0,29,0,0" Background="{x:Null}" Grid.Row="1"
+                            BorderThickness="0" Margin="0,310,0,0" Background="{x:Null}" Grid.Row="2"
                                       Click="Tg_Btn_Setting_Click">
 
                             <Label Content="设置" 
@@ -67,9 +81,9 @@
                     </Grid>
 
                 </StackPanel>
-                
+
             </Grid>
-            
+
         </Grid>
 
         <ContentControl Name="Change_Page" Margin="113,0,0,0"
