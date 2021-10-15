@@ -419,5 +419,101 @@
                 Console.WriteLine("创建目录出错：" + ex.Message);
             }
         }
+
+
+        /// <summary>
+        /// 删除目录 上一级必须先存在
+        /// </summary>
+        /// <param name="dirName">服务器下的相对路径</param>
+        public void DeleteDir(string dirName)
+        {
+            try
+            {
+                string uri = UrlCombine(host, dirName);
+                FtpWebRequest reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                // ftp用户名和密码
+                reqFTP.Credentials = new NetworkCredential(username, password);
+                reqFTP.Method = WebRequestMethods.Ftp.RemoveDirectory;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("删除目录出错：" + ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取文件大小
+        /// </summary>
+        /// <param name="file">ip服务器下的相对路径</param>
+        /// <returns>文件大小</returns>
+        public int GetFileSize(string file)
+        {
+            StringBuilder result = new StringBuilder();
+            FtpWebRequest request;
+            try
+            {
+                string uri = UrlCombine(host, file);
+                request = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                request.UseBinary = true;
+                request.Credentials = new NetworkCredential(username, password);//设置用户名和密码
+                request.Method = WebRequestMethods.Ftp.GetFileSize;
+
+                int dataLength = (int)request.GetResponse().ContentLength;
+
+                return dataLength;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("获取文件大小出错：" + ex.Message);
+                return -1;
+            }
+        }
+
+
+        /// <summary>
+        /// 重命名
+        /// </summary>
+        /// <param name="ftpPath">ftp文件路径</param>
+        /// <param name="currentFilename"></param>
+        /// <param name="newFilename"></param>
+        public bool Rename(string currentFileName, string newFileName)
+        {
+            bool success = false;
+            FtpWebRequest ftpWebRequest = null;
+            FtpWebResponse ftpWebResponse = null;
+            Stream ftpResponseStream = null;
+            try
+            {
+                string uri = UrlCombine(host, currentFileName);
+                ftpWebRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                ftpWebRequest.Credentials = new NetworkCredential(username, password);
+                ftpWebRequest.UseBinary = true;
+                ftpWebRequest.Method = WebRequestMethods.Ftp.Rename;
+                ftpWebRequest.RenameTo = newFileName;
+
+                ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse();
+                ftpResponseStream = ftpWebResponse.GetResponseStream();
+
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+            finally
+            {
+                if (ftpResponseStream != null)
+                {
+                    ftpResponseStream.Close();
+                }
+                if (ftpWebResponse != null)
+                {
+                    ftpWebResponse.Close();
+                }
+            }
+            return success;
+        }
     }
 }

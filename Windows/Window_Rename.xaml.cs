@@ -16,23 +16,23 @@ using Co_work.Pages;
 namespace Co_work.Windows
 {
     /// <summary>
-    /// Window_NewFolder.xaml 的交互逻辑
+    /// Window_RenameFile.xaml 的交互逻辑
     /// </summary>
-    public partial class Window_NewFolder : Window
+    public partial class Window_RenameFile : Window
     {
-        public Window_NewFolder()
+        public Window_RenameFile()
         {
             InitializeComponent();
-            Lb_FolderName.Focus();
+            Lb_FileName.Focus();
         }
 
         public Page_ProjectInstance_Project Owner1;
 
-        private void Btn_New_Click(object sender, RoutedEventArgs e)
+        private void Btn_Rename_Click(object sender, RoutedEventArgs e)
         {
-            if (Lb_FolderName.Text != "")
+            if (Lb_FileName.Text != "")
             {
-                Owner1.CreateNewFolder(Lb_FolderName.Text);
+                Owner1.Rename(Lb_FileName.Text);
                 this.Close();
             }
         }

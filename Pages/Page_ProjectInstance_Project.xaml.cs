@@ -49,9 +49,7 @@ namespace Co_work.Pages
                 string fileName = System.IO.Path.GetFileName(fileAddress);
 
                 FileUploadAsync(fileAddress, fileName);
-                //FileUpload(fileAddress, fileName);
             }
-            
         }
 
         private async Task FileUploadAsync(string fileAddress, string fileName)
@@ -89,14 +87,13 @@ namespace Co_work.Pages
             ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref persent);
         }
 
-        private void FileItemCreate(string fileName)
+        private void FileItemCreate(string fileName , string fileSize)
         {
-            FileItem file = new FileItem { name = fileName };
+            FileItem file = new FileItem { name = fileName , size = fileSize};
             ListViewItem item = new ListViewItem();
             item.Content = file;
             item.DataContext = file;
             Lv_File.Items.Add(item);
-            item.MouseRightButtonUp += ListViewItem_MouseRightButtonUp;
             item.ContextMenu = MenuFile();
         }
 
@@ -106,26 +103,54 @@ namespace Co_work.Pages
             
         }
 
-        void ListViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            
-
-        }
 
         private void Rename_Click(object sender, RoutedEventArgs e)
         {
+            Window_RenameFile window = new Window_RenameFile();
+            window.Owner1 = this;
+            window.Lb_FileName.Text = ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name;
+            window.ShowDialog();
+        }
 
+        public async Task Rename(string newFileName)
+        {
+            await Task.Run(() =>
+            Dispatcher.Invoke(new Action(delegate
+            {
+                ftpHelper.Rename("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, newFileName);
+            })));
+            RefreshListView();
         }
 
         private void DeleteFile_Click(object sender, RoutedEventArgs e)
         {
-            ftpHelper.Delete("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+            DeleteFile();
+        }
+
+        private async Task DeleteFile()
+        {
+            await Task.Run(() =>
+            Dispatcher.Invoke(new Action(delegate
+            {
+                ftpHelper.Delete("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+            })));
             RefreshListView();
         }
 
+
         private void DeleteFolder_Click(object sender, RoutedEventArgs e)
         {
+            DeleteFolder();
+        }
 
+        private async Task DeleteFolder()
+        {
+            await Task.Run(() =>
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    ftpHelper.DeleteDir("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+                })));
+            RefreshListView();
         }
 
         private void Download_Click(object sender, RoutedEventArgs e)
@@ -143,7 +168,7 @@ namespace Co_work.Pages
             Task.Run(() => RefreshListViewAsync());
         }
 
-        private async void RefreshListViewAsync()
+        private async Task RefreshListViewAsync()
         {
             List<string> listFolder = ftpHelper.GetDirctory("/Test/");
             List<string> listFile = ftpHelper.GetFile("/Test/");
@@ -157,14 +182,14 @@ namespace Co_work.Pages
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    FileItemCreate(itemFolder);
+                    CreateNewFolderItem(itemFolder);
                 }));
             }
             foreach (var itemFile in listFile)
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    CreateNewFolderItem(itemFile);
+                    FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
                 }));
             }
         }
@@ -190,7 +215,7 @@ namespace Co_work.Pages
             item.Content = file;
             Lv_File.Items.Add(item);
             item.MouseDoubleClick += ListViewItem_MouseDoubleClick;
-            item.MouseRightButtonUp += ListViewItem_MouseRightButtonUp;
+            item.DataContext = file;
             item.ContextMenu = MenuFolder();
         }
 
