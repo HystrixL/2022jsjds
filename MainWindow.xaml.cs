@@ -27,6 +27,15 @@ namespace Co_work
             ChangePageProject();
         }
 
+        public void InitializePageTransmisson()
+        {
+            if (page_Transmisson == null)
+            {
+                page_Transmisson = new Page_Transmisson();
+                page_Transmisson.Owner = this;
+            }
+        }
+
         #region 导航栏
         public Page_Project page_Project;
         public Page_Transmisson page_Transmisson;
@@ -72,6 +81,7 @@ namespace Co_work
             if (page_Transmisson == null)
             {
                 page_Transmisson = new Page_Transmisson();
+                page_Transmisson.Owner = this;
             }
             Change_Page.Content = new Frame()
             {

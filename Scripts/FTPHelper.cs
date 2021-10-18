@@ -194,14 +194,14 @@
         /// <param name="localFile">本地文件</param>
         /// <param name="remoteFileName">上传文件名</param>
         /// <returns>上传成功返回 true</returns>
-        public bool Upload(FileInfo localFile, string remoteFileName, ref float persent)
+        public bool Upload(FileInfo localFile, string remoteFileName, ref float percent)
         {
             bool result = false;
             if (localFile.Exists)
             {
                 try
                 {
-                    persent = 0;
+                    percent = 0;
                     long current = 0;
                     long total = 1;
                     total = localFile.Length;
@@ -219,7 +219,7 @@
                         while (count > 0)
                         {
                             current += count;
-                            persent = float.Parse((100 * (double)current / total).ToString());
+                            percent = (float)(100 * (double)current / total);
 
                             rs.Write(buffer, 0, count);
                             count = fs.Read(buffer, 0, buffer.Length);
@@ -449,7 +449,7 @@
         /// </summary>
         /// <param name="file">ip服务器下的相对路径</param>
         /// <returns>文件大小</returns>
-        public int GetFileSize(string file)
+        public long GetFileSize(string file)
         {
             StringBuilder result = new StringBuilder();
             FtpWebRequest request;
@@ -461,9 +461,10 @@
                 request.Credentials = new NetworkCredential(username, password);//设置用户名和密码
                 request.Method = WebRequestMethods.Ftp.GetFileSize;
 
-                int dataLength = (int)request.GetResponse().ContentLength;
+                request.GetResponse();
+                //long dataLength = request.GetResponse().ContentLength;
 
-                return dataLength;
+                return 0;
             }
             catch (Exception ex)
             {

@@ -26,6 +26,7 @@ namespace Co_work.Pages
         {
             InitializeComponent();
             Lv_File.ContextMenu = MenuListView();
+            Pb_Upload_Progress.Visibility = Visibility.Hidden;
         }
 
         public Page_ProjectInstance Owner;
@@ -54,37 +55,52 @@ namespace Co_work.Pages
 
         private async Task FileUploadAsync(string fileAddress, string fileName)
         {
-            await Task.Run(() => FileUploadPlusAsync(fileAddress, fileName));
+            Owner.Owner.Owner.InitializePageTransmisson();
+            Owner.Owner.Owner.page_Transmisson.InitializePages();
+            await Task.Run(() => FileUploadTaskAsync(fileAddress, fileName));
             RefreshListView();
         }
 
-        public float persent;
-
-        private void FileUploadPlusAsync(string fileAddress, string fileName)
+        int index = 0;
+        List<float> list = new List<float>();
+        private void FileUploadTaskAsync(string fileAddress, string fileName)
         {
-            Task.Run(() => FileUpload(fileAddress, fileName, ref persent));
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Pb_Upload_Progress.Visibility = Visibility.Visible;
+            }));
+
+            index++;
+            list.Add(0);
+            float percent = 0;
+            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.CreateList();
+            Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
+            list[index] = percent;
+            
             while (true)
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    Pb_test.Value = persent;
+                    Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[0].percent = percent;
+                    Pb_Upload_Progress.Value = percent;
                 }));
 
-                if (persent == 100)
+                if (percent == 100)
                 {
                     Dispatcher.Invoke(new Action(delegate
                     {
-                        Pb_test.Value = 100;
+                        Pb_Upload_Progress.Value = 100;
+                        Pb_Upload_Progress.Visibility = Visibility.Hidden;
                     }));
                     break;
                 }
             }
         }
 
-        private void FileUpload(string fileAddress, string fileName, ref float persent)
+        private void FileUpload(string fileAddress, string fileName, ref float percent)
         {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileAddress);
-            ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref persent);
+            ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref percent);
         }
 
         private void FileItemCreate(string fileName , string fileSize)
