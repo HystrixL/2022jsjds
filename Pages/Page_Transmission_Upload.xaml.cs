@@ -62,29 +62,29 @@ namespace Co_work.Pages
                 itemPercents.Add(itemPercent);
                 Lv_ListUpload.ItemsSource = itemPercents;
                 //Lv_ListUpload.Items.Add(item);
-                Task.Run(async () =>
-                {
-                    while (true)
-                    {
-                        UpdateProgress(item, itemPercent);
-                        //await Task.Delay(1000);
-                    }
-
-                });
+                // Task.Run(async () =>
+                // {
+                //     while (true)
+                //     {
+                //         UpdateProgress(item, itemPercent);
+                //         //await Task.Delay(1000);
+                //     }
+                //
+                // });
             }));
         }
 
-        public void UpdateProgress(ListViewItem item, ItemPercent itemPercent)
-        {
-            Dispatcher.Invoke(new Action(delegate
-            {
-                //item.Content = null;
-                //item.Content = itemPercent;
-                //((ItemPercent)item.Content).percent = itemPercent.percent;
-                //BindingExpression be = item.GetBindingExpression(ProgressBar.ValueProperty);
-                //be.UpdateSource();
-                //MessageBox.Show(item.Content.GetType().Name.ToString());
-            }));
-        }
+        // public void UpdateProgress(ListViewItem item, ItemPercent itemPercent)
+        // {
+        //     Dispatcher.Invoke(new Action(delegate
+        //     {
+        //         //item.Content = null;
+        //         //item.Content = itemPercent;
+        //         //((ItemPercent)item.Content).percent = itemPercent.percent;
+        //         //BindingExpression be = item.GetBindingExpression(ProgressBar.ValueProperty);
+        //         //be.UpdateSource();
+        //         //MessageBox.Show(item.Content.GetType().Name.ToString());
+        //     }));
+        // }
     }
 }

@@ -34,8 +34,8 @@ namespace Co_work.Pages
         public FtpHelper ftpHelper = new FtpHelper("103.193.189.241", "Administrator", "adxq@9139");
 
         class FileItem
-        { 
-            public string name { get; set;}
+        {
+            public string name { get; set; }
             public string uper { get; set; }
             public string date { get; set; }
             public string size { get; set; }
@@ -61,31 +61,45 @@ namespace Co_work.Pages
             RefreshListView();
         }
 
-        int index = 0;
+        int Index = 0;
         List<float> list = new List<float>();
+
+        private void PercentUpdate(string fileAddress, string fileName, int index)
+        {
+            float percent = 0;
+            Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
+            while (percent < 100)
+            {
+                list[index] = percent;
+            }
+        }
+
         private void FileUploadTaskAsync(string fileAddress, string fileName)
         {
-            Dispatcher.Invoke(new Action(delegate
-            {
-                Pb_Upload_Progress.Visibility = Visibility.Visible;
-            }));
+            Dispatcher.Invoke(new Action(delegate { Pb_Upload_Progress.Visibility = Visibility.Visible; }));
 
-            index++;
             list.Add(0);
-            float percent = 0;
-            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.CreateList();
-            Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
-            list[index] = percent;
+            Task.Run(() => PercentUpdate(fileAddress, fileName, Index));
             
+            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.CreateList();
+            Index++;
+
             while (true)
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[0].percent = percent;
-                    Pb_Upload_Progress.Value = percent;
+                    for (int i = 0; i < Index; i++)
+                    {
+                        if (Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents.Count > i)
+                        {
+                            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[i].percent =
+                                list[i];
+                            //Pb_Upload_Progress.Value = list[i];
+                        }
+                    }
                 }));
 
-                if (percent == 100)
+                if (list[list.Count - 1] == 100)
                 {
                     Dispatcher.Invoke(new Action(delegate
                     {
@@ -103,9 +117,9 @@ namespace Co_work.Pages
             ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref percent);
         }
 
-        private void FileItemCreate(string fileName , string fileSize)
+        private void FileItemCreate(string fileName, string fileSize)
         {
-            FileItem file = new FileItem { name = fileName , size = fileSize};
+            FileItem file = new FileItem { name = fileName, size = fileSize };
             ListViewItem item = new ListViewItem();
             item.Content = file;
             item.DataContext = file;
@@ -116,7 +130,6 @@ namespace Co_work.Pages
 
         void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
         }
 
 
@@ -131,10 +144,12 @@ namespace Co_work.Pages
         public async Task Rename(string newFileName)
         {
             await Task.Run(() =>
-            Dispatcher.Invoke(new Action(delegate
-            {
-                ftpHelper.Rename("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, newFileName);
-            })));
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    ftpHelper.Rename(
+                        "/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name,
+                        newFileName);
+                })));
             RefreshListView();
         }
 
@@ -146,10 +161,11 @@ namespace Co_work.Pages
         private async Task DeleteFile()
         {
             await Task.Run(() =>
-            Dispatcher.Invoke(new Action(delegate
-            {
-                ftpHelper.Delete("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
-            })));
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    ftpHelper.Delete("/Test/" +
+                                     ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+                })));
             RefreshListView();
         }
 
@@ -164,14 +180,14 @@ namespace Co_work.Pages
             await Task.Run(() =>
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    ftpHelper.DeleteDir("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
+                    ftpHelper.DeleteDir("/Test/" +
+                                        ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
                 })));
             RefreshListView();
         }
 
         private void Download_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -189,18 +205,13 @@ namespace Co_work.Pages
             List<string> listFolder = ftpHelper.GetDirctory("/Test/");
             List<string> listFile = ftpHelper.GetFile("/Test/");
 
-            Dispatcher.Invoke(new Action(delegate
-            {
-                Lv_File.Items.Clear();
-            }));
-            
+            Dispatcher.Invoke(new Action(delegate { Lv_File.Items.Clear(); }));
+
             foreach (var itemFolder in listFolder)
             {
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    CreateNewFolderItem(itemFolder);
-                }));
+                Dispatcher.Invoke(new Action(delegate { CreateNewFolderItem(itemFolder); }));
             }
+
             foreach (var itemFile in listFile)
             {
                 Dispatcher.Invoke(new Action(delegate
@@ -279,6 +290,5 @@ namespace Co_work.Pages
 
             return menu;
         }
-
     }
 }
