@@ -126,8 +126,12 @@ namespace Co_work
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = true;
         }
+
         #endregion
 
-
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
     }
 }

@@ -49,65 +49,93 @@ namespace Co_work.Pages
                 string fileAddress = dialog.FileName;
                 string fileName = System.IO.Path.GetFileName(fileAddress);
 
-                FileUploadAsync(fileAddress, fileName);
+                Owner.Owner.Owner.InitializePageTransmisson();
+                Owner.Owner.Owner.page_Transmisson.InitializePages();
+                Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.CreateList(fileAddress, fileName, Owner.Owner.project[Owner.Owner.selectIndex].Name);
             }
+        }
+
+        public void StartFileUpload(string fileAddress, string fileName)
+        {
+            FileUploadAsync(fileAddress, fileName);
         }
 
         private async Task FileUploadAsync(string fileAddress, string fileName)
         {
-            Owner.Owner.Owner.InitializePageTransmisson();
-            Owner.Owner.Owner.page_Transmisson.InitializePages();
+            
             await Task.Run(() => FileUploadTaskAsync(fileAddress, fileName));
+            
             RefreshListView();
         }
 
-        int Index = 0;
-        List<float> list = new List<float>();
+        //int Index = 0;
+        //List<float> list = new List<float>();
 
-        private void PercentUpdate(string fileAddress, string fileName, int index)
-        {
-            float percent = 0;
-            Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
-            while (percent < 100)
-            {
-                list[index] = percent;
-            }
-        }
+        //private void PercentUpdate(string fileAddress, string fileName,int index)
+        //{
+        //    Index++;
+        //    float percent = 0;
+        //    Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
+        //    while (percent < 100)
+        //    {
+        //        list[index] = percent;
+        //    }
+        //}
 
         private void FileUploadTaskAsync(string fileAddress, string fileName)
         {
-            Dispatcher.Invoke(new Action(delegate { Pb_Upload_Progress.Visibility = Visibility.Visible; }));
+            //Dispatcher.Invoke(new Action(delegate { Pb_Upload_Progress.Visibility = Visibility.Visible; }));
 
-            list.Add(0);
-            Task.Run(() => PercentUpdate(fileAddress, fileName, Index));
-            
-            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.CreateList();
-            Index++;
+            //list.Add(0);
+            //Task.Run(() => PercentUpdate(fileAddress, fileName, Index));
+            //Index++;
+            float percent = 0;
+            Task.Run(() => FileUpload(fileAddress, fileName, ref percent));
 
             while (true)
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    for (int i = 0; i < Index; i++)
-                    {
-                        if (Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents.Count > i)
-                        {
-                            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[i].percent =
-                                list[i];
+                    //for (int i = 0; i < Index; i++)
+                    //{
+                    //    if (Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents.Count > i)
+                    //    {
+                    //        Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[i].percent =
+                    //            list[i];
+                    //        //Pb_Upload_Progress.Value = list[i];
+                    //    }
+                    //}
+
+                    //for (int i = 0; i < Index; i++)
+                    //{
+                        //if (Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents.Count > i)
+                        //{
+                            Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[0].percent = percent;
                             //Pb_Upload_Progress.Value = list[i];
-                        }
-                    }
+                        //}
+                    //}
+                    
                 }));
 
-                if (list[list.Count - 1] == 100)
+                if (Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.itemPercents[0].percent > 99.9)
                 {
+                    
                     Dispatcher.Invoke(new Action(delegate
                     {
-                        Pb_Upload_Progress.Value = 100;
-                        Pb_Upload_Progress.Visibility = Visibility.Hidden;
+                        Owner.Owner.Owner.page_Transmisson.page_Transmission_Upload.RemoveFirstItem();
                     }));
                     break;
                 }
+
+                //if (list[list.Count - 1] == 100)
+                //{
+                //    Dispatcher.Invoke(new Action(delegate
+                //    {
+                //        Pb_Upload_Progress.Value = 100;
+                //        Pb_Upload_Progress.Visibility = Visibility.Hidden;
+                //    }));
+                //    break;
+                //}
             }
         }
 
@@ -197,7 +225,7 @@ namespace Co_work.Pages
 
         public void RefreshListView()
         {
-            Task.Run(() => RefreshListViewAsync());
+            Task.Run(async() => await RefreshListViewAsync());
         }
 
         private async Task RefreshListViewAsync()

@@ -8,26 +8,41 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page_Transmission_Upload">
 
-    <Grid Background="White">
+    <Grid Background="#FFE8E8ED">
         <ListView Name="Lv_ListUpload"
-                 HorizontalAlignment="left"
+                  Background="#FFE8E8ED"
+                 ItemContainerStyle="{DynamicResource ListViewItemKey}"
+                 HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  Width="800"
-                 Height="700" Margin="20,20,0,0" BorderThickness="0,0,0,0">
+                 Height="700" BorderThickness="0,0,0,1">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="test" Width="200">
+                    <GridViewColumn Header="fileName" Width="200"
+                                    DisplayMemberBinding="{Binding fileName}"/>
+                    <GridViewColumn Header="projectName" Width="200" DisplayMemberBinding="{Binding projectName}"/>
+                    <GridViewColumn Header="progress" Width="250">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ProgressBar Name="Pb_UploadProgress"
                                              Width="200"
-                                             Height="20"
+                                             Height="10"
                                              Value ="{Binding percent, UpdateSourceTrigger=Explicit}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+            <ListView.Resources>
+                <Style x:Key="ListViewItemKey" TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Height" Value="50"/>
+                </Style>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </ListView.Resources>
         </ListView>
     </Grid>
 </Page>

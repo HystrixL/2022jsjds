@@ -461,7 +461,7 @@
                 request.Credentials = new NetworkCredential(username, password);//设置用户名和密码
                 request.Method = WebRequestMethods.Ftp.GetFileSize;
 
-                request.GetResponse();
+                //request.GetResponse();
                 //long dataLength = request.GetResponse().ContentLength;
 
                 return 0;
