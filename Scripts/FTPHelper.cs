@@ -249,18 +249,25 @@
         /// <param name="serverName">服务器文件名称</param>
         /// <param name="localName">需要保存在本地的文件名称</param>
         /// <returns>下载成功返回 true</returns>
-        public bool Download(string serverName, string localName)
+        public bool Download(string serverName, string localName, ref float percent)
         {
             bool result = false;
             using (FileStream fs = new FileStream(localName, FileMode.OpenOrCreate))
             {
                 try
                 {
+                    percent = 0;
+                    long current = 0;
+                    long total = 1;
+
                     string url = UrlCombine(Host, RemotePath, serverName);
                     Console.WriteLine(url);
 
                     FtpWebRequest request = CreateConnection(url, WebRequestMethods.Ftp.DownloadFile);
                     request.ContentOffset = fs.Length;
+
+                    total = GetFileSize(url, 0);
+
                     using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
                     {
                         fs.Position = fs.Length;
@@ -268,6 +275,9 @@
                         int count = response.GetResponseStream().Read(buffer, 0, buffer.Length);
                         while (count > 0)
                         {
+                            current = fs.Length;
+                            percent = (float)(100 * (double)current / total);
+
                             fs.Write(buffer, 0, count);
                             count = response.GetResponseStream().Read(buffer, 0, buffer.Length);
                         }
@@ -444,33 +454,83 @@
         }
 
 
+        ///// <summary>
+        ///// 获取文件大小
+        ///// </summary>
+        ///// <param name="file">ip服务器下的相对路径</param>
+        ///// <returns>文件大小</returns>
+        //public long GetFileSize(string file)
+        //{
+        //    StringBuilder result = new StringBuilder();
+        //    FtpWebRequest request;
+        //    try
+        //    {
+        //        string uri = UrlCombine(host, file);
+        //        request = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+        //        request.UseBinary = true;
+        //        request.Credentials = new NetworkCredential(username, password);//设置用户名和密码
+        //        request.Method = WebRequestMethods.Ftp.GetFileSize;
+
+        //        //request.GetResponse();
+        //        //long dataLength = request.GetResponse().ContentLength;
+
+        //        return 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("获取文件大小出错：" + ex.Message);
+        //        return -1;
+        //    }
+        //}
+
         /// <summary>
-        /// 获取文件大小
+        /// 获得文件大小
         /// </summary>
-        /// <param name="file">ip服务器下的相对路径</param>
-        /// <returns>文件大小</returns>
-        public long GetFileSize(string file)
+        /// <param name="url">FTP文件的完全路径</param>
+        /// <returns></returns>
+        public long GetFileSize(string fileName)//获取大小就要重新连接吗？是的，method只能有一个
         {
-            StringBuilder result = new StringBuilder();
-            FtpWebRequest request;
+
+            long fileSize = 0;
             try
             {
-                string uri = UrlCombine(host, file);
-                request = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                request.UseBinary = true;
-                request.Credentials = new NetworkCredential(username, password);//设置用户名和密码
-                request.Method = WebRequestMethods.Ftp.GetFileSize;
+                string uri = UrlCombine(Host, RemotePath, fileName);
+                FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));//路径创造新的连接
+                reqFtp.UseBinary = true;
+                reqFtp.Credentials = new NetworkCredential(username, password);//连接
+                reqFtp.Method = WebRequestMethods.Ftp.GetFileSize;//方法大小
+                FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+                fileSize = response.ContentLength;//获得大小
 
-                //request.GetResponse();
-                //long dataLength = request.GetResponse().ContentLength;
-
-                return 0;
+                response.Close();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("获取文件大小出错：" + ex.Message);
-                return -1;
+                
             }
+            return fileSize;
+        }
+
+        public long GetFileSize(string url, int type)//获取大小就要重新连接吗？是的，method只能有一个
+        {
+
+            long fileSize = 0;
+            try
+            {
+                FtpWebRequest reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri(url));//路径创造新的连接
+                reqFtp.UseBinary = true;
+                reqFtp.Credentials = new NetworkCredential(username, password);//连接
+                reqFtp.Method = WebRequestMethods.Ftp.GetFileSize;//方法大小
+                FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
+                fileSize = response.ContentLength;//获得大小
+
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return fileSize;
         }
 
 

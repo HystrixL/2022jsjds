@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Co_work.Pages
 {
@@ -23,6 +24,22 @@ namespace Co_work.Pages
         public Page_Setting()
         {
             InitializeComponent();
+        }
+
+        public void EnterPage()
+        {
+            Tb_SaveAddress.Text = Owner.fileSaveAddress;
+        }
+
+        public MainWindow Owner;
+
+        private void Btn_SaveAddress_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            dialog.ShowDialog();
+            Owner.fileSaveAddress = dialog.FileName;
+            Tb_SaveAddress.Text = Owner.fileSaveAddress;
         }
     }
 }

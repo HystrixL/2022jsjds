@@ -116,6 +116,7 @@ namespace Co_work
             if (page_Setting == null)
             {
                 page_Setting = new Page_Setting();
+                page_Setting.Owner = this;
             }
             Change_Page.Content = new Frame()
             {
@@ -125,6 +126,7 @@ namespace Co_work
             Tg_Btn_Transmission.IsChecked = false;
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = true;
+            page_Setting.EnterPage();
         }
 
         #endregion
@@ -133,5 +135,7 @@ namespace Co_work
         {
             Environment.Exit(Environment.ExitCode);
         }
+
+        public string fileSaveAddress =  Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work";
     }
 }

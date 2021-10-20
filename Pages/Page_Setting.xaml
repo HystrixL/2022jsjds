@@ -8,10 +8,26 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page_Setting">
 
-    <Grid>
-        <Label Content="设置" 
-                               FontSize="20" Foreground="Black"
-                                   HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center"/>
+    <Grid Background="White">
+        <Label Content="文件下载路径"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top" 
+               Margin="28,32,0,0"
+               FontSize="16"/>
+        <TextBox Name="Tb_SaveAddress" 
+                   Width="250"
+                   Height="25"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top" 
+                   Margin="139,35,0,0"
+                 FontSize="16"/>
+        <Button Content=".."
+                FontSize="16"
+                Click="Btn_SaveAddress_Click"
+                Height="25"
+                Width="60" 
+                Margin="394,35,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
     </Grid>
 </Page>
