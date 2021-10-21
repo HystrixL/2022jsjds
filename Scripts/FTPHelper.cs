@@ -9,6 +9,7 @@
     using System.IO;
 //对文件和目录操作
     using System.Threading;
+    using System.Windows;
 
     public class FtpHelper
     {
@@ -275,11 +276,11 @@
                         int count = response.GetResponseStream().Read(buffer, 0, buffer.Length);
                         while (count > 0)
                         {
-                            current = fs.Length;
-                            percent = (float)(100 * (double)current / total);
-
                             fs.Write(buffer, 0, count);
                             count = response.GetResponseStream().Read(buffer, 0, buffer.Length);
+
+                            current = fs.Length;
+                            percent = (float)(100 * (double)current / total);
                         }
 
                         response.GetResponseStream().Close();
@@ -326,6 +327,7 @@
             }
             catch (Exception ex)
             {
+                MessageBox.Show("远程服务器不存在目标文件");
                 throw new Exception("FtpHelper Delete Error --> " + ex.Message + "  文件名:" + fileName);
             }
         }

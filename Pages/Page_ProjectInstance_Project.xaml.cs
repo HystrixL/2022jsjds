@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,12 +36,24 @@ namespace Co_work.Pages
 
         public FtpHelper ftpHelper = new FtpHelper("103.193.189.241", "Administrator", "adxq@9139");
 
-        class FileItem
+        public class FileItem : INotifyPropertyChanged
         {
             public string name { get; set; }
             public string uper { get; set; }
             public string date { get; set; }
             public string size { get; set; }
+            public string menu { get; set; }
+
+            #region // INotifyPropertyChanged成员
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void OnPropertyChanged(PropertyChangedEventArgs e)
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, e);
+                }
+            }
+            #endregion
         }
 
         private void Btn_Upload_Click(object sender, RoutedEventArgs e)
@@ -144,15 +158,15 @@ namespace Co_work.Pages
             ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref percent);
         }
 
-        private void FileItemCreate(string fileName, string fileSize)
-        {
-            FileItem file = new FileItem { name = fileName, size = fileSize };
-            ListViewItem item = new ListViewItem();
-            item.Content = file;
-            item.DataContext = file;
-            Lv_File.Items.Add(item);
-            item.ContextMenu = MenuFile();
-        }
+        //private void FileItemCreate(string fileName, string fileSize)
+        //{
+        //    FileItem file = new FileItem { name = fileName, size = fileSize };
+        //    ListViewItem item = new ListViewItem();
+        //    item.Content = file;
+        //    item.DataContext = file;
+        //    Lv_File.Items.Add(item);
+        //    //item.ContextMenu = MenuFile();
+        //}
 
 
         void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -164,7 +178,7 @@ namespace Co_work.Pages
         {
             Window_RenameFile window = new Window_RenameFile();
             window.Owner1 = this;
-            window.Lb_FileName.Text = ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name;
+            window.Lb_FileName.Text = (Lv_File.SelectedItem as FileItem).name;
             window.ShowDialog();
         }
 
@@ -173,8 +187,7 @@ namespace Co_work.Pages
             await Task.Run(() =>
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    ftpHelper.Rename("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name,
-                        newFileName);
+                    ftpHelper.Rename("/Test/" + (Lv_File.SelectedItem as FileItem).name, newFileName);
                 })));
             RefreshListView();
         }
@@ -186,11 +199,14 @@ namespace Co_work.Pages
 
         private async Task DeleteFile()
         {
-            await Task.Run(() =>
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    ftpHelper.Delete("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
-                })));
+            if (Lv_File.SelectedItem as FileItem != null)
+            {
+                await Task.Run(() =>
+                    Dispatcher.Invoke(new Action(delegate
+                    {
+                        ftpHelper.Delete("/Test/" + (Lv_File.SelectedItem as FileItem).name);
+                    })));
+            }
             RefreshListView();
         }
 
@@ -202,34 +218,44 @@ namespace Co_work.Pages
 
         private async Task DeleteFolder()
         {
-            await Task.Run(() =>
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    ftpHelper.DeleteDir("/Test/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
-                })));
+            if (Lv_File.SelectedItem as FileItem != null)
+            {
+                await Task.Run(() =>
+                    Dispatcher.Invoke(new Action(delegate
+                    {
+                        ftpHelper.DeleteDir("/Test/" + (Lv_File.SelectedItem as FileItem).name);
+                    })));
+            }    
             RefreshListView();
         }
 
         private void Download_Click(object sender, RoutedEventArgs e)
         {
-            Owner.Owner.Owner.InitializePageTransmisson();
-            Owner.Owner.Owner.page_Transmisson.InitializePages();
+            if (ftpHelper.GetFile("/Test/").Contains((Lv_File.SelectedItem as FileItem).name))
+            {
+                Owner.Owner.Owner.InitializePageTransmisson();
+                Owner.Owner.Owner.page_Transmisson.InitializePages();
 
-            if (Directory.Exists(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name) == false)//如果不存在就创建file文件夹
-            {
-                Directory.CreateDirectory(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name);
-            }
-            if (File.Exists(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name))
-            {
-                MessageBoxButton button = MessageBoxButton.YesNo;
-                if (MessageBox.Show("目标文件夹内已有同名文件，是否覆盖？", "", button) == MessageBoxResult.Yes)
+                if (Directory.Exists(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name) == false)//如果不存在就创建file文件夹
                 {
-                    File.Delete(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name);
-                    Owner.Owner.Owner.page_Transmisson.page_Transmission_Download.CreateList(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, Owner.Owner.project[Owner.Owner.selectIndex].Name);
+                    Directory.CreateDirectory(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name);
                 }
+                if (File.Exists(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + (Lv_File.SelectedItem as FileItem).name))
+                {
+                    MessageBoxButton button = MessageBoxButton.YesNo;
+                    if (MessageBox.Show("目标文件夹内已有同名文件，是否覆盖？", "", button) == MessageBoxResult.Yes)
+                    {
+                        File.Delete(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + (Lv_File.SelectedItem as FileItem).name);
+                        Owner.Owner.Owner.page_Transmisson.page_Transmission_Download.CreateList(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + (Lv_File.SelectedItem as FileItem).name, (Lv_File.SelectedItem as FileItem).name, Owner.Owner.project[Owner.Owner.selectIndex].Name);
+                    }
+                }
+                else
+                    Owner.Owner.Owner.page_Transmisson.page_Transmission_Download.CreateList(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + (Lv_File.SelectedItem as FileItem).name, (Lv_File.SelectedItem as FileItem).name, Owner.Owner.project[Owner.Owner.selectIndex].Name);
             }
             else
-                Owner.Owner.Owner.page_Transmisson.page_Transmission_Download.CreateList(Owner.Owner.Owner.fileSaveAddress + "/" + Owner.Owner.project[Owner.Owner.selectIndex].Name + "/" + ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, ((Lv_File.SelectedItem as ListViewItem).DataContext as FileItem).name, Owner.Owner.project[Owner.Owner.selectIndex].Name);
+            {
+                MessageBox.Show("远程服务器不存在目标文件");
+            }
         }
 
         public async void StartFileDownload(string fileAddress, string fileName)
@@ -263,6 +289,7 @@ namespace Co_work.Pages
             }
         }
 
+        public BindingList<FileItem> FileList = new BindingList<FileItem>();
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -279,11 +306,19 @@ namespace Co_work.Pages
             List<string> listFolder = ftpHelper.GetDirctory("/Test/");
             List<string> listFile = ftpHelper.GetFile("/Test/");
 
-            Dispatcher.Invoke(new Action(delegate { Lv_File.Items.Clear(); }));
+            Dispatcher.Invoke(new Action(delegate 
+            {
+                //Lv_File.Items.Clear(); 
+                FileList.Clear();
+            }));
 
             foreach (var itemFolder in listFolder)
             {
-                Dispatcher.Invoke(new Action(delegate { CreateNewFolderItem(itemFolder); }));
+                Dispatcher.Invoke(new Action(delegate 
+                {
+                    FileList.Add(new FileItem { name = itemFolder, menu = "folder" });
+                    //CreateNewFolderItem(itemFolder); 
+                }));
             }
 
             foreach (var itemFile in listFile)
@@ -291,11 +326,16 @@ namespace Co_work.Pages
                 Dispatcher.Invoke(new Action(delegate
                 {
                     //FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
-                    FileItemCreate(itemFile, "0");
+                    FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize("/Test/" + itemFile).ToString(), menu = "file" });
+                    //FileItemCreate(itemFile, "0");
                 }));
             }
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Lv_File.ItemsSource = FileList;
+            }));
+            
         }
-
 
         private void Btn_NewFolder_Click(object sender, RoutedEventArgs e)
         {
@@ -318,10 +358,10 @@ namespace Co_work.Pages
             Lv_File.Items.Add(item);
             item.MouseDoubleClick += ListViewItem_MouseDoubleClick;
             item.DataContext = file;
-            item.ContextMenu = MenuFolder();
+            //item.ContextMenu = MenuFolder();
         }
 
-        private ContextMenu MenuFile()
+        public ContextMenu MenuFile(ListViewItem sender)
         {
             ContextMenu menu = new ContextMenu();
             MenuItem itemRename = new MenuItem { Name = "Rename", Header = "重命名" };
@@ -333,11 +373,12 @@ namespace Co_work.Pages
             menu.Items.Add(itemRename);
             menu.Items.Add(itemDelete);
             menu.Items.Add(itemDownload);
+            sender.ContextMenu = menu;
 
             return menu;
         }
 
-        private ContextMenu MenuFolder()
+        private ContextMenu MenuFolder(ListViewItem sender)
         {
             ContextMenu menu = new ContextMenu();
             MenuItem itemRename = new MenuItem { Name = "Rename", Header = "重命名" };
@@ -346,6 +387,7 @@ namespace Co_work.Pages
             itemDelete.Click += DeleteFolder_Click;
             menu.Items.Add(itemRename);
             menu.Items.Add(itemDelete);
+            sender.ContextMenu = menu;
 
             return menu;
         }
@@ -364,6 +406,18 @@ namespace Co_work.Pages
             menu.Items.Add(itemNewFolder);
 
             return menu;
+        }
+
+        private void ListViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (((FileItem)Lv_File.SelectedItem).menu == "folder")
+            {
+                MenuFolder(sender as ListViewItem);
+            }
+            if (((FileItem)Lv_File.SelectedItem).menu == "file")
+            {
+                MenuFile(sender as ListViewItem);
+            }
         }
     }
 }

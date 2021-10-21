@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Co_work.Pages"
+      xmlns:local="clr-namespace:Co_work.Pages" d:DataContext="{d:DesignInstance Type=local:Page_ProjectInstance_Project}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page_ProjectInstance_Project">
@@ -92,8 +92,10 @@
                  VerticalAlignment="Top"
                  HorizontalAlignment="Left"
                  MaxWidth="800" Height="500"
-                  MinWidth="800"
-                  ItemsSource="{Binding}" SelectionMode="Single" Foreground="Black">
+                  MinWidth="800" 
+                  SelectionMode="Single" Foreground="Black"
+                  ItemContainerStyle="{DynamicResource ListViewItemKey}"
+                  ItemsSource="{Binding FileList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="名称" Width="400"
@@ -106,7 +108,14 @@
                                     DisplayMemberBinding="{Binding size}"/>
                 </GridView>
             </ListView.View>
+            <ListView.Resources>
+                <Style x:Key="ListViewItemKey" TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                    <EventSetter Event="MouseRightButtonUp" Handler="ListViewItem_MouseRightButtonUp"/>
+                </Style>
+            </ListView.Resources>
         </ListView>
+
 
         <ProgressBar Name="Pb_Upload_Progress" 
                      Margin="32,282,562,142"
