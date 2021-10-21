@@ -29,12 +29,17 @@ namespace Co_work.Pages
         {
             InitializeComponent();
             Lv_File.ContextMenu = MenuListView();
-            Pb_Upload_Progress.Visibility = Visibility.Hidden;
+            //Pb_Upload_Progress.Visibility = Visibility.Hidden;
+
+            string baseAddress = "/Test/";
+            Address.Add(baseAddress);
         }
 
         public Page_ProjectInstance Owner;
 
         public FtpHelper ftpHelper = new FtpHelper("103.193.189.241", "Administrator", "adxq@9139");
+
+        public List<string> Address = new List<string>();
 
         public class FileItem : INotifyPropertyChanged
         {
@@ -42,7 +47,7 @@ namespace Co_work.Pages
             public string uper { get; set; }
             public string date { get; set; }
             public string size { get; set; }
-            public string menu { get; set; }
+            public int type { get; set; }//0为文件夹，1为文件，3为返回上一目录
 
             #region // INotifyPropertyChanged成员
             public event PropertyChangedEventHandler PropertyChanged;
@@ -54,6 +59,16 @@ namespace Co_work.Pages
                 }
             }
             #endregion
+        }
+
+        public string CurrentAddress()
+        {
+            string result = "";
+            foreach (string item in Address)
+            {
+                result += item;
+            }
+            return result;
         }
 
         private void Btn_Upload_Click(object sender, RoutedEventArgs e)
@@ -155,7 +170,7 @@ namespace Co_work.Pages
         private void FileUpload(string fileAddress, string fileName, ref float percent)
         {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileAddress);
-            ftpHelper.Upload(fileInfo, "/Test/" + fileName, ref percent);
+            ftpHelper.Upload(fileInfo, CurrentAddress() + fileName, ref percent);
         }
 
         //private void FileItemCreate(string fileName, string fileSize)
@@ -167,12 +182,6 @@ namespace Co_work.Pages
         //    Lv_File.Items.Add(item);
         //    //item.ContextMenu = MenuFile();
         //}
-
-
-        void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-        }
-
 
         private void Rename_Click(object sender, RoutedEventArgs e)
         {
@@ -187,7 +196,7 @@ namespace Co_work.Pages
             await Task.Run(() =>
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    ftpHelper.Rename("/Test/" + (Lv_File.SelectedItem as FileItem).name, newFileName);
+                    ftpHelper.Rename(CurrentAddress() + (Lv_File.SelectedItem as FileItem).name, newFileName);
                 })));
             RefreshListView();
         }
@@ -204,7 +213,7 @@ namespace Co_work.Pages
                 await Task.Run(() =>
                     Dispatcher.Invoke(new Action(delegate
                     {
-                        ftpHelper.Delete("/Test/" + (Lv_File.SelectedItem as FileItem).name);
+                        ftpHelper.Delete(CurrentAddress() + (Lv_File.SelectedItem as FileItem).name);
                     })));
             }
             RefreshListView();
@@ -223,7 +232,7 @@ namespace Co_work.Pages
                 await Task.Run(() =>
                     Dispatcher.Invoke(new Action(delegate
                     {
-                        ftpHelper.DeleteDir("/Test/" + (Lv_File.SelectedItem as FileItem).name);
+                        ftpHelper.DeleteDir(CurrentAddress() + (Lv_File.SelectedItem as FileItem).name);
                     })));
             }    
             RefreshListView();
@@ -231,7 +240,7 @@ namespace Co_work.Pages
 
         private void Download_Click(object sender, RoutedEventArgs e)
         {
-            if (ftpHelper.GetFile("/Test/").Contains((Lv_File.SelectedItem as FileItem).name))
+            if (ftpHelper.GetFile(CurrentAddress()).Contains((Lv_File.SelectedItem as FileItem).name))
             {
                 Owner.Owner.Owner.InitializePageTransmisson();
                 Owner.Owner.Owner.page_Transmisson.InitializePages();
@@ -267,7 +276,7 @@ namespace Co_work.Pages
         {
             float percent = 0;
 
-            Task.Run(() =>ftpHelper.Download("/Test/" + fileName, fileAddress, ref percent));
+            Task.Run(() =>ftpHelper.Download(CurrentAddress() + fileName, fileAddress, ref percent));
 
             while (true)
             {
@@ -303,8 +312,8 @@ namespace Co_work.Pages
 
         private async Task RefreshListViewAsync()
         {
-            List<string> listFolder = ftpHelper.GetDirctory("/Test/");
-            List<string> listFile = ftpHelper.GetFile("/Test/");
+            List<string> listFolder = ftpHelper.GetDirctory(CurrentAddress());
+            List<string> listFile = ftpHelper.GetFile(CurrentAddress());
 
             Dispatcher.Invoke(new Action(delegate 
             {
@@ -312,11 +321,19 @@ namespace Co_work.Pages
                 FileList.Clear();
             }));
 
+            if (Address.Count != 1)
+            {
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    FileList.Add(new FileItem { name = "..", type = 3 });
+                }));
+            }
+
             foreach (var itemFolder in listFolder)
             {
                 Dispatcher.Invoke(new Action(delegate 
                 {
-                    FileList.Add(new FileItem { name = itemFolder, menu = "folder" });
+                    FileList.Add(new FileItem { name = itemFolder, type = 0 });
                     //CreateNewFolderItem(itemFolder); 
                 }));
             }
@@ -326,7 +343,7 @@ namespace Co_work.Pages
                 Dispatcher.Invoke(new Action(delegate
                 {
                     //FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
-                    FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize("/Test/" + itemFile).ToString(), menu = "file" });
+                    FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize(CurrentAddress() + itemFile).ToString(), type = 1 });
                     //FileItemCreate(itemFile, "0");
                 }));
             }
@@ -346,20 +363,20 @@ namespace Co_work.Pages
 
         public void CreateNewFolder(string newFolderName)
         {
-            ftpHelper.CreateDir("/Test/" + newFolderName);
+            ftpHelper.CreateDir(CurrentAddress() + newFolderName);
             RefreshListView();
         }
 
-        public void CreateNewFolderItem(string newFolderName)
-        {
-            FileItem file = new FileItem { name = newFolderName };
-            ListViewItem item = new ListViewItem();
-            item.Content = file;
-            Lv_File.Items.Add(item);
-            item.MouseDoubleClick += ListViewItem_MouseDoubleClick;
-            item.DataContext = file;
-            //item.ContextMenu = MenuFolder();
-        }
+        //public void CreateNewFolderItem(string newFolderName)
+        //{
+        //    FileItem file = new FileItem { name = newFolderName };
+        //    ListViewItem item = new ListViewItem();
+        //    item.Content = file;
+        //    Lv_File.Items.Add(item);
+        //    item.MouseDoubleClick += ListViewItem_MouseDoubleClick;
+        //    item.DataContext = file;
+        //    //item.ContextMenu = MenuFolder();
+        //}
 
         public ContextMenu MenuFile(ListViewItem sender)
         {
@@ -410,14 +427,27 @@ namespace Co_work.Pages
 
         private void ListViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (((FileItem)Lv_File.SelectedItem).menu == "folder")
+            if (((FileItem)Lv_File.SelectedItem).type == 0)
             {
                 MenuFolder(sender as ListViewItem);
             }
-            if (((FileItem)Lv_File.SelectedItem).menu == "file")
+            if (((FileItem)Lv_File.SelectedItem).type == 1)
             {
                 MenuFile(sender as ListViewItem);
             }
+        }
+
+        void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (((FileItem)Lv_File.SelectedItem).type == 0)
+            {
+                Address.Add(((FileItem)Lv_File.SelectedItem).name + "/");
+            }
+            if (((FileItem)Lv_File.SelectedItem).type == 3)
+            {
+                Address.Remove(Address.Last());
+            }
+            RefreshListView();
         }
     }
 }

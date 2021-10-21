@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.IO;
+using System.Runtime.InteropServices;
+using Co_work.Scripts;
 
 namespace Co_work.Pages
 {
@@ -31,6 +34,8 @@ namespace Co_work.Pages
             Tb_SaveAddress.Text = Owner.fileSaveAddress;
         }
 
+        public INI ini = new INI();
+
         public MainWindow Owner;
 
         private void Btn_SaveAddress_Click(object sender, RoutedEventArgs e)
@@ -40,6 +45,7 @@ namespace Co_work.Pages
             dialog.ShowDialog();
             Owner.fileSaveAddress = dialog.FileName;
             Tb_SaveAddress.Text = Owner.fileSaveAddress;
+            ini.WriteIni("Setting", "fileSaveAddress", Owner.fileSaveAddress);
         }
     }
 }

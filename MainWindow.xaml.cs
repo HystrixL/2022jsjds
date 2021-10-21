@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Co_work.Pages;
+using Co_work.Scripts;
 
 namespace Co_work
 {
@@ -25,7 +26,14 @@ namespace Co_work
         {
             InitializeComponent();
             ChangePageProject();
+
+            if (ini.ReadIni("Setting", "fileSaveAddress") == "")
+                ini.WriteIni("Setting", "fileSaveAddress", fileSaveAddress);
+            else
+                fileSaveAddress = ini.ReadIni("Setting", "fileSaveAddress");
         }
+
+        public INI ini = new INI();
 
         public void InitializePageTransmisson()
         {

@@ -116,15 +116,5 @@
             </ListView.Resources>
         </ListView>
 
-
-        <ProgressBar Name="Pb_Upload_Progress" 
-                     Margin="32,282,562,142"
-                     Width="200"
-                     Height="10"/>
-        <Label Name="l1"
-               Height="30"
-               Width="80" Margin="95,353,625,67"/>
-
-
     </Grid>
 </Page>
