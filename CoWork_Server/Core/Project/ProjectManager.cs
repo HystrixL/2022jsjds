@@ -5,7 +5,7 @@ namespace Co_Work.Core.Project
 {
     public class ProjectManager
     {
-        public static List<Project> Projects = new List<Project>();
+        public static List<Project> Projects;
 
         public static Project GetProjectFromGuid(string guid)
         {

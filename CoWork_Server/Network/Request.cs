@@ -164,6 +164,9 @@ namespace Co_Work.Network
                     };
                     project.Note = transData.Content.ProjectNote;
                     project.ProgressRate = transData.Content.ProjectProcess;
+                    
+                    ProjectManager.Projects.Add(project);
+                    DataBaseManager._dataContext.Add(project);
                 }
 
                 DataBaseManager.SaveChange();
@@ -201,6 +204,7 @@ namespace Co_Work.Network
                         EmployeeManager.GetEmployeeFromGuid(transData.Content.DeleterGuid).Level > Level.Staff)
                     {
                         ProjectManager.Projects.Remove(project);
+                        DataBaseManager._dataContext.Remove(transData.Content.ProjectGuid);
                         deleteProjectResult = Response.DeleteProject.DeleteProjectResultEnum.Succeed;
                     }
                     else

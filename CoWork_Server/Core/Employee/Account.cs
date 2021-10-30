@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using Co_Work.Local;
 using Co_Work.Network;
 
 namespace Co_Work.Core
@@ -22,7 +23,7 @@ namespace Co_Work.Core
 
     public static class AccountManager
     {
-        public static List<Account> Accounts = new List<Account>();
+        public static List<Account> Accounts;
 
         public static Response.Login.LoginResultEnum TryLogin(string id, string password)
         {
@@ -67,7 +68,9 @@ namespace Co_Work.Core
                     Id = id, Password = password
                 };
                 Accounts.Add(account);
+                DataBaseManager._dataContext.Add(account);
                 EmployeeManager.Employees.Add(employee);
+                DataBaseManager._dataContext.Add(employee);
             }
 
             return registerResult;

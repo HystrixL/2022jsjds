@@ -122,7 +122,14 @@ namespace Co_Work.Core
         /// </summary>
         [Required]public double TasksCompletionRate
         {
-            get { return FinishedTasks / (double)TotalTasks * 100; }
+            get
+            {
+                if (TotalTasks==0)
+                {
+                    return 0;
+                }
+                return FinishedTasks / (double)TotalTasks * 100;
+            }
         }
 
         /// <summary>

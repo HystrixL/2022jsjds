@@ -34,9 +34,9 @@ namespace Co_Work.Network.TCP
                 {
                     length = clientSocket.Receive(data);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine((clientSocket.RemoteEndPoint as IPEndPoint).Address + " 连接已断开");
+                    Console.WriteLine((clientSocket.RemoteEndPoint as IPEndPoint)?.Address + " 连接已断开");
                     ClientManager.RemoveClient(ClientGuid);
                 }
 
@@ -49,7 +49,7 @@ namespace Co_Work.Network.TCP
                 if (length != 0)
                 {
                     string request = Encoding.UTF8.GetString(data, 0, length);
-                    Console.WriteLine("来自" + (clientSocket.RemoteEndPoint as IPEndPoint).Address + ":" +
+                    Console.WriteLine("来自" + (clientSocket.RemoteEndPoint as IPEndPoint)?.Address + ":" +
                                       request);
                     Task.Run(() =>
                     {

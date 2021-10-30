@@ -5,7 +5,7 @@ namespace Co_Work.Core
 {
     public static class EmployeeManager
     {
-        public static List<Employee> Employees = new List<Employee>();
+        public static List<Employee> Employees;
         
         public static Employee GetEmployeeFromId(string id)
         {

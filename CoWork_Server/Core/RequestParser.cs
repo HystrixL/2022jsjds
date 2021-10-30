@@ -27,7 +27,7 @@ namespace Co_Work.Core
         private string GetRequestBody()
         {
             var typeString = GetRequestType();
-            return _request.Replace(typeString, "");
+            return _request.Replace(typeString+":", "");
         }
 
         public void Parse(Client client)

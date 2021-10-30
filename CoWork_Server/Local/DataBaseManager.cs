@@ -7,7 +7,7 @@ namespace Co_Work.Local
 {
     public static class DataBaseManager
     {
-        private static DataContext _dataContext;
+        public static DataContext _dataContext;
         
         public static void Init(string dbPath = "CoWork.db")
         {
@@ -17,6 +17,7 @@ namespace Co_Work.Local
             EmployeeManager.Employees = _dataContext.EmployeeDataBase.ToList();
             ProjectManager.Projects = _dataContext.ProjectDataBase.ToList();
             Console.WriteLine("数据库初始化已完成...");
+            SaveChange();
         }
 
         public static void SaveChange()
