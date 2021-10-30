@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoWork_Server", "CoWork_Server\CoWork_Server.csproj", "{CB1413A0-1707-4FF1-9E7D-732A190C5016}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{047F728C-474E-4EB5-BD16-FAEA27654226}"
+ProjectSection(SolutionItems) = preProject
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB1413A0-1707-4FF1-9E7D-732A190C5016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB1413A0-1707-4FF1-9E7D-732A190C5016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB1413A0-1707-4FF1-9E7D-732A190C5016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB1413A0-1707-4FF1-9E7D-732A190C5016}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
