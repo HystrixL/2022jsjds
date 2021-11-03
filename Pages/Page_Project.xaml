@@ -11,21 +11,31 @@
     <Grid Name="Grid1"
           Background="#FFE8E8ED">
 
-        <Button Margin="20,20,572,260"
-                Name="Btn_AddProject"
-                Click="Btn_AddProject_Click"
-                Height="185"
-                Width="200"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                BorderThickness="0,0,0,0"
-                Background="White">
-            <Label Content ="+添加项目" FontSize="20"
-                   Height="185" Width="200"
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      Height="1080"
+                      Width="1920"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top">
+            <Grid Width="1080" Height="1920"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Name="WP">
+                <Button Name="Btn_AddProject"
+                        Click="Btn_AddProject_Click"
+                        Height="185"
+                        Width="200"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        BorderThickness="0,0,0,0"
+                        Margin="20, 20, 0, 0"
+                        Background="White">
+                    <Label Content ="+添加项目" FontSize="20"
+                   Height="105" Width="110"
                    VerticalContentAlignment="Center"
-                   HorizontalContentAlignment="Center" Foreground="#FF6E6E6E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-10,0,0,0">
-            </Label>
-        </Button>
+                   HorizontalContentAlignment="Center" Foreground="#FF6E6E6E" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+            </Grid>
+        </ScrollViewer>
 
     </Grid>
 </Page>

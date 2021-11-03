@@ -42,10 +42,13 @@ namespace Co_work.Pages
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            dialog.ShowDialog();
-            Owner.fileSaveAddress = dialog.FileName;
-            Tb_SaveAddress.Text = Owner.fileSaveAddress;
-            ini.WriteIni("Setting", "fileSaveAddress", Owner.fileSaveAddress);
+            //dialog.ShowDialog();
+            if ((int)dialog.ShowDialog() == 1)
+            {
+                Owner.fileSaveAddress = dialog.FileName;
+                Tb_SaveAddress.Text = Owner.fileSaveAddress;
+                ini.WriteIni("Setting", "fileSaveAddress", Owner.fileSaveAddress);
+            }
         }
     }
 }

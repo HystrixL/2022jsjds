@@ -8,7 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\back.ico" />
+    <None Remove="Images\file.ico" />
+    <None Remove="Images\folder.ico" />
+    <None Remove="Images\folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\back.ico" />
+    <Resource Include="Images\file.ico" />
+    <Resource Include="Images\folder.ico" />
   </ItemGroup>
 
 </Project>

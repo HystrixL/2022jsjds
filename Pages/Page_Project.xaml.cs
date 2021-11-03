@@ -102,16 +102,16 @@ namespace Co_work.Pages
             //清空已有按钮
             for (int i = 0; i <= project.Count; i++)
             {
-                Button btn = Grid1.FindName("Btn_Project_" + i.ToString()) as Button;
+                Button btn = WP.FindName("Btn_Project_" + i.ToString()) as Button;
                 if (btn != null)
                 {
-                    Grid1.Children.Remove(btn);
-                    Grid1.UnregisterName("Btn_Project_" + i.ToString());
+                    WP.Children.Remove(btn);
+                    WP.UnregisterName("Btn_Project_" + i.ToString());
                 }
             }
-            Btn_AddProject.Margin = new Thickness(20, 20, 572, 260);
+            Btn_AddProject.Margin = new Thickness(20, 20, 0, 0);
             //重新创建按钮
-            for (int i = 0; i <= project.Count-1; i++)
+            for (int i = 0; i <= project.Count - 1; i++)
             {
                 Thickness Mov;
 
@@ -125,8 +125,8 @@ namespace Co_work.Pages
                 ProjectBtn.HorizontalAlignment = HorizontalAlignment.Left;
                 ProjectBtn.BorderThickness = new Thickness(0);
                 ProjectBtn.Background = new SolidColorBrush(Colors.White);
-                Grid1.Children.Add(ProjectBtn);
-                Grid1.RegisterName("Btn_Project_" + i.ToString(), ProjectBtn);
+                WP.Children.Add(ProjectBtn);
+                WP.RegisterName("Btn_Project_" + i.ToString(), ProjectBtn);
                 ProjectBtn.Name = "Btn_Project_" + i.ToString();
 
                 TextBlock ProjectInfo = new TextBlock();
@@ -145,10 +145,25 @@ namespace Co_work.Pages
 
                 ProjectBtn.Click += ProjectBtn_Click;
 
-                Thickness Mov2;
-                Mov2 = Mov;
-                Mov2.Left += 220;
-                Btn_AddProject.Margin = Mov2;
+                
+
+                if ((i + 1) % 5 == 0)
+                {
+                    Thickness Mov2;
+                    Mov2 = Mov;
+                    Mov2.Left = 20;
+                    Mov2.Top += 205;
+                    Btn_AddProject.Margin = Mov2;
+                    WP.Height = Mov2.Top + 800;
+                }
+                else
+                {
+                    Thickness Mov2;
+                    Mov2 = Mov;
+                    Mov2.Left += 210;
+                    Btn_AddProject.Margin = Mov2;
+                    WP.Height = Mov2.Top + 800;
+                }
             }
         }
 

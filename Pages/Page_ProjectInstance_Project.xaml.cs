@@ -31,7 +31,7 @@ namespace Co_work.Pages
             Lv_File.ContextMenu = MenuListView();
             //Pb_Upload_Progress.Visibility = Visibility.Hidden;
 
-            string baseAddress = "/Test/";
+            string baseAddress = "/Test";
             Address.Add(baseAddress);
         }
 
@@ -47,6 +47,7 @@ namespace Co_work.Pages
             public string uper { get; set; }
             public string date { get; set; }
             public string size { get; set; }
+            public string icon { get; set; }
             public int type { get; set; }//0为文件夹，1为文件，3为返回上一目录
 
             #region // INotifyPropertyChanged成员
@@ -66,7 +67,17 @@ namespace Co_work.Pages
             string result = "";
             foreach (string item in Address)
             {
-                result += item;
+                result += item + "/";
+            }
+            return result;
+        }
+
+        public string LastLastAddress()
+        {
+            string result = "";
+            for(int i = 0; i < Address.Count -2; i++)
+            {
+                result += Address[i] + "/";
             }
             return result;
         }
@@ -325,7 +336,7 @@ namespace Co_work.Pages
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    FileList.Add(new FileItem { name = "..", type = 3 });
+                    FileList.Add(new FileItem { name = " ..", icon = "/Images/back.ico", type = 3 });
                 }));
             }
 
@@ -333,7 +344,7 @@ namespace Co_work.Pages
             {
                 Dispatcher.Invoke(new Action(delegate 
                 {
-                    FileList.Add(new FileItem { name = itemFolder, type = 0 });
+                    FileList.Add(new FileItem { name = itemFolder, icon = "/Images/folder.ico",  type = 0 });
                     //CreateNewFolderItem(itemFolder); 
                 }));
             }
@@ -343,7 +354,8 @@ namespace Co_work.Pages
                 Dispatcher.Invoke(new Action(delegate
                 {
                     //FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
-                    FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize(CurrentAddress() + itemFile).ToString(), type = 1 });
+                    //FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize(CurrentAddress() + itemFile).ToString(), type = 1 });
+                    FileList.Add(new FileItem { name = itemFile, icon = "/Images/file.ico", type = 1 });
                     //FileItemCreate(itemFile, "0");
                 }));
             }
@@ -437,17 +449,34 @@ namespace Co_work.Pages
             }
         }
 
-        void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (((FileItem)Lv_File.SelectedItem).type == 0)
+            if (Lv_File.SelectedItem != null)
             {
-                Address.Add(((FileItem)Lv_File.SelectedItem).name + "/");
+                if (((FileItem)Lv_File.SelectedItem).type == 0)
+                {
+                    if (ftpHelper.GetDirctory(CurrentAddress()).Contains(((FileItem)Lv_File.SelectedItem).name))
+                    {
+                        Address.Add(((FileItem)Lv_File.SelectedItem).name);
+                    }
+                    RefreshListView();
+                }
+                else if (((FileItem)Lv_File.SelectedItem).type == 3 && Address.Count > 1)
+                {
+                    if (ftpHelper.GetDirctory(LastLastAddress()).Contains(Address[Address.Count - 2]))
+                    {
+                        Address.Remove(Address.Last());
+                    }
+                    else
+                    {
+                        string tmp = Address[0];
+                        Address.Clear();
+                        Address.Add(tmp);
+                    }
+                    RefreshListView();
+                }
             }
-            if (((FileItem)Lv_File.SelectedItem).type == 3)
-            {
-                Address.Remove(Address.Last());
-            }
-            RefreshListView();
         }
+
     }
 }
