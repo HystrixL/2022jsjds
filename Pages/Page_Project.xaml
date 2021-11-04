@@ -16,7 +16,7 @@
                       Width="1920"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top">
-            <Grid Width="1080" Height="1920"
+            <Grid Width="1080" Height="250"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Name="WP">

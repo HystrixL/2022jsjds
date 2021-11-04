@@ -34,7 +34,7 @@
                FontSize="16"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"/>
-        <TextBox Name="Tb_Password"
+        <PasswordBox Name="Tb_Password"
                  Margin="109,210,0,0"
                  Width="250"
                  Height="30"

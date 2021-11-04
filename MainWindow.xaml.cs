@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Co_work.Pages;
 using Co_work.Scripts;
+using Co_Work.Network;
 
 namespace Co_work
 {
@@ -26,6 +30,7 @@ namespace Co_work
         {
             InitializeComponent();
             ChangePageProject();
+            ConnectToServer();
 
             if (ini.ReadIni("Setting", "fileSaveAddress") == "")
                 ini.WriteIni("Setting", "fileSaveAddress", fileSaveAddress);
@@ -34,6 +39,167 @@ namespace Co_work
         }
 
         public INI ini = new INI();
+
+        public bool isLogined = false;
+
+        public Co_Work.Core.Employee User;
+
+        public Socket clientScoket;
+        public byte[] data = new byte[1024 * 1024];
+        public bool isConnected = false;
+
+        public void ConnectToServer()
+        {
+            var ipPort = "103.193.189.241:2333";
+            var serverIp = ipPort.Split(":")[0];
+            var serverPort = int.Parse(ipPort.Split(":")[1]);
+            try
+            {
+                clientScoket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                clientScoket.ReceiveBufferSize = 100 * 1024 * 1024;
+                clientScoket.Connect(new IPEndPoint(IPAddress.Parse(serverIp), serverPort));
+                isConnected = true;
+            }
+            catch
+            {
+                MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+            }
+        }
+
+        public void SendMessageLogin() //发送登录请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.Login login =
+                       new Request.Login(page_User.page_User_Login.Tb_Id.Text, page_User.page_User_Login.Tb_Password.Password);
+                var message = new TransData<Request.Login>(login, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_User.page_User_Login.ReceiveMessage); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageRegister() //发送注册请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.Register register =
+                   new Request.Register(page_User.page_User_Login.page_User_Register.Tb_Id.Text, page_User.page_User_Login.page_User_Register.Tb_Password.Password, page_User.page_User_Login.page_User_Register.Tb_Name.Text, 0, "2021-10-30");
+                var message = new TransData<Request.Register>(register, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_User.page_User_Login.page_User_Register.ReceiveMessage); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageUpdateProjects() //发送更新项目列表请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.GetProjectsInfoFromEmployee getProjects =
+                       new Request.GetProjectsInfoFromEmployee(User.GUID);
+                var message = new TransData<Request.GetProjectsInfoFromEmployee>(getProjects, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.ReceiveMessageUpdate); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageCreateProject() //发送创建项目请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.CreatProject createProject =
+                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, page_Project.newProject.StartTime.Year + "-" + page_Project.newProject.StartTime.Month.ToString().PadLeft(2, '0') + "-" + page_Project.newProject.StartTime.Day.ToString().PadLeft(2, '0'), User.GUID, new List<string>());
+                var message = new TransData<Request.CreatProject>(createProject, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.ReceiveMessageCreate); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageDeleteProject() //发送删除项目请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.DeleteProject deleteProject =
+                       new Request.DeleteProject(page_Project.project[page_Project.selectIndex].GUID, User.GUID);
+                var message = new TransData<Request.DeleteProject>(deleteProject, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageDelete); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
 
         public void InitializePageTransmisson()
         {
@@ -101,7 +267,7 @@ namespace Co_work
             Tg_Btn_Setting.IsChecked = false;
         }
 
-        private void ChangePageUser()
+        public void ChangePageUser()
         {
             if (page_User == null)
             {

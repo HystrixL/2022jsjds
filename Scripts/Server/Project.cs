@@ -13,6 +13,7 @@ namespace Co_Work.Core.Project
         
         [Required]public string Name { get; set; }
         [Required]public DateTime StartTime { get; set; }
+        [Required]public string Deadline { get; set; }
         [Required]public Employee Creator { get; set; }
         [Required]public List<Employee> Members { get; set; } = new List<Employee>();
         [Required]public string Note { get; set; }
@@ -34,7 +35,7 @@ namespace Co_Work.Core.Project
             set{}
         }*/
         
-        [Required]public double ProgressRate { get; set; }
+        [Required]public float ProgressRate { get; set; }
         
         //public List<Project> SubProject { get; set; } = new List<Project>();
         //public bool IsSubProject { get; set; }

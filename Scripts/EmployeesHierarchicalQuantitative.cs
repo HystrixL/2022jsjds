@@ -11,7 +11,7 @@ namespace Co_work.Scripts
     {
         
     }
-    class Employee
+    public class Employee
     {
         /// <summary>
         /// 姓名
@@ -202,7 +202,7 @@ namespace Co_work.Scripts
         }
     }
 
-    class Project
+    public class Project
     {
         /// <summary>
         /// 项目成本(百万)

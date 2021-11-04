@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Co_Work.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,12 +46,12 @@ namespace Co_work.Pages
             else
             {
                 Owner.Owner.newProject.Name = Tb_Name.Text;
-                Owner.Owner.newProject.Intro = Tb_Intro.Text;
+                Owner.Owner.newProject.Note = Tb_Intro.Text;
                 if (Dp_Deadline.SelectedDate == null)
                     Owner.Owner.newProject.Deadline = "无";
                 else
                     Owner.Owner.newProject.Deadline = Dp_Deadline.Text;
-                Owner.Owner.newProject.Progress = progress;
+                Owner.Owner.newProject.ProgressRate = progress;
 
                 Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
                 Owner.Owner.project.Insert(Owner.Owner.selectIndex, Owner.Owner.newProject);
@@ -79,9 +81,45 @@ namespace Co_work.Pages
         {
             if (MessageBox.Show("确定要删除“" + this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name + "”项目吗？", "删除项目", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
-                this.Owner.Owner.RefreshProject();
-                this.Owner.Owner.Owner.ChangePageProject();
+                //Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
+                //this.Owner.Owner.RefreshProject();
+                //this.Owner.Owner.Owner.ChangePageProject();
+                Thread sendT;
+                sendT = new Thread(Owner.Owner.Owner.SendMessageDeleteProject);
+                sendT.Start();
+            }
+        }
+
+        public void ReceiveMessageDelete() //接收消息
+        {
+            int length = 0;
+            while (Owner.Owner.Owner.isConnected)
+            {
+                if (Owner.Owner.Owner.clientScoket.Connected == true)
+                {
+                    try
+                    {
+                        length = Owner.Owner.Owner.clientScoket.Receive(Owner.Owner.Owner.data);
+                    }
+                    catch (Exception e)
+                    {
+                        Owner.Owner.Owner.isConnected = false;
+                    }
+
+                    if (length != 0)
+                    {
+                        string message = Encoding.UTF8.GetString(Owner.Owner.Owner.data, 0, length);
+                        var received = TransData<Response.DeleteProject>.Convert(message);
+
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            Owner.Owner.RefreshProject();
+                            Owner.Owner.Owner.ChangePageProject();
+                        }));
+
+                        break;
+                    }
+                }
             }
         }
 

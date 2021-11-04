@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using Co_Work.Network;
 
 namespace Co_work.Pages
 {
@@ -29,11 +33,70 @@ namespace Co_work.Pages
 
         public Page_User_Register page_User_Register;
 
+        public void ReceiveMessage() //接收消息
+        {
+            int length = 0;
+            while (Owner.Owner.isConnected)
+            {
+                if (Owner.Owner.clientScoket.Connected == true)
+                {
+                    try
+                    {
+                        length = Owner.Owner.clientScoket.Receive(Owner.Owner.data);
+                    }
+                    catch (Exception e)
+                    {
+                        Owner.Owner.isConnected = false;
+                    }
+
+                    if (length != 0)
+                    {
+                        string message = Encoding.UTF8.GetString(Owner.Owner.data, 0, length);
+                        var received = TransData<Response.Login>.Convert(message);
+                        if (received.Content.LoginResult == Response.Login.LoginResultEnum.Succeed)
+                        {
+                            Owner.Owner.User = received.Content.Employee;
+                            Owner.Owner.isLogined = true;
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                Owner.Owner.ChangePageUser();
+                            }));
+                        }
+                        else if (received.Content.LoginResult == Response.Login.LoginResultEnum.UnknownAccount)
+                        {
+                            MessageBox.Show("用户名不存在");
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                Tb_Id.Text = "";
+                                Tb_Password.Password = "";
+                            }));
+                        }
+                        else if (received.Content.LoginResult == Response.Login.LoginResultEnum.WrongPassword)
+                        {
+                            MessageBox.Show("密码错误");
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                Tb_Password.Password = "";
+                            }));
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            if (Tb_Id.Text == "" || Tb_Password.Text == "")
+            if (Tb_Id.Text == "" || Tb_Password.Password == "")
             {
                 MessageBox.Show("请填写用户名或密码", "错误", MessageBoxButton.OK);
+            }
+            else 
+            {
+                Thread sendT;
+                sendT = new Thread(Owner.Owner.SendMessageLogin);
+                sendT.Start();
             }
 
         }

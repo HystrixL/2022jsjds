@@ -10,10 +10,7 @@
 
     <Grid Background= "White">
         
-        <Label Content="个人" 
-                               FontSize="20" Foreground="Black"
-                                   HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center"/>
+        
         
     </Grid>
 </Page>

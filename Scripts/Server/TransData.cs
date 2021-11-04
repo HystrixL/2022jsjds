@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using System.Windows;
 
 namespace Co_Work.Network
 {
@@ -24,6 +25,7 @@ namespace Co_Work.Network
         }
         public static TransData<T> Convert(string dataString)
         {
+            MessageBox.Show(dataString);
             return JsonSerializer.Deserialize<TransData<T>>(dataString.Replace(typeof(T).Name+":",""));
         }
     }

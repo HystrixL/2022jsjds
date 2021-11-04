@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Co_Work.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,13 +38,13 @@ namespace Co_work.Pages
                 Owner.newProject.Name = newProjectName.Text;
                 if (newProjectIntro.Text == "")
                     newProjectIntro.Text = "无";
-                Owner.newProject.Intro = newProjectIntro.Text;
-                Owner.newProject.StartTime = DateTime.Today.ToLongDateString();
+                Owner.newProject.Note = newProjectIntro.Text;
+                Owner.newProject.StartTime = DateTime.Today.Date;
                 if (newProjectDeadline.SelectedDate == null)
                     Owner.newProject.Deadline = "无";
                 else
                     Owner.newProject.Deadline = newProjectDeadline.Text;
-                Owner.project.Add(Owner.newProject);
+                //Owner.project.Add(Owner.newProject);
 
                 ////if((this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name != "")
                 //(this.Owner as Page_Project).projectIndex++;

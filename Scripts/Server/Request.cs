@@ -72,9 +72,10 @@ namespace Co_Work.Network
 
         public class DeleteProject
         {
-            public DeleteProject(string projectGuid)
+            public DeleteProject(string projectGuid, string deleterGuid)
             {
                 ProjectGuid = projectGuid;
+                DeleterGuid = deleterGuid;
             }
 
             public string ProjectGuid { get; set; }

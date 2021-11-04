@@ -24,8 +24,6 @@ namespace Co_work.Pages
 
         public Page_User_Login page_User_Login;
 
-        public bool isLogined = false;
-
         public Page_User()
         {
             InitializeComponent();
@@ -33,7 +31,7 @@ namespace Co_work.Pages
 
         public void CheckLoginState()
         {
-            if (!isLogined)
+            if (!Owner.isLogined)
             {
                 if (page_User_Login == null)
                 {
@@ -47,7 +45,5 @@ namespace Co_work.Pages
                 page_User_Login.Tb_Id.Focus();
             }
         }
-
-        
     }
 }
