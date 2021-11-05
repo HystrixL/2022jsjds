@@ -152,7 +152,7 @@ namespace Co_work
             Dispatcher.Invoke(new Action(delegate
             {
                 Request.CreatProject createProject =
-                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, page_Project.newProject.StartTime.Year + "-" + page_Project.newProject.StartTime.Month.ToString().PadLeft(2, '0') + "-" + page_Project.newProject.StartTime.Day.ToString().PadLeft(2, '0'), User.GUID, new List<string>());
+                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartTime), User.GUID, new List<string>());
                 var message = new TransData<Request.CreatProject>(createProject, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -189,6 +189,33 @@ namespace Co_work
                         clientScoket.Send(data);
                         Thread receiveT;
                         receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageDelete); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageUpdateProject() //发送删除项目请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.UpdateProject updateProject =
+                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartTime), User.GUID, new List<string>());
+                var message = new TransData<Request.UpdateProject>(updateProject, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageUpdate); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch
@@ -304,6 +331,11 @@ namespace Co_work
         }
 
         #endregion
+
+        public string ToTimeString(DateTime time)
+        {
+            return time.Year + "-" + time.Month.ToString().PadLeft(2, '0') + "-" + time.Day.ToString().PadLeft(2, '0');
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

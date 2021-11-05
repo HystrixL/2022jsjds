@@ -45,16 +45,8 @@ namespace Co_work.Pages
             }
             else
             {
-                Owner.Owner.newProject.Name = Tb_Name.Text;
-                Owner.Owner.newProject.Note = Tb_Intro.Text;
-                if (Dp_Deadline.SelectedDate == null)
-                    Owner.Owner.newProject.Deadline = "无";
-                else
-                    Owner.Owner.newProject.Deadline = Dp_Deadline.Text;
-                Owner.Owner.newProject.ProgressRate = progress;
-
-                Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
-                Owner.Owner.project.Insert(Owner.Owner.selectIndex, Owner.Owner.newProject);
+                //Owner.Owner.project.RemoveAt(Owner.Owner.selectIndex);
+                //Owner.Owner.project.Insert(Owner.Owner.selectIndex, Owner.Owner.newProject);
 
                 //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Name = Tb_Name.Text;
                 //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Intro = Tb_Intro.Text;
@@ -64,16 +56,59 @@ namespace Co_work.Pages
                 //    this.Owner.Owner.project[this.Owner.Owner.selectIndex].Deadline = Dp_Deadline.Text;
                 //this.Owner.Owner.project[this.Owner.Owner.selectIndex].Progress = progress;
 
-                this.Owner.Lb_ProjectName.Content = Tb_Name.Text;
-                this.Owner.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + Tb_Intro.Text;
+                Owner.Owner.newProject.Name = Tb_Name.Text;
+                Owner.Owner.newProject.Note = Tb_Intro.Text;
                 if (Dp_Deadline.SelectedDate == null)
-                    this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：无";
+                    Owner.Owner.newProject.Deadline = "无";
                 else
-                    this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + Dp_Deadline.Text;
-                this.Owner.page_ProjectInstance_Project.Pb_Progress.Value = progress;
-                this.Owner.page_ProjectInstance_Project.Lb_Progress.Content = Tb_Progress.Text + "%";
+                    Owner.Owner.newProject.Deadline = Dp_Deadline.Text;
+                Owner.Owner.newProject.ProgressRate = progress;
 
-                MessageBox.Show("保存成功", "", MessageBoxButton.OK);
+                Thread sendT;
+                sendT = new Thread(Owner.Owner.Owner.SendMessageUpdateProject);
+                sendT.Start();
+
+            }
+        }
+
+        public void ReceiveMessageUpdate() //接收消息
+        {
+            int length = 0;
+            while (Owner.Owner.Owner.isConnected)
+            {
+                if (Owner.Owner.Owner.clientScoket.Connected == true)
+                {
+                    try
+                    {
+                        length = Owner.Owner.Owner.clientScoket.Receive(Owner.Owner.Owner.data);
+                    }
+                    catch (Exception e)
+                    {
+                        Owner.Owner.Owner.isConnected = false;
+                    }
+
+                    if (length != 0)
+                    {
+                        string message = Encoding.UTF8.GetString(Owner.Owner.Owner.data, 0, length);
+                        var received = TransData<Response.UpdateProject>.Convert(message);
+
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            this.Owner.Lb_ProjectName.Content = Tb_Name.Text;
+                            this.Owner.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + Tb_Intro.Text;
+                            if (Dp_Deadline.SelectedDate == null)
+                                this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：无";
+                            else
+                                this.Owner.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + Dp_Deadline.Text;
+                            this.Owner.page_ProjectInstance_Project.Pb_Progress.Value = float.Parse(Tb_Progress.Text);
+                            this.Owner.page_ProjectInstance_Project.Lb_Progress.Content = Tb_Progress.Text + "%";
+
+                            MessageBox.Show("保存成功", "", MessageBoxButton.OK);
+                        }));
+
+                        break;
+                    }
+                }
             }
         }
 
