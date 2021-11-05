@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using Co_Work.Core.Project;
 
 namespace Co_Work.Core
@@ -122,7 +120,14 @@ namespace Co_Work.Core
         /// </summary>
         [Required]public double TasksCompletionRate
         {
-            get { return FinishedTasks / (double)TotalTasks * 100; }
+            get
+            {
+                if (TotalTasks==0)
+                {
+                    return 0;
+                }
+                return FinishedTasks / (double)TotalTasks * 100;
+            }
         }
 
         /// <summary>

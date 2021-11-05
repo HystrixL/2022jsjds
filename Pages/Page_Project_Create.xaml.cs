@@ -39,11 +39,11 @@ namespace Co_work.Pages
                 if (newProjectIntro.Text == "")
                     newProjectIntro.Text = "无";
                 Owner.newProject.Note = newProjectIntro.Text;
-                Owner.newProject.StartTime = DateTime.Today.Date;
+                Owner.newProject.StartDate = DateTime.Today.Date;
                 if (newProjectDeadline.SelectedDate == null)
-                    Owner.newProject.Deadline = "无";
+                    Owner.newProject.EndDate = DateTime.MinValue;
                 else
-                    Owner.newProject.Deadline = newProjectDeadline.Text;
+                    Owner.newProject.EndDate = newProjectDeadline.SelectedDate.Value;
                 //Owner.project.Add(Owner.newProject);
 
                 ////if((this.Owner as Page_Project).project[(this.Owner as Page_Project).projectIndex].Name != "")

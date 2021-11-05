@@ -29,6 +29,13 @@ namespace Co_work.Pages
             InitializeComponent();
         }
 
+        private void Btn_Logout_Click(object sender, RoutedEventArgs e)
+        {
+            Owner.isLogined = false;
+            Owner.User = null;
+            CheckLoginState();
+        }
+
         public void CheckLoginState()
         {
             if (!Owner.isLogined)
@@ -43,6 +50,11 @@ namespace Co_work.Pages
                     Content = page_User_Login
                 };
                 page_User_Login.Tb_Id.Focus();
+            }
+            else
+            {
+                Lb_Id.Content = Owner.User.ID;
+                Lb_Name.Content = Owner.User.Name;
             }
         }
     }

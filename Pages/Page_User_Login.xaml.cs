@@ -60,6 +60,8 @@ namespace Co_work.Pages
                             Dispatcher.Invoke(new Action(delegate
                             {
                                 Owner.Owner.ChangePageUser();
+                                Tb_Id.Text = "";
+                                Tb_Password.Password = "";
                             }));
                         }
                         else if (received.Content.LoginResult == Response.Login.LoginResultEnum.UnknownAccount)

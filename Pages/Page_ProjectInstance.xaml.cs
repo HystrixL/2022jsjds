@@ -101,10 +101,10 @@ namespace Co_work.Pages
 
             page_ProjectInstance_Setting.Tb_Name.Text = this.Owner.project[this.Owner.selectIndex].Name;
             page_ProjectInstance_Setting.Tb_Intro.Text = this.Owner.project[this.Owner.selectIndex].Note;
-            if (this.Owner.project[this.Owner.selectIndex].Deadline == "无")
+            if (this.Owner.project[this.Owner.selectIndex].EndDate == DateTime.MinValue)
                 page_ProjectInstance_Setting.Dp_Deadline.Text = "";
             else
-                page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.selectIndex].Deadline;
+                page_ProjectInstance_Setting.Dp_Deadline.Text = this.Owner.project[this.Owner.selectIndex].EndDate.ToLongDateString();
             page_ProjectInstance_Setting.Tb_Progress.Text = this.Owner.project[this.Owner.selectIndex].ProgressRate.ToString();
             page_ProjectInstance_Setting.Sl_Progress.Value = (double)this.Owner.project[this.Owner.selectIndex].ProgressRate;
         }

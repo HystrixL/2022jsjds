@@ -58,10 +58,11 @@ namespace Co_work.Pages
 
                 Owner.Owner.newProject.Name = Tb_Name.Text;
                 Owner.Owner.newProject.Note = Tb_Intro.Text;
+                Owner.Owner.newProject.StartDate = Owner.Owner.project[Owner.Owner.selectIndex].StartDate;
                 if (Dp_Deadline.SelectedDate == null)
-                    Owner.Owner.newProject.Deadline = "无";
+                    Owner.Owner.newProject.EndDate = DateTime.MinValue;
                 else
-                    Owner.Owner.newProject.Deadline = Dp_Deadline.Text;
+                    Owner.Owner.newProject.EndDate = Dp_Deadline.SelectedDate.Value;
                 Owner.Owner.newProject.ProgressRate = progress;
 
                 Thread sendT;

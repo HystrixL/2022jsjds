@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Co_work.Pages;
 using Co_work.Scripts;
+using Co_Work.Core;
 using Co_Work.Network;
 
 namespace Co_work
@@ -70,8 +71,10 @@ namespace Co_work
         {
             Dispatcher.Invoke(new Action(delegate
             {
+                var password = MD5withSalt.Encrypt(page_User.page_User_Login.Tb_Password.Password);
+                MessageBox.Show(password);
                 Request.Login login =
-                       new Request.Login(page_User.page_User_Login.Tb_Id.Text, page_User.page_User_Login.Tb_Password.Password);
+                       new Request.Login(page_User.page_User_Login.Tb_Id.Text,password );
                 var message = new TransData<Request.Login>(login, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -151,8 +154,14 @@ namespace Co_work
         {
             Dispatcher.Invoke(new Action(delegate
             {
+                string endDate;
+                if (page_Project.newProject.EndDate == DateTime.MinValue)
+                    endDate = "";
+                else 
+                    endDate = ToTimeString(page_Project.newProject.EndDate);
+
                 Request.CreatProject createProject =
-                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartTime), User.GUID, new List<string>());
+                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, new List<string>());
                 var message = new TransData<Request.CreatProject>(createProject, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -201,12 +210,18 @@ namespace Co_work
             }));
         }
 
-        public void SendMessageUpdateProject() //发送删除项目请求
+        public void SendMessageUpdateProject() //发送更新项目请求
         {
             Dispatcher.Invoke(new Action(delegate
             {
+                string endDate;
+                if (page_Project.newProject.EndDate == DateTime.MinValue)
+                    endDate = "";
+                else
+                    endDate = ToTimeString(page_Project.newProject.EndDate);
+
                 Request.UpdateProject updateProject =
-                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartTime), User.GUID, new List<string>());
+                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, new List<string>());
                 var message = new TransData<Request.UpdateProject>(updateProject, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -216,6 +231,33 @@ namespace Co_work
                         clientScoket.Send(data);
                         Thread receiveT;
                         receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageUpdate); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageUserInfo() //发送查询用户信息请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.GetEmployeeInfo userInfo =
+                       new Request.GetEmployeeInfo(User.GUID);
+                var message = new TransData<Request.GetEmployeeInfo>(userInfo, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageDelete); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch

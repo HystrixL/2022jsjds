@@ -52,7 +52,7 @@
                VerticalAlignment="Top"
                  FontSize="20"/>
         <Label Name="Lb_Name_Instru"
-               Content="昵称注册后可改" 
+               Content="昵称可以使用汉字" 
                Margin="103,240,0,0"
                FontSize="12" Foreground="Gray"
                HorizontalAlignment="Left"

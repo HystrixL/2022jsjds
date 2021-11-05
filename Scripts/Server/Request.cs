@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Collections.Generic;
+
 
 namespace Co_Work.Network
 {
@@ -11,11 +9,11 @@ namespace Co_Work.Network
         {
             public Login(string id, string password)
             {
-                ID = id;
+                Id = id;
                 Password = password;
             }
 
-            public string ID { get; set; }
+            public string Id { get; set; }
             public string Password { get; set; }
         }
 
@@ -23,14 +21,14 @@ namespace Co_Work.Network
         {
             public Register(string id, string password, string name, int age, string entryTime)
             {
-                ID = id;
+                Id = id;
                 Password = password;
                 Name = name;
                 Age = age;
                 EntryTime = entryTime;
             }
 
-            public string ID { get; set; }
+            public string Id { get; set; }
             public string Password { get; set; }
             public string Name { get; set; }
 
@@ -50,13 +48,14 @@ namespace Co_Work.Network
 
         public class CreatProject
         {
-            public CreatProject(string projectName, string projectNote, double projectProcess, string startDate,
+            public CreatProject(string projectName, string projectNote, double projectProcess, string startDate,string endDate,
                 string creatorGuid, List<string> members)
             {
                 ProjectName = projectName;
                 ProjectNote = projectNote;
                 ProjectProcess = projectProcess;
                 StartDate = startDate;
+                EndDate = endDate;
                 CreatorGuid = creatorGuid;
                 Members = members;
             }
@@ -65,14 +64,14 @@ namespace Co_Work.Network
             public string ProjectNote { get; set; }
             public double ProjectProcess { get; set; }
             public string StartDate { get; set; }
+            public string EndDate { get; set; }
             public string CreatorGuid { get; set; }
             public List<string> Members { get; set; } //Guid
-            
         }
 
         public class DeleteProject
         {
-            public DeleteProject(string projectGuid, string deleterGuid)
+            public DeleteProject(string projectGuid,string deleterGuid)
             {
                 ProjectGuid = projectGuid;
                 DeleterGuid = deleterGuid;
@@ -86,7 +85,7 @@ namespace Co_Work.Network
         public class UpdateProject
         {
             public UpdateProject(string projectGuid, string projectName, string projectNote, double projectProcess,
-                string startDate,
+                string startDate,string endDate,
                 string updaterGuid, List<string> members)
             {
                 ProjectGuid = projectGuid;
@@ -94,6 +93,7 @@ namespace Co_Work.Network
                 ProjectNote = projectNote;
                 ProjectProcess = projectProcess;
                 StartDate = startDate;
+                EndDate = endDate;
                 UpdaterGuid = updaterGuid;
                 Members = members;
             }
@@ -104,6 +104,7 @@ namespace Co_Work.Network
             public string ProjectNote { get; set; }
             public double ProjectProcess { get; set; }
             public string StartDate { get; set; }
+            public string EndDate { get; set; }
             public string UpdaterGuid { get; set; }
             public List<string> Members { get; set; } //Guid
         }

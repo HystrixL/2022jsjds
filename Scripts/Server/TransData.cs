@@ -21,7 +21,7 @@ namespace Co_Work.Network
         public T Content { get; set; }
         public override string ToString()
         {
-            return Type+":"+JsonSerializer.Serialize(this);
+            return Type + ":" + JsonSerializer.Serialize(this);
         }
         public static TransData<T> Convert(string dataString)
         {

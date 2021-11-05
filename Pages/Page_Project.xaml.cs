@@ -112,7 +112,14 @@ namespace Co_work.Pages
                                 ProjectInfo.Width = 200;
                                 ProjectInfo.Height = 185;
                                 ProjectInfo.FontSize = 12;
-                                ProjectInfo.Text = "项目名称：" + project[i].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[i].Note + Environment.NewLine + "创建者：" + project[i].Creator.Name + Environment.NewLine + "创建日期：" + project[i].StartTime.ToLongDateString() + Environment.NewLine + "截止日期：" + project[i].Deadline + Environment.NewLine + "进度：" + project[i].ProgressRate + "%";
+
+                                string endDate;
+                                if (project[i].EndDate == DateTime.MinValue)
+                                    endDate = "无";
+                                else
+                                    endDate = project[i].EndDate.ToLongDateString();
+
+                                ProjectInfo.Text = "项目名称：" + project[i].Name + Environment.NewLine + Environment.NewLine + "简介：" + project[i].Note + Environment.NewLine + "创建者：" + project[i].Creator.Name + Environment.NewLine + "创建日期：" + project[i].StartDate.ToLongDateString() + Environment.NewLine + "截止日期：" + endDate + Environment.NewLine + "进度：" + project[i].ProgressRate + "%";
                                 ProjectInfo.Margin = new Thickness(5, 5, 0, 0);
                                 ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
                                 ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
@@ -253,6 +260,19 @@ namespace Co_work.Pages
                 sendT = new Thread(Owner.SendMessageUpdateProjects);
                 sendT.Start();
             }
+            else
+            {
+                for (int i = 0; i <= project.Count; i++)
+                {
+                    Button btn = WP.FindName("Btn_Project_" + i.ToString()) as Button;
+                    if (btn != null)
+                    {
+                        WP.Children.Remove(btn);
+                        WP.UnregisterName("Btn_Project_" + i.ToString());
+                    }
+                }
+                Btn_AddProject.Margin = new Thickness(20, 20, 0, 0);
+            }
         }
 
         public MainWindow Owner;
@@ -288,8 +308,13 @@ namespace Co_work.Pages
             page_ProjectInstance.Lb_ProjectName.Content = project[selectIndex].Name;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + project[selectIndex].Note;
             //page_ProjectInstance.page_ProjectInstance_Project.Lb_Creator.Content = "创建者：" + project[index].Creator;
-            page_ProjectInstance.page_ProjectInstance_Project.Lb_StartTime.Content = "创建日期：" + project[selectIndex].StartTime.ToLongDateString();
-            page_ProjectInstance.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + project[selectIndex].Deadline;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_StartTime.Content = "创建日期：" + project[selectIndex].StartDate.ToLongDateString();
+            string endDate;
+            if (project[selectIndex].EndDate == DateTime.MinValue)
+                endDate = "无";
+            else
+                endDate = project[selectIndex].EndDate.ToLongDateString();
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + endDate;
             page_ProjectInstance.page_ProjectInstance_Project.Pb_Progress.Value = project[selectIndex].ProgressRate;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Progress.Content = project[selectIndex].ProgressRate + "%";
         }
