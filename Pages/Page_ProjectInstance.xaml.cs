@@ -61,7 +61,7 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectInstance_Project
             };
-            page_ProjectInstance_Project.RefreshListView();
+            //page_ProjectInstance_Project.RefreshListView();
         }
 
         private void Btn_Member_Click(object sender, RoutedEventArgs e)

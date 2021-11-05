@@ -72,7 +72,7 @@ namespace Co_work
             Dispatcher.Invoke(new Action(delegate
             {
                 var password = MD5withSalt.Encrypt(page_User.page_User_Login.Tb_Password.Password);
-                MessageBox.Show(password);
+                //MessageBox.Show(password);
                 Request.Login login =
                        new Request.Login(page_User.page_User_Login.Tb_Id.Text,password );
                 var message = new TransData<Request.Login>(login, "ertgwergf", "etyhtgyetyh").ToString();
@@ -243,13 +243,13 @@ namespace Co_work
             }));
         }
 
-        public void SendMessageUserInfo() //发送查询用户信息请求
+        public void SendMessageFileInfo() //发送获取文件信息请求
         {
             Dispatcher.Invoke(new Action(delegate
             {
-                Request.GetEmployeeInfo userInfo =
-                       new Request.GetEmployeeInfo(User.GUID);
-                var message = new TransData<Request.GetEmployeeInfo>(userInfo, "ertgwergf", "etyhtgyetyh").ToString();
+                Request.GetFileInfo fileInfo =
+                       new Request.GetFileInfo(page_Project.project[page_Project.selectIndex].GUID);
+                var message = new TransData<Request.GetFileInfo>(fileInfo, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
                 {
@@ -257,7 +257,7 @@ namespace Co_work
                     {
                         clientScoket.Send(data);
                         Thread receiveT;
-                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageDelete); //开启线程执行循环接收消息
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Project.ReceiveMessageFileInfo); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch

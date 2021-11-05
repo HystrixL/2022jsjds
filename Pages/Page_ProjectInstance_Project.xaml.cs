@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Co_work.Windows;
+using Co_Work.Local;
+using Co_Work.Network;
 using FTPHelper;
 
 namespace Co_work.Pages
@@ -31,8 +33,8 @@ namespace Co_work.Pages
             Lv_File.ContextMenu = MenuListView();
             //Pb_Upload_Progress.Visibility = Visibility.Hidden;
 
-            string baseAddress = "/Test";
-            Address.Add(baseAddress);
+            //string baseAddress = "/Test";
+            //Address.Add(baseAddress);
         }
 
         public Page_ProjectInstance Owner;
@@ -81,6 +83,43 @@ namespace Co_work.Pages
             }
             return result;
         }
+
+        public void ReceiveMessageFileInfo() //接收消息
+        {
+            int length = 0;
+            while (Owner.Owner.Owner.isConnected)
+            {
+                if (Owner.Owner.Owner.clientScoket.Connected == true)
+                {
+                    try
+                    {
+                        length = Owner.Owner.Owner.clientScoket.Receive(Owner.Owner.Owner.data);
+                    }
+                    catch (Exception e)
+                    {
+                        Owner.Owner.Owner.isConnected = false;
+                    }
+
+                    if (length != 0)
+                    {
+                        string message = Encoding.UTF8.GetString(Owner.Owner.Owner.data, 0, length);
+                        var received = TransData<Response.GetFileInfo>.Convert(message);
+
+                        listFile = received.Content.ProjectFiles;
+
+                        ftpHelper.CreateDir(Owner.Owner.project[Owner.Owner.selectIndex].GUID);
+                        string baseAddress = "/" + Owner.Owner.project[Owner.Owner.selectIndex].GUID;
+                        Address.Clear();
+                        Address.Add(baseAddress);
+                        RefreshListView();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private List<ProjectFile> listFile = new List<ProjectFile>();
 
         private void Btn_Upload_Click(object sender, RoutedEventArgs e)
         {

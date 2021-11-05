@@ -317,6 +317,10 @@ namespace Co_work.Pages
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Deadline.Content = "截止日期：" + endDate;
             page_ProjectInstance.page_ProjectInstance_Project.Pb_Progress.Value = project[selectIndex].ProgressRate;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Progress.Content = project[selectIndex].ProgressRate + "%";
+
+            Thread sendT;
+            sendT = new Thread(Owner.SendMessageFileInfo);
+            sendT.Start();
         }
     }
 }
