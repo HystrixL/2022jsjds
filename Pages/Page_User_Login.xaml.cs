@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
 using Co_Work.Network;
+using Co_Work.Core;
+using Co_work.Scripts;
 
 namespace Co_work.Pages
 {
@@ -27,6 +29,13 @@ namespace Co_work.Pages
         public Page_User_Login()
         {
             InitializeComponent();
+
+            if (ini.ReadIni("Setting", "RememberPassword") == "true")
+            {
+                Cb_RememberPassword.IsChecked = true;
+                Tb_Id.Text = ini.ReadIni("TNUOCA", "RESU");
+                Tb_Password.Password = ini.ReadIni("TNUOCA", "DROWSSAP");
+            }
         }
 
         public Page_User Owner;
@@ -57,11 +66,26 @@ namespace Co_work.Pages
                         {
                             Owner.Owner.User = received.Content.Employee;
                             Owner.Owner.isLogined = true;
+
                             Dispatcher.Invoke(new Action(delegate
                             {
+                                if (Cb_RememberPassword.IsChecked.Value)
+                                {
+                                    Owner.Owner.RememberPassword(Tb_Id.Text, Tb_Password.Password);
+                                }
+                                else
+                                {
+                                    Owner.Owner.UnRememberPassword();
+                                }
+
                                 Owner.Owner.ChangePageUser();
                                 Tb_Id.Text = "";
                                 Tb_Password.Password = "";
+                                if (ini.ReadIni("Setting", "RememberPassword") == "true")
+                                {
+                                    Tb_Id.Text = ini.ReadIni("TNUOCA", "RESU");
+                                    Tb_Password.Password = ini.ReadIni("TNUOCA", "DROWSSAP");
+                                }
                             }));
                         }
                         else if (received.Content.LoginResult == Response.Login.LoginResultEnum.UnknownAccount)
@@ -87,6 +111,8 @@ namespace Co_work.Pages
                 }
             }
         }
+
+        public INI ini = new INI();
 
         private void Btn_Login_Click(object sender, RoutedEventArgs e)
         {

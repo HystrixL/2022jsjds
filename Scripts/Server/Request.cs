@@ -3,9 +3,9 @@
 
 namespace Co_Work.Network
 {
-    class Request
+    partial class Request
     {
-        public class Login
+        public partial class Login
         {
             public Login(string id, string password)
             {
@@ -17,7 +17,7 @@ namespace Co_Work.Network
             public string Password { get; set; }
         }
 
-        public class Register
+        public partial class Register
         {
             public Register(string id, string password, string name, int age, string entryTime)
             {
@@ -36,7 +36,7 @@ namespace Co_Work.Network
             public string EntryTime { get; set; }
         }
 
-        public class GetFileInfo
+        public partial class GetFileInfo
         {
             public GetFileInfo(string projectGuid)
             {
@@ -46,9 +46,9 @@ namespace Co_Work.Network
             public string ProjectGuid { get; set; }
         }
 
-        public class CreatProject
+        public partial class CreatProject
         {
-            public CreatProject(string projectName, string projectNote, double projectProcess, string startDate,string endDate,
+            public CreatProject(string projectName, string projectNote, double projectProcess, string startDate, string endDate,
                 string creatorGuid, List<string> members)
             {
                 ProjectName = projectName;
@@ -69,9 +69,9 @@ namespace Co_Work.Network
             public List<string> Members { get; set; } //Guid
         }
 
-        public class DeleteProject
+        public partial class DeleteProject
         {
-            public DeleteProject(string projectGuid,string deleterGuid)
+            public DeleteProject(string projectGuid, string deleterGuid)
             {
                 ProjectGuid = projectGuid;
                 DeleterGuid = deleterGuid;
@@ -82,10 +82,10 @@ namespace Co_Work.Network
             public string DeleterGuid { get; set; }
         }
 
-        public class UpdateProject
+        public partial class UpdateProject
         {
             public UpdateProject(string projectGuid, string projectName, string projectNote, double projectProcess,
-                string startDate,string endDate,
+                string startDate, string endDate,
                 string updaterGuid, List<string> members)
             {
                 ProjectGuid = projectGuid;
@@ -109,7 +109,7 @@ namespace Co_Work.Network
             public List<string> Members { get; set; } //Guid
         }
 
-        public class GetEmployeesInfo
+        public partial class GetEmployeesInfo
         {
             public GetEmployeesInfo(string employeeGuid)
             {
@@ -119,9 +119,9 @@ namespace Co_Work.Network
             public string EmployeeGuid { get; set; }
         }
 
-        public class GetEmployeeInfo
+        public partial class GetEmployeeInfoFromGuid
         {
-            public GetEmployeeInfo(string employeeGuid)
+            public GetEmployeeInfoFromGuid(string employeeGuid)
             {
                 EmployeeGuid = employeeGuid;
             }
@@ -129,7 +129,17 @@ namespace Co_Work.Network
             public string EmployeeGuid { get; set; }
         }
 
-        public class GetProjectsInfoFromEmployee
+        public partial class GetEmployeeInfoFromId
+        {
+            public GetEmployeeInfoFromId(string employeeId)
+            {
+                EmployeeId = employeeId;
+            }
+
+            public string EmployeeId { get; set; }
+        }
+
+        public partial class GetProjectsInfoFromEmployee
         {
             public GetProjectsInfoFromEmployee(string employeeGuid)
             {
@@ -139,7 +149,7 @@ namespace Co_Work.Network
             public string EmployeeGuid { get; set; }
         }
 
-        public class GetProjectsInfo
+        public partial class GetProjectsInfo
         {
             public GetProjectsInfo(string employeeGuid)
             {
@@ -150,7 +160,7 @@ namespace Co_Work.Network
         }
 
 
-        public class GetProjectInfo
+        public partial class GetProjectInfo
         {
             public GetProjectInfo(string projectGuid)
             {

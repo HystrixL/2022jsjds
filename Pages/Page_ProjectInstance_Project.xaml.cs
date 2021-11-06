@@ -549,15 +549,15 @@ namespace Co_work.Pages
             string result = "0KB";
             int filelength = size.ToString().Length;
             if (filelength < 4)
-                result = size + "byte";
+                result = size + " byte";
             else if (filelength < 7)
-                result = Math.Round(Convert.ToDouble(size / 1024d), 2) + "KB";
+                result = Math.Round(Convert.ToDouble(size / 1024d), 2) + " KB";
             else if (filelength < 10)
-                result = Math.Round(Convert.ToDouble(size / 1024d / 1024), 2) + "MB";
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024), 2) + " MB";
             else if (filelength < 13)
-                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024), 2) + "GB";
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024), 2) + " GB";
             else
-                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024 / 1024), 2) + "TB";
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024 / 1024), 2) + " TB";
             return result;
         }
 

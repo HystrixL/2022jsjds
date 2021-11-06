@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,12 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectInstance_Project
             };
+
+            if (page_ProjectInstance_Setting == null)
+            {
+                page_ProjectInstance_Setting = new Page_ProjectInstance_Setting();
+            }
+            page_ProjectInstance_Setting.Owner = this;
         }
 
         public Page_Project Owner;
@@ -80,6 +87,7 @@ namespace Co_work.Pages
             {
                 Content = page_ProjectInstance_Member
             };
+            page_ProjectInstance_Member.RefreshMember();
         }
 
         private void Btn_Setting_Click(object sender, RoutedEventArgs e)

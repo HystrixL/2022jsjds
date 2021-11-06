@@ -1,0 +1,29 @@
+﻿<Window x:Class="Co_work.Windows.Window_AddMember"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Co_work.Windows"
+        mc:Ignorable="d"
+         Title="请输入成员用户名" Height="200" Width="400"
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox Name="Lb_Id" 
+                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Margin="0,0,0,30"
+                 Height="28"
+                 FontSize="19"/>
+        <Button Margin="0,0,0,-80"
+                Click="Btn_Add_Click"
+                Width="100"
+                Height="28"
+                HorizontalAlignment="Center"
+                IsDefault="True">
+            <Label Content="添加成员"
+                   FontSize="12" Width="100"
+                   Height="28"
+                   HorizontalContentAlignment ="Center"/>
+        </Button>
+    </Grid>
+</Window>

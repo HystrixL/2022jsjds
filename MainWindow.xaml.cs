@@ -71,10 +71,15 @@ namespace Co_work
         {
             Dispatcher.Invoke(new Action(delegate
             {
-                var password = MD5withSalt.Encrypt(page_User.page_User_Login.Tb_Password.Password);
+                string password;
+                if (ini.ReadIni("Setting", "RememberPassword") == "true")
+                    password = MD5withSalt.Encrypt(ini.ReadIni("TNUOCA", "DROWSSAP"));
+                else
+                    password = MD5withSalt.Encrypt(page_User.page_User_Login.Tb_Password.Password);
+                
                 //MessageBox.Show(password);
                 Request.Login login =
-                       new Request.Login(page_User.page_User_Login.Tb_Id.Text,password );
+                       new Request.Login(page_User.page_User_Login.Tb_Id.Text, password);
                 var message = new TransData<Request.Login>(login, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -161,7 +166,7 @@ namespace Co_work
                     endDate = ToTimeString(page_Project.newProject.EndDate);
 
                 Request.CreatProject createProject =
-                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, new List<string>());
+                       new Request.CreatProject(page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, new List<string>() { User.GUID });
                 var message = new TransData<Request.CreatProject>(createProject, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -221,7 +226,7 @@ namespace Co_work
                     endDate = ToTimeString(page_Project.newProject.EndDate);
 
                 Request.UpdateProject updateProject =
-                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, new List<string>());
+                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.newProject.Name, page_Project.newProject.Note, page_Project.newProject.ProgressRate, ToTimeString(page_Project.newProject.StartDate), endDate, User.GUID, page_Project.membersGUID);
                 var message = new TransData<Request.UpdateProject>(updateProject, "ertgwergf", "etyhtgyetyh").ToString();
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 if (isConnected)
@@ -231,6 +236,72 @@ namespace Co_work
                         clientScoket.Send(data);
                         Thread receiveT;
                         receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Setting.ReceiveMessageUpdate); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageRemoveMember() //发送删除成员请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                string endDate;
+                if (page_Project.project[page_Project.selectIndex].EndDate == DateTime.MinValue)
+                    endDate = "";
+                else
+                    endDate = ToTimeString(page_Project.project[page_Project.selectIndex].EndDate);
+
+                Request.UpdateProject updateProject =
+                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.project[page_Project.selectIndex].Name, page_Project.project[page_Project.selectIndex].Note, page_Project.project[page_Project.selectIndex].ProgressRate, ToTimeString(page_Project.project[page_Project.selectIndex].StartDate), endDate, User.GUID, page_Project.membersGUID);
+                var message = new TransData<Request.UpdateProject>(updateProject, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Member.ReceiveMessageRemove); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageAddMember() //发送添加成员请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                string endDate;
+                if (page_Project.project[page_Project.selectIndex].EndDate == DateTime.MinValue)
+                    endDate = "";
+                else
+                    endDate = ToTimeString(page_Project.project[page_Project.selectIndex].EndDate);
+
+                Request.UpdateProject updateProject =
+                       new Request.UpdateProject(page_Project.project[page_Project.selectIndex].GUID, page_Project.project[page_Project.selectIndex].Name, page_Project.project[page_Project.selectIndex].Note, page_Project.project[page_Project.selectIndex].ProgressRate, ToTimeString(page_Project.project[page_Project.selectIndex].StartDate), endDate, User.GUID, page_Project.membersGUID);
+                var message = new TransData<Request.UpdateProject>(updateProject, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Member.ReceiveMessageRemove); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch
@@ -269,6 +340,34 @@ namespace Co_work
                 else ConnectToServer();
             }));
         }
+
+        public void SendMessageGetUserGUID() //发送获取用户GUID请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.GetEmployeeInfoFromId employeeInfo =
+                       new Request.GetEmployeeInfoFromId(page_Project.page_ProjectInstance.page_ProjectInstance_Member.newMemberId);
+                var message = new TransData<Request.GetEmployeeInfoFromId>(employeeInfo, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Member.ReceiveMessageGetUserGUID); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
 
         public void InitializePageTransmisson()
         {
@@ -388,5 +487,20 @@ namespace Co_work
         }
 
         public string fileSaveAddress =  Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work";
+
+        public void RememberPassword(string id, string password)
+        {
+            ini.WriteIni("Setting", "RememberPassword", "true");
+            ini.WriteIni("TNUOCA", "RESU", id);
+            ini.WriteIni("TNUOCA", "DROWSSAP", password);
+        }
+
+        public void UnRememberPassword()
+        {
+            ini.WriteIni("Setting", "RememberPassword", "false");
+            ini.WriteIni("TNUOCA", "RESU", "");
+            ini.WriteIni("TNUOCA", "DROWSSAP", "");
+        }
+
     }
 }

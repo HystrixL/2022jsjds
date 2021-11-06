@@ -9,6 +9,40 @@
       Title="Page_ProjectInstance_Member">
 
     <Grid Background="White">
-        
+
+        <Button Margin="20,20,637,339" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Height="30"
+                Width="80"
+                Click="Btn_Add_Click">
+            添加成员
+        </Button>
+
+        <ListView Name="Lv_Member" 
+                  Margin="20,73,0,0"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Left"
+                 MaxWidth="400" Height="500"
+                  MinWidth="400" 
+                  SelectionMode="Single" Foreground="Black"
+                  ItemContainerStyle="{DynamicResource ListViewItemKey}"
+                  ItemsSource="{Binding Members}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="昵称" Width="160"
+                                    DisplayMemberBinding="{Binding Name}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.Resources>
+                <Style x:Key="ListViewItemKey" TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseRightButtonUp" Handler="ListViewItem_MouseRightButtonUp"/>
+                </Style>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </ListView.Resources>
+        </ListView>
+
     </Grid>
 </Page>

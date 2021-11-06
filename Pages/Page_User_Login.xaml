@@ -62,10 +62,12 @@
 
         <CheckBox Content="记住密码" Margin="109,257,0,0"
                   HorizontalAlignment="Left"
-                  VerticalAlignment="Top"/>
+                  VerticalAlignment="Top"
+                  Name="Cb_RememberPassword"/>
         <CheckBox Content="自动登录" Margin="210,257,0,0"
                   HorizontalAlignment="Left"
-                  VerticalAlignment="Top"/>
+                  VerticalAlignment="Top"
+                  Name="Cb_AutoLogin"/>
 
     </Grid>
 </Page>

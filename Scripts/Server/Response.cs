@@ -130,7 +130,7 @@ namespace Co_Work.Network
                 PermissionDenied,
             }
 
-            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResultEnum,List<Employee> employees)
+            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResultEnum, List<Employee> employees)
             {
                 GetEmployeesInfoResult = getEmployeesInfoResultEnum;
                 Employees = employees;
@@ -140,21 +140,39 @@ namespace Co_Work.Network
             public List<Employee> Employees { get; set; }
         }
 
-        public class GetEmployeeInfo
+        public class GetEmployeeInfoFromGuid
         {
-            public enum GetEmployeeInfoResultEnum
+            public enum GetEmployeeInfoFromGuidResultEnum
             {
                 Succeed,
                 UnknownEmployee,
             }
 
-            public GetEmployeeInfo(GetEmployeeInfoResultEnum getEmployeeInfoResult, Employee employee)
+            public GetEmployeeInfoFromGuid(GetEmployeeInfoFromGuidResultEnum getEmployeeInfoFromGuidResult, Employee employee)
             {
-                GetEmployeeInfoResult = getEmployeeInfoResult;
+                GetEmployeeInfoFromGuidResult = getEmployeeInfoFromGuidResult;
                 Employee = employee;
             }
 
-            public GetEmployeeInfoResultEnum GetEmployeeInfoResult { get; set; }
+            public GetEmployeeInfoFromGuidResultEnum GetEmployeeInfoFromGuidResult { get; set; }
+            public Employee Employee { get; set; }
+        }
+
+        public class GetEmployeeInfoFromId
+        {
+            public enum GetEmployeeInfoFromIdEnum
+            {
+                Succeed,
+                UnknownEmployee,
+            }
+
+            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnum, Employee employee)
+            {
+                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnum;
+                Employee = employee;
+            }
+
+            public GetEmployeeInfoFromIdEnum GetEmployeeInfoFromIdEnumResult { get; set; }
             public Employee Employee { get; set; }
         }
 
@@ -184,7 +202,7 @@ namespace Co_Work.Network
                 PermissionDenied,
             }
 
-            public GetProjectsInfo(GetProjectsInfoResultEnum getProjectsInfoResult,List<Project> projects)
+            public GetProjectsInfo(GetProjectsInfoResultEnum getProjectsInfoResult, List<Project> projects)
             {
                 GetProjectsInfoResult = getProjectsInfoResult;
                 Projects = projects;

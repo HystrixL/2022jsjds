@@ -19,6 +19,7 @@ using System.Threading;
 using System.Net;
 using Co_Work.Network;
 using Co_Work.Core.Project;
+using Co_Work.Core;
 
 namespace Co_work.Pages
 {
@@ -50,6 +51,8 @@ namespace Co_work.Pages
         public List<Project> project = new List<Project>();
         public Project newProject = new Project();
 
+        public List<string> membersGUID = new List<string>();
+
         //public Projects[] project;
         //public int projectIndex = -1;
 
@@ -75,6 +78,8 @@ namespace Co_work.Pages
                         string message = Encoding.UTF8.GetString(Owner.data, 0, length);
                         var received = TransData<Response.GetProjectsInfoFromEmployee>.Convert(message);
                         project = received.Content.Projects;
+
+                        
 
                         Dispatcher.Invoke(new Action(delegate
                         {
@@ -319,6 +324,12 @@ namespace Co_work.Pages
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Progress.Content = project[selectIndex].ProgressRate + "%";
 
             page_ProjectInstance.page_ProjectInstance_Project.SetRootAddress();
+
+
+            membersGUID.Clear();
+            foreach (Employee member in project[selectIndex].Members)
+                membersGUID.Add(member.GUID);
+            //newProject = project[selectIndex];
         }
     }
 }

@@ -105,6 +105,8 @@ namespace Co_work.Pages
                             this.Owner.page_ProjectInstance_Project.Lb_Progress.Content = Tb_Progress.Text + "%";
 
                             MessageBox.Show("保存成功", "", MessageBoxButton.OK);
+
+                            Owner.Owner.RefreshProject();
                         }));
 
                         break;

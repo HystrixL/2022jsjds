@@ -30,7 +30,8 @@
                  Height="30"
                  HorizontalAlignment="Left"
                VerticalAlignment="Top"
-                 FontSize="20"/>
+                 FontSize="20"
+                 MaxLength="16"/>
         <Label Name="Lb_Id_Instru"
                Content="用户名唯一且不可改，只能使用字母数字下划线" 
                Margin="103,135,0,0"
@@ -50,7 +51,8 @@
                  Height="30"
                  HorizontalAlignment="Left"
                VerticalAlignment="Top"
-                 FontSize="20"/>
+                 FontSize="20"
+                 MaxLength="16"/>
         <Label Name="Lb_Name_Instru"
                Content="昵称可以使用汉字" 
                Margin="103,240,0,0"

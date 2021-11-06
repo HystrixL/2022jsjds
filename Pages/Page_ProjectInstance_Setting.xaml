@@ -58,6 +58,7 @@
                HorizontalAlignment="Left"
                FontSize="12" Margin="10,189,0,0"/>
         <TextBox Name="Tb_Progress" Margin="219,191,0,0"
+                 MaxLength="4"
                  FontSize="12"
                  Height="22"
                  HorizontalAlignment="Left"
