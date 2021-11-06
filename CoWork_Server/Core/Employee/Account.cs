@@ -30,12 +30,12 @@ namespace Co_Work.Core
             Response.Login.LoginResultEnum loginResult = Response.Login.LoginResultEnum.UnknownAccount;
             foreach (var account in Accounts)
             {
-                if (account.Id == id && account.Password == password)
+                if (account.Id == id && MD5withSalt.Check(account.Password, password))
                 {
                     loginResult = Response.Login.LoginResultEnum.Succeed;
                 }
 
-                if (account.Id == id && account.Password != password)
+                if (account.Id == id && !MD5withSalt.Check(account.Password,password))
                 {
                     loginResult = Response.Login.LoginResultEnum.WrongPassword;
                 }

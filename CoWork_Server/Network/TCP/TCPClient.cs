@@ -10,46 +10,46 @@ namespace Co_Work.Network.TCP
 {
     public class Client
     {
-        private Socket clientSocket;
-        private Thread t;
-        public string ip;
+        private Socket _clientSocket;
+        public string Ip;
         public string ClientGuid;
 
         public Client(Socket socket)
         {
             ClientGuid = Guid.NewGuid().ToString();
-            clientSocket = socket;
-            ip = (clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
-            t = new Thread(ReceiveRequest);
+            _clientSocket = socket;
+            _clientSocket.ReceiveBufferSize = 100 * 1024 * 1024;
+            Ip = (_clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
+            var t = new Thread(ReceiveRequest);
             t.Start();
         }
 
         private void ReceiveRequest() //接收消息
         {
-            byte[] data = new byte[4096];
+            byte[] data = new byte[1024*1024];
             while (true)
             {
                 int length = 0;
                 try
                 {
-                    length = clientSocket.Receive(data);
+                    length = _clientSocket.Receive(data);
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine((clientSocket.RemoteEndPoint as IPEndPoint)?.Address + " 连接已断开");
+                    Console.WriteLine((_clientSocket.RemoteEndPoint as IPEndPoint)?.Address + " 连接已断开");
                     ClientManager.RemoveClient(ClientGuid);
                 }
 
-                if (clientSocket.Poll(10, SelectMode.SelectRead)) //
+                if (_clientSocket.Poll(10, SelectMode.SelectRead)) //
                 {
-                    clientSocket.Close();
+                    _clientSocket.Close();
                     break;
                 }
 
                 if (length != 0)
                 {
                     string request = Encoding.UTF8.GetString(data, 0, length);
-                    Console.WriteLine("来自" + (clientSocket.RemoteEndPoint as IPEndPoint)?.Address + ":" +
+                    Console.WriteLine("来自" + (_clientSocket.RemoteEndPoint as IPEndPoint)?.Address + ":" +
                                       request);
                     Task.Run(() =>
                     {
@@ -62,13 +62,14 @@ namespace Co_Work.Network.TCP
 
         public void SendResponse(string response) //发送消息
         {
+            Console.WriteLine(response);
             byte[] data = Encoding.UTF8.GetBytes(response);
-            clientSocket.Send(data);
+            _clientSocket.Send(data);
         }
 
         public bool Connected //获取该客户端的状态
         {
-            get { return clientSocket.Connected; }
+            get { return _clientSocket.Connected; }
         }
     }
 }

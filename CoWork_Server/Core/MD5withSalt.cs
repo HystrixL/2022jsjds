@@ -5,22 +5,17 @@ using System.Text;
 
 namespace Co_Work.Core
 {
-    static class MD5withSalt
+    public static class MD5withSalt
     {
         public static string Encrypt(string password)
         {
             var salt = new Salt();
-            //生成salt
             var saltString = salt.Generate();
 
             password = salt.Join(password, saltString);
-
-            //MD5加密
             var result = _Md5Encrypt(password);
-
-            result = salt.Join(result, saltString);
-            //结果逆序
-            result = _Reverse(result);
+            result = salt.Join(result, _Reverse(saltString));
+            result = _Reverse(result).ToLower();
             return result;
         }
 
@@ -28,17 +23,12 @@ namespace Co_Work.Core
         {
             var salt = new Salt();
             encryptResult = _Reverse(encryptResult);
-
-            //salt提取
-            var saltString = salt.Extract(encryptResult);
+            
+            var saltString = _Reverse(salt.Extract(encryptResult)).ToUpper();
             password = salt.Join(password, saltString);
-
-            //MD5加密
-            var result =  _Md5Encrypt(password);
-
-            result = salt.Join(result, saltString);
-
-            return result == encryptResult;
+            var result =  _Reverse(_Md5Encrypt(password));
+            result = salt.Join(result, saltString).ToLower();
+            return result == _Reverse(encryptResult);
         }
 
         private static string _Md5Encrypt(string originalStr)
@@ -61,8 +51,17 @@ namespace Co_Work.Core
                 var salt = "";
                 for (var i = 0; i < 8; i++)
                 {
-                    var saltBit = new Random().Next(0, 10);
-                    salt += saltBit.ToString();
+                    var isNumOrLetter = new Random().Next(0, 2);
+                    if (isNumOrLetter == 0)
+                    {
+                        var saltBit = new Random().Next(0, 10);
+                        salt += saltBit.ToString();
+                    }
+                    else
+                    {
+                        var saltBit = (char)new Random().Next(65, 91);
+                        salt += saltBit.ToString();
+                    }
                 }
 
                 return salt;
@@ -70,7 +69,7 @@ namespace Co_Work.Core
 
             public string Join(string originalStr, string salt)
             {
-                return salt.Substring(0, 4) + originalStr + salt.Substring(salt.Length - 4, 4);
+                return salt.Substring(0, 4)+ originalStr + salt.Substring(salt.Length - 4, 4) ;
             }
 
             public string Extract(string originalStr)

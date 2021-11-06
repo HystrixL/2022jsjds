@@ -2,6 +2,7 @@
 using Co_Work.Core;
 using Co_Work.Core.Project;
 using Co_Work.Local;
+using Co_Work.Local.ProjectFile;
 
 namespace Co_Work.Network
 {
@@ -140,21 +141,39 @@ namespace Co_Work.Network
             public List<Employee> Employees { get; set; }
         }
 
-        public class GetEmployeeInfo
+        public class GetEmployeeInfoFromGuid
         {
-            public enum GetEmployeeInfoResultEnum
+            public enum GetEmployeeInfoFromGuidResultEnum
             {
                 Succeed,
                 UnknownEmployee,
             }
 
-            public GetEmployeeInfo(GetEmployeeInfoResultEnum getEmployeeInfoResult, Employee employee)
+            public GetEmployeeInfoFromGuid(GetEmployeeInfoFromGuidResultEnum getEmployeeInfoFromGuidResult, Employee employee)
             {
-                GetEmployeeInfoResult = getEmployeeInfoResult;
+                GetEmployeeInfoFromGuidResult = getEmployeeInfoFromGuidResult;
                 Employee = employee;
             }
 
-            public GetEmployeeInfoResultEnum GetEmployeeInfoResult { get; set; }
+            public GetEmployeeInfoFromGuidResultEnum GetEmployeeInfoFromGuidResult { get; set; }
+            public Employee Employee { get; set; }
+        }
+        
+        public class GetEmployeeInfoFromId
+        {
+            public enum GetEmployeeInfoFromIdEnum
+            {
+                Succeed,
+                UnknownEmployee,
+            }
+
+            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnum, Employee employee)
+            {
+                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnum;
+                Employee = employee;
+            }
+
+            public GetEmployeeInfoFromIdEnum GetEmployeeInfoFromIdEnumResult { get; set; }
             public Employee Employee { get; set; }
         }
 

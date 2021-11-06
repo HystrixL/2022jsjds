@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using Co_Work.Core.Project;
 
 namespace Co_Work.Core

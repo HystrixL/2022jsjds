@@ -13,7 +13,7 @@ namespace Co_Work.Network.TCP
         {
             tcpServer.Bind(new IPEndPoint(IPAddress.Parse(serverIp), serverPort));
 
-            tcpServer.Listen(100); //设置客户端最大连接数
+            tcpServer.Listen(1000);
             Console.WriteLine($"服务器已启动，端口{serverPort}，等待连接.........");
             Thread t = new Thread(WaitConnect);
             t.Start();

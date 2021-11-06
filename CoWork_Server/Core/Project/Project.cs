@@ -12,7 +12,7 @@ namespace Co_Work.Core.Project
         [Key]public string GUID { get; set; } = Guid.NewGuid().ToString();
         
         [Required]public string Name { get; set; }
-        [Required]public DateTime StartTime { get; set; }
+        [Required]public DateTime StartDate { get; set; }
         [Required]public Employee Creator { get; set; }
         [Required]public List<Employee> Members { get; set; } = new List<Employee>();
         [Required]public string Note { get; set; }
@@ -39,8 +39,8 @@ namespace Co_Work.Core.Project
         //public List<Project> SubProject { get; set; } = new List<Project>();
         //public bool IsSubProject { get; set; }
         
-        [Required]public bool IsFinish { get; set; } 
-        //public DateTime EndTime { get; set; }
+        [Required]public bool IsFinish { get; set; }
+        [Required] public DateTime EndDate { get; set; } = DateTime.MinValue;
 
         // public Project(string name,DateTime startTime,Employee creator,List<Employee> employees)
         // {

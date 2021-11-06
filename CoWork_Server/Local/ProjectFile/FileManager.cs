@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using Co_Work.Core;
-using SQLitePCL;
 
-namespace Co_Work.Local
+namespace Co_Work.Local.ProjectFile
 {
     public class FileManager
     {
@@ -19,22 +16,24 @@ namespace Co_Work.Local
             _projectFilesRelativeDirectory = Path.Combine(serverRootPath, _projectFilesPath, _projectGuid);
         }
 
-        public List<ProjectFile> GetProjectFilesList(string path = "")
+        public List<Local.ProjectFile.ProjectFile> GetProjectFilesList(string path = "")
         {
             if (path == "") path = _projectFilesRelativeDirectory;
-            var fileList = new List<ProjectFile>();
+            var fileList = new List<Local.ProjectFile.ProjectFile>();
 
             if (Directory.Exists(path))
             {
                 foreach (var file in Directory.GetFiles(path))
                 {
                     FileInfo fileInfo = new FileInfo(file);
-                    var projectFile = new ProjectFile();
-                    projectFile.ProjectGuid = _projectGuid;
-                    projectFile.FileName = fileInfo.Name;
-                    projectFile.FileSize = fileInfo.Length;
-                    projectFile.UploadDate = fileInfo.CreationTime;
-                    projectFile.Path = GetRelativePath(fileInfo.FullName).Replace(fileInfo.Name,"");
+                    var projectFile = new Local.ProjectFile.ProjectFile
+                    {
+                        ProjectGuid = _projectGuid,
+                        FileName = fileInfo.Name,
+                        FileSize = fileInfo.Length,
+                        UploadDate = fileInfo.CreationTime,
+                        Path = GetRelativePath(fileInfo.FullName).Replace(fileInfo.Name,"")
+                    };
                     fileList.Add(projectFile);
                 }
 
@@ -51,15 +50,5 @@ namespace Co_Work.Local
         {
             return absolutePath.Replace(_projectFilesRelativeDirectory, "");
         }
-    }
-
-    public class ProjectFile
-    {
-        public string ProjectGuid { get; set; }
-        public string FileName { get; set; }
-        public long FileSize { get; set; }
-        public DateTime UploadDate { get; set; }
-        public string Uploader { get; set; }
-        public string Path { get; set; } = @"\";
     }
 }

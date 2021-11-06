@@ -58,8 +58,11 @@ namespace Co_Work.Core
                 case nameof(Request.GetEmployeesInfo):
                     Request.GetEmployeesInfo.Parse(TransData<Request.GetEmployeesInfo>.Convert(requestBody),client);
                     break;
-                case nameof(Request.GetEmployeeInfo):
-                    Request.GetEmployeeInfo.Parse(TransData<Request.GetEmployeeInfo>.Convert(requestBody),client);
+                case nameof(Request.GetEmployeeInfoFromGuid):
+                    Request.GetEmployeeInfoFromGuid.Parse(TransData<Request.GetEmployeeInfoFromGuid>.Convert(requestBody),client);
+                    break;
+                case nameof(Request.GetEmployeeInfoFromId):
+                    Request.GetEmployeeInfoFromId.Parse(TransData<Request.GetEmployeeInfoFromId>.Convert(requestBody),client);
                     break;
                 case nameof(Request.GetProjectsInfoFromEmployee):
                     Request.GetProjectsInfoFromEmployee.Parse(TransData<Request.GetProjectsInfoFromEmployee>.Convert(requestBody),client);
