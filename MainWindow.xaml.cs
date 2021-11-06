@@ -308,6 +308,7 @@ namespace Co_work
             {
                 page_Project = new Page_Project();
                 page_Project.Owner = this;
+                //page_Project.page_ProjectInstance = new Page_ProjectInstance();
             }
             Change_Page.Content = new Frame()
             {
@@ -318,6 +319,8 @@ namespace Co_work
             Tg_Btn_User.IsChecked = false;
             Tg_Btn_Setting.IsChecked = false;
             page_Project.RefreshProject();
+            if(page_Project.page_ProjectInstance.page_ProjectInstance_Project.FileList != null)
+                page_Project.page_ProjectInstance.page_ProjectInstance_Project.FileList.Clear();
         }
         private void ChangePageTransmisson()
         {

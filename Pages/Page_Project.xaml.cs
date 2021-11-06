@@ -307,7 +307,7 @@ namespace Co_work.Pages
             selectIndex = Convert.ToInt32((sender as Button).Name.Replace("Btn_Project_", ""));
             page_ProjectInstance.Lb_ProjectName.Content = project[selectIndex].Name;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Intro.Text = "简介：" + Environment.NewLine + project[selectIndex].Note;
-            //page_ProjectInstance.page_ProjectInstance_Project.Lb_Creator.Content = "创建者：" + project[index].Creator;
+            page_ProjectInstance.page_ProjectInstance_Project.Lb_Creator.Content = "创建者：" + project[selectIndex].Creator.Name;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_StartTime.Content = "创建日期：" + project[selectIndex].StartDate.ToLongDateString();
             string endDate;
             if (project[selectIndex].EndDate == DateTime.MinValue)
@@ -318,9 +318,7 @@ namespace Co_work.Pages
             page_ProjectInstance.page_ProjectInstance_Project.Pb_Progress.Value = project[selectIndex].ProgressRate;
             page_ProjectInstance.page_ProjectInstance_Project.Lb_Progress.Content = project[selectIndex].ProgressRate + "%";
 
-            Thread sendT;
-            sendT = new Thread(Owner.SendMessageFileInfo);
-            sendT.Start();
+            page_ProjectInstance.page_ProjectInstance_Project.SetRootAddress();
         }
     }
 }

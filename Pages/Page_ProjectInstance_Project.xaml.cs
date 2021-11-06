@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +47,7 @@ namespace Co_work.Pages
         public class FileItem : INotifyPropertyChanged
         {
             public string name { get; set; }
-            public string uper { get; set; }
+            //public string uper { get; set; }
             public string date { get; set; }
             public string size { get; set; }
             public string icon { get; set; }
@@ -69,7 +70,7 @@ namespace Co_work.Pages
             string result = "";
             foreach (string item in Address)
             {
-                result += item + "/";
+                result += item + "\\";
             }
             return result;
         }
@@ -79,9 +80,24 @@ namespace Co_work.Pages
             string result = "";
             for(int i = 0; i < Address.Count -2; i++)
             {
-                result += Address[i] + "/";
+                result += Address[i] + "\\";
             }
             return result;
+        }
+
+
+        public void SetRootAddress()
+        {
+            ftpHelper.CreateDir(Owner.Owner.project[Owner.Owner.selectIndex].GUID);
+            string rootAddress = "\\" + Owner.Owner.project[Owner.Owner.selectIndex].GUID;
+            Address.Clear();
+            Address.Add(rootAddress);
+            RefreshListView();
+        }
+
+        public void DeleteRootAddress()
+        { 
+            ftpHelper.DeleteDir("\\" + Owner.Owner.project[Owner.Owner.selectIndex].GUID);
         }
 
         public void ReceiveMessageFileInfo() //接收消息
@@ -105,13 +121,51 @@ namespace Co_work.Pages
                         string message = Encoding.UTF8.GetString(Owner.Owner.Owner.data, 0, length);
                         var received = TransData<Response.GetFileInfo>.Convert(message);
 
-                        listFile = received.Content.ProjectFiles;
+                        ProjectFiles = received.Content.ProjectFiles;
 
-                        ftpHelper.CreateDir(Owner.Owner.project[Owner.Owner.selectIndex].GUID);
-                        string baseAddress = "/" + Owner.Owner.project[Owner.Owner.selectIndex].GUID;
-                        Address.Clear();
-                        Address.Add(baseAddress);
-                        RefreshListView();
+
+                        List<string> listFolder = ftpHelper.GetDirctory(CurrentAddress());
+                        //List<string> listFile = ftpHelper.GetFile(CurrentAddress());
+                        List<ProjectFile> listFile = GetCurrentFiles(CurrentAddress());
+
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            //Lv_File.Items.Clear(); 
+                            FileList.Clear();
+                        }));
+
+                        if (Address.Count != 1)
+                        {
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                FileList.Add(new FileItem { name = " ..", icon = "/Images/back.ico", type = 3 });
+                            }));
+                        }
+
+                        foreach (var itemFolder in listFolder)
+                        {
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                FileList.Add(new FileItem { name = itemFolder, icon = "/Images/folder.ico", type = 0 });
+                                //CreateNewFolderItem(itemFolder); 
+                            }));
+                        }
+
+                        foreach (var itemFile in listFile)
+                        {
+                            Dispatcher.Invoke(new Action(delegate
+                            {
+                                //FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
+                                //FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize(CurrentAddress() + itemFile).ToString(), type = 1 });
+                                FileList.Add(new FileItem { name = itemFile.FileName, date = itemFile.UploadDate.ToShortDateString() + "  " + itemFile.UploadDate.ToShortTimeString(), size = ConvertFileSize(itemFile.FileSize), icon = "/Images/file.ico", type = 1 });
+                                //FileItemCreate(itemFile, "0");
+                            }));
+                        }
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            Lv_File.ItemsSource = FileList;
+                        }));
+
 
                         break;
                     }
@@ -119,7 +173,18 @@ namespace Co_work.Pages
             }
         }
 
-        private List<ProjectFile> listFile = new List<ProjectFile>();
+        private List<ProjectFile> GetCurrentFiles(string currentAddress)
+        {
+            List<ProjectFile> currentFiles = new List<ProjectFile>();
+            foreach (ProjectFile File in ProjectFiles)
+            {
+                if ("\\" + Owner.Owner.project[Owner.Owner.selectIndex].GUID + File.Path == currentAddress)
+                    currentFiles.Add(File);
+            }
+            return currentFiles;
+        }
+
+        private List<ProjectFile> ProjectFiles = new List<ProjectFile>();
 
         private void Btn_Upload_Click(object sender, RoutedEventArgs e)
         {
@@ -362,47 +427,9 @@ namespace Co_work.Pages
 
         private async Task RefreshListViewAsync()
         {
-            List<string> listFolder = ftpHelper.GetDirctory(CurrentAddress());
-            List<string> listFile = ftpHelper.GetFile(CurrentAddress());
-
-            Dispatcher.Invoke(new Action(delegate 
-            {
-                //Lv_File.Items.Clear(); 
-                FileList.Clear();
-            }));
-
-            if (Address.Count != 1)
-            {
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    FileList.Add(new FileItem { name = " ..", icon = "/Images/back.ico", type = 3 });
-                }));
-            }
-
-            foreach (var itemFolder in listFolder)
-            {
-                Dispatcher.Invoke(new Action(delegate 
-                {
-                    FileList.Add(new FileItem { name = itemFolder, icon = "/Images/folder.ico",  type = 0 });
-                    //CreateNewFolderItem(itemFolder); 
-                }));
-            }
-
-            foreach (var itemFile in listFile)
-            {
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    //FileItemCreate(itemFile, ftpHelper.GetFileSize("/Test/" + itemFile).ToString());
-                    //FileList.Add(new FileItem { name = itemFile, size = ftpHelper.GetFileSize(CurrentAddress() + itemFile).ToString(), type = 1 });
-                    FileList.Add(new FileItem { name = itemFile, icon = "/Images/file.ico", type = 1 });
-                    //FileItemCreate(itemFile, "0");
-                }));
-            }
-            Dispatcher.Invoke(new Action(delegate
-            {
-                Lv_File.ItemsSource = FileList;
-            }));
-            
+            Thread sendT;
+            sendT = new Thread(Owner.Owner.Owner.SendMessageFileInfo);
+            sendT.Start();
         }
 
         private void Btn_NewFolder_Click(object sender, RoutedEventArgs e)
@@ -515,6 +542,23 @@ namespace Co_work.Pages
                     RefreshListView();
                 }
             }
+        }
+
+        public static string ConvertFileSize(long size)
+        {
+            string result = "0KB";
+            int filelength = size.ToString().Length;
+            if (filelength < 4)
+                result = size + "byte";
+            else if (filelength < 7)
+                result = Math.Round(Convert.ToDouble(size / 1024d), 2) + "KB";
+            else if (filelength < 10)
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024), 2) + "MB";
+            else if (filelength < 13)
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024), 2) + "GB";
+            else
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024 / 1024), 2) + "TB";
+            return result;
         }
 
     }

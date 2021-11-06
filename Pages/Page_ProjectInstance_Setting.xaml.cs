@@ -149,6 +149,7 @@ namespace Co_work.Pages
 
                         Dispatcher.Invoke(new Action(delegate
                         {
+                            Owner.page_ProjectInstance_Project.DeleteRootAddress();
                             Owner.Owner.RefreshProject();
                             Owner.Owner.Owner.ChangePageProject();
                         }));
