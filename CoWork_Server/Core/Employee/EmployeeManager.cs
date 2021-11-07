@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using Co_Work.Network;
 
-namespace Co_Work.Core
+namespace Co_Work.Core.Employee
 {
     public static class EmployeeManager
     {
-        public static List<Employee> Employees;
+        public static List<Core.Employee.Employee> Employees;
         
-        public static Employee GetEmployeeFromId(string id)
+        public static Core.Employee.Employee GetEmployeeFromId(string id)
         {
             foreach (var employee in Employees)
             {
@@ -20,7 +19,7 @@ namespace Co_Work.Core
             return null;
         }
 
-        public static Employee GetEmployeeFromGuid(string guid)
+        public static Core.Employee.Employee GetEmployeeFromGuid(string guid)
         {
             foreach (var employee in Employees)
             {

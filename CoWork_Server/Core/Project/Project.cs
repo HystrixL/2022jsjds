@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 
 namespace Co_Work.Core.Project
@@ -13,8 +14,8 @@ namespace Co_Work.Core.Project
         
         [Required]public string Name { get; set; }
         [Required]public DateTime StartDate { get; set; }
-        [Required]public Employee Creator { get; set; }
-        [Required]public List<Employee> Members { get; set; } = new List<Employee>();
+        [Required]public Employee.Employee Creator { get; set; }
+        [Required]public List<Employee.Employee> Members { get; set; } = new List<Employee.Employee>();
         [Required]public string Note { get; set; }
         
         /*public int ProgressRate {
@@ -41,6 +42,8 @@ namespace Co_Work.Core.Project
         
         [Required]public bool IsFinish { get; set; }
         [Required] public DateTime EndDate { get; set; } = DateTime.MinValue;
+
+        //[Required] public string ProjectFilesPath { get; set; } = Path.Combine(Environment.CurrentDirectory, "CoWorkData","CoWorkData",GUID);
 
         // public Project(string name,DateTime startTime,Employee creator,List<Employee> employees)
         // {
@@ -72,14 +75,14 @@ namespace Co_Work.Core.Project
             return true;
         }*/
         
-        public bool AddMember(Employee member)
+        public bool AddMember(Employee.Employee member)
         {
             if (this.Members.Any(m=>m.GUID==member.GUID)) return false;
             Members.Add(member);
             return true;
         }
         
-        public bool AddMember(Employee[] members)
+        public bool AddMember(Employee.Employee[] members)
         {
             if (members.Any(m1 => this.Members.Any(m2=>m1.GUID==m2.GUID)))
             {

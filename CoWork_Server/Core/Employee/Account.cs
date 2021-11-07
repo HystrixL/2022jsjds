@@ -6,7 +6,7 @@ using System.Globalization;
 using Co_Work.Local;
 using Co_Work.Network;
 
-namespace Co_Work.Core
+namespace Co_Work.Core.Employee
 {
     [Table(nameof(Account))]
     public class Account
@@ -58,7 +58,7 @@ namespace Co_Work.Core
 
             if (registerResult == Response.Register.RegisterResultEnum.Succeed)
             {
-                Employee employee = new Employee()
+                Core.Employee.Employee employee = new Core.Employee.Employee()
                 {
                     Name = name, ID = id, Age = age,
                     EntryTime = DateTime.ParseExact(entryTime, "yyyy-MM-dd", CultureInfo.CurrentCulture)

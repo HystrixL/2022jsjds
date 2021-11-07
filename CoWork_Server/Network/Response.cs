@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Co_Work.Core;
+using Co_Work.Core.Employee;
 using Co_Work.Core.Project;
 using Co_Work.Local;
 using Co_Work.Local.ProjectFile;
@@ -131,9 +132,9 @@ namespace Co_Work.Network
                 PermissionDenied,
             }
 
-            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResultEnum,List<Employee> employees)
+            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResult,List<Employee> employees)
             {
-                GetEmployeesInfoResult = getEmployeesInfoResultEnum;
+                GetEmployeesInfoResult = getEmployeesInfoResult;
                 Employees = employees;
             }
 
@@ -167,9 +168,9 @@ namespace Co_Work.Network
                 UnknownEmployee,
             }
 
-            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnum, Employee employee)
+            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnumResult, Employee employee)
             {
-                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnum;
+                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnumResult;
                 Employee = employee;
             }
 

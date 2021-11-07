@@ -13,7 +13,7 @@ namespace Co_Work.Network
         }
 
         public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-        public string SourceRequest { get; set; } = "";
+        public string SourceRequest { get; set; }
         public string ClientGuid { get; set; }
         public DateTime SendData { get; set; } = DateTime.Now;
         public string Type { get; set; } = typeof(T).Name;

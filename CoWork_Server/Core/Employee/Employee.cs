@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Co_Work.Core.Project;
 
-namespace Co_Work.Core
+namespace Co_Work.Core.Employee
 {
     public enum Level
     {

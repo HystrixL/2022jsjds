@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Co_Work.Core;
+using Co_Work.Core.Employee;
 using Co_Work.Core.Project;
 using Co_Work.Local;
 using Co_Work.Local.ProjectFile;
@@ -294,7 +295,7 @@ namespace Co_Work.Network
             public static void Parse(TransData<Request.GetEmployeeInfoFromId> transData, Client client)
             {
                 Response.GetEmployeeInfoFromId.GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdResult;
-                var employee = EmployeeManager.GetEmployeeFromGuid(transData.Content.EmployeeId);
+                var employee = EmployeeManager.GetEmployeeFromId(transData.Content.EmployeeId);
                 if (employee == null)
                 {
                     getEmployeeInfoFromIdResult = Response.GetEmployeeInfoFromId.GetEmployeeInfoFromIdEnum.UnknownEmployee;
