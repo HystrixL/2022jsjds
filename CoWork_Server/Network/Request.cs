@@ -48,7 +48,7 @@ namespace Co_Work.Network
 
         public partial class CreatProject
         {
-            public CreatProject(string projectName, string projectNote, double projectProcess, string startDate,string endDate,
+            public CreatProject(string projectName, string projectNote, float projectProcess, string startDate,string endDate,
                 string creatorGuid, List<string> members)
             {
                 ProjectName = projectName;
@@ -62,7 +62,7 @@ namespace Co_Work.Network
 
             public string ProjectName { get; set; }
             public string ProjectNote { get; set; }
-            public double ProjectProcess { get; set; }
+            public float ProjectProcess { get; set; }
             public string StartDate { get; set; }
             public string EndDate { get; set; }
             public string CreatorGuid { get; set; }
@@ -84,7 +84,7 @@ namespace Co_Work.Network
 
         public partial class UpdateProject
         {
-            public UpdateProject(string projectGuid, string projectName, string projectNote, double projectProcess,
+            public UpdateProject(string projectGuid, string projectName, string projectNote, float projectProcess,
                 string startDate,string endDate,
                 string updaterGuid, List<string> members)
             {
@@ -102,7 +102,7 @@ namespace Co_Work.Network
 
             public string ProjectName { get; set; }
             public string ProjectNote { get; set; }
-            public double ProjectProcess { get; set; }
+            public float ProjectProcess { get; set; }
             public string StartDate { get; set; }
             public string EndDate { get; set; }
             public string UpdaterGuid { get; set; }

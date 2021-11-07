@@ -35,7 +35,7 @@ namespace Co_Work.Core.Project
             set{}
         }*/
         
-        [Required]public double ProgressRate { get; set; }
+        [Required]public float ProgressRate { get; set; }
         
         //public List<Project> SubProject { get; set; } = new List<Project>();
         //public bool IsSubProject { get; set; }
