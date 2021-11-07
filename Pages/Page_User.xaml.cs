@@ -33,6 +33,7 @@ namespace Co_work.Pages
         {
             Owner.isLogined = false;
             Owner.User = null;
+            Owner.UnAutoLogin();
             CheckLoginState();
         }
 

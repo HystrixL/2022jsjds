@@ -130,9 +130,9 @@ namespace Co_Work.Network
                 PermissionDenied,
             }
 
-            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResultEnum, List<Employee> employees)
+            public GetEmployeesInfo(GetEmployeesInfoResultEnum getEmployeesInfoResult, List<Employee> employees)
             {
-                GetEmployeesInfoResult = getEmployeesInfoResultEnum;
+                GetEmployeesInfoResult = getEmployeesInfoResult;
                 Employees = employees;
             }
 
@@ -166,9 +166,9 @@ namespace Co_Work.Network
                 UnknownEmployee,
             }
 
-            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnum, Employee employee)
+            public GetEmployeeInfoFromId(GetEmployeeInfoFromIdEnum getEmployeeInfoFromIdEnumResult, Employee employee)
             {
-                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnum;
+                GetEmployeeInfoFromIdEnumResult = getEmployeeInfoFromIdEnumResult;
                 Employee = employee;
             }
 

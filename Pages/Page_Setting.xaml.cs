@@ -50,5 +50,11 @@ namespace Co_work.Pages
                 ini.WriteIni("Setting", "fileSaveAddress", Owner.fileSaveAddress);
             }
         }
+
+        private void Btn_Default_Click(object sender, RoutedEventArgs e)
+        {
+            Owner.SetDefault();
+            Tb_SaveAddress.Text = Owner.fileSaveAddress;
+        }
     }
 }

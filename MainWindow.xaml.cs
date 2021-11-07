@@ -37,6 +37,19 @@ namespace Co_work
                 ini.WriteIni("Setting", "fileSaveAddress", fileSaveAddress);
             else
                 fileSaveAddress = ini.ReadIni("Setting", "fileSaveAddress");
+
+            if (ini.ReadIni("Setting", "AutoLogin") == "true")
+            {
+                Thread sendT;
+                sendT = new Thread(SendMessageAutoLogin);
+                sendT.Start();
+            }
+        }
+
+        public void SetDefault()
+        {
+            ini.WriteIni("Setting", "fileSaveAddress", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work");
+            fileSaveAddress = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work";
         }
 
         public INI ini = new INI();
@@ -89,6 +102,33 @@ namespace Co_work
                         clientScoket.Send(data);
                         Thread receiveT;
                         receiveT = new Thread(page_User.page_User_Login.ReceiveMessage); //开启线程执行循环接收消息
+                        receiveT.Start();
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                    }
+                }
+                else ConnectToServer();
+            }));
+        }
+
+        public void SendMessageAutoLogin() //发送自动登录请求
+        {
+            Dispatcher.Invoke(new Action(delegate
+            {
+                Request.Login login =
+                       new Request.Login(ini.ReadIni("TNUOCA", "RESU"), MD5withSalt.Encrypt(ini.ReadIni("TNUOCA", "DROWSSAP")));
+                var message = new TransData<Request.Login>(login, "ertgwergf", "etyhtgyetyh").ToString();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                if (isConnected)
+                {
+                    try
+                    {
+                        clientScoket.Send(data);
+                        Thread receiveT;
+                        receiveT = new Thread(ReceiveMessageAutoLogin); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch
@@ -301,7 +341,7 @@ namespace Co_work
                     {
                         clientScoket.Send(data);
                         Thread receiveT;
-                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Member.ReceiveMessageRemove); //开启线程执行循环接收消息
+                        receiveT = new Thread(page_Project.page_ProjectInstance.page_ProjectInstance_Member.ReceiveMessageAddMember); //开启线程执行循环接收消息
                         receiveT.Start();
                     }
                     catch
@@ -486,7 +526,7 @@ namespace Co_work
             Environment.Exit(Environment.ExitCode);
         }
 
-        public string fileSaveAddress =  Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work";
+        public string fileSaveAddress = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Co-Work";
 
         public void RememberPassword(string id, string password)
         {
@@ -500,6 +540,50 @@ namespace Co_work
             ini.WriteIni("Setting", "RememberPassword", "false");
             ini.WriteIni("TNUOCA", "RESU", "");
             ini.WriteIni("TNUOCA", "DROWSSAP", "");
+        }
+
+        public void AutoLogin(string id, string password)
+        {
+            ini.WriteIni("Setting", "AutoLogin", "true");
+            ini.WriteIni("TNUOCA", "RESU", id);
+            ini.WriteIni("TNUOCA", "DROWSSAP", password);
+        }
+
+        public void UnAutoLogin()
+        {
+            ini.WriteIni("Setting", "AutoLogin", "false");
+        }
+
+        public void ReceiveMessageAutoLogin() //接收消息
+        {
+            int length = 0;
+            while (isConnected)
+            {
+                if (clientScoket.Connected == true)
+                {
+                    try
+                    {
+                        length = clientScoket.Receive(data);
+                    }
+                    catch (Exception e)
+                    {
+                        isConnected = false;
+                    }
+
+                    if (length != 0)
+                    {
+                        string message = Encoding.UTF8.GetString(data, 0, length);
+                        var received = TransData<Response.Login>.Convert(message);
+
+                        User = received.Content.Employee;
+                        isLogined = true;
+
+                        page_Project.RefreshProject();
+
+                        break;
+                    }
+                }
+            }
         }
 
     }

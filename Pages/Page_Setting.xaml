@@ -29,5 +29,12 @@
                 Margin="394,35,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
+        <Button Content="恢复默认"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" 
+                Margin="28,239,0,0" 
+                Height="30" Width="100"
+                FontSize="16"
+                Click="Btn_Default_Click"/>
     </Grid>
 </Page>

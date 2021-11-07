@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Text.Json;
-using System.Windows;
 
 namespace Co_Work.Network
 {
     class TransData<T>
     {
-        public TransData(T content,string clientGuid,string sourceRequest = "")
+        public TransData(T content, string clientGuid, string sourceRequest = "")
         {
             SourceRequest = sourceRequest;
             ClientGuid = clientGuid;
@@ -14,7 +13,7 @@ namespace Co_Work.Network
         }
 
         public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-        public string SourceRequest { get; set; } = "";
+        public string SourceRequest { get; set; }
         public string ClientGuid { get; set; }
         public DateTime SendData { get; set; } = DateTime.Now;
         public string Type { get; set; } = typeof(T).Name;
@@ -25,8 +24,7 @@ namespace Co_Work.Network
         }
         public static TransData<T> Convert(string dataString)
         {
-            //MessageBox.Show(dataString);
-            return JsonSerializer.Deserialize<TransData<T>>(dataString.Replace(typeof(T).Name+":",""));
+            return JsonSerializer.Deserialize<TransData<T>>(dataString.Replace(typeof(T).Name + ":", ""));
         }
     }
 }

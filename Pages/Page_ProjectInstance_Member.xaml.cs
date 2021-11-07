@@ -144,14 +144,19 @@ namespace Co_work.Pages
                         string message = Encoding.UTF8.GetString(Owner.Owner.Owner.data, 0, length);
                         var received = TransData<Response.GetEmployeeInfoFromId>.Convert(message);
 
-                        if (Owner.Owner.project[Owner.Owner.selectIndex].AddMember(received.Content.Employee))
+                        if (received.Content.GetEmployeeInfoFromIdEnumResult == Response.GetEmployeeInfoFromId.GetEmployeeInfoFromIdEnum.Succeed)
                         {
-                            Owner.Owner.membersGUID.Add(received.Content.Employee.GUID);
+                            if (Owner.Owner.project[Owner.Owner.selectIndex].AddMember(received.Content.Employee))
+                            {
+                                Owner.Owner.membersGUID.Add(received.Content.Employee.GUID);
 
-                            Thread sendT;
-                            sendT = new Thread(Owner.Owner.Owner.SendMessageAddMember);
-                            sendT.Start();
+                                Thread sendT;
+                                sendT = new Thread(Owner.Owner.Owner.SendMessageAddMember);
+                                sendT.Start();
+                            }
                         }
+                        else
+                            MessageBox.Show("无此用户名");
 
                         break;
                     }

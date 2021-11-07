@@ -23,6 +23,7 @@ namespace Co_work.Windows
         public Window_AddMember()
         {
             InitializeComponent();
+            Lb_Id.Focus();
         }
 
         public Page_ProjectInstance_Member Owner;

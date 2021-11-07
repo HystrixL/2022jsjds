@@ -78,6 +78,15 @@ namespace Co_work.Pages
                                     Owner.Owner.UnRememberPassword();
                                 }
 
+                                if (Cb_AutoLogin.IsChecked.Value)
+                                {
+                                    Owner.Owner.AutoLogin(Tb_Id.Text, Tb_Password.Password);
+                                }
+                                else
+                                {
+                                    Owner.Owner.UnAutoLogin();
+                                }
+
                                 Owner.Owner.ChangePageUser();
                                 Tb_Id.Text = "";
                                 Tb_Password.Password = "";
