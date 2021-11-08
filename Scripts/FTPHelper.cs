@@ -116,7 +116,7 @@
         #region 构造函数
 
         public FtpHelper(string host, string username, string password)
-            : this(host, username, password, defaultFtpPort, null, false, true, true, defaultReadWriteTimeout)
+            : this(host , username, password, defaultFtpPort, null, false, true, true, defaultReadWriteTimeout)
         {
         }
 

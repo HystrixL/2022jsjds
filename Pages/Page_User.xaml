@@ -10,28 +10,28 @@
 
     <Grid Background= "White">
         <Label Content="用户名：" 
-               Margin="28,17,102,325"
+               Margin="28,37,102,325"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                Height="30"
                Width="60"/>
         <Label Name="Lb_Id"
                Content="ID" 
-               Margin="90,17,400,364"
+               Margin="90,37,400,364"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                Height="30"
                Width="300"/>
 
         <Label Content="昵称：" 
-               Margin="28,57,102,325"
+               Margin="28,77,102,325"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                Height="30"
                Width="60"/>
         <Label Name="Lb_Name"
                Content="Name" 
-               Margin="90,57,400,364"
+               Margin="90,77,0,0"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                Height="30"

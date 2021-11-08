@@ -17,14 +17,17 @@ namespace Co_Work.Network
                 InvalidValues
             }
 
-            public Login(LoginResultEnum loginResult, Employee employee)
+            public Login(LoginResultEnum loginResult, Employee employee, Ftp ftp)
             {
                 LoginResult = loginResult;
                 Employee = employee;
+                Ftp = ftp;
             }
 
             public LoginResultEnum LoginResult { get; set; }
             public Employee Employee { get; set; }
+
+            public Ftp Ftp { get; set; }
         }
 
         public class Register

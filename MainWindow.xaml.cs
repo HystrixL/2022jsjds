@@ -31,6 +31,13 @@ namespace Co_work
         {
             InitializeComponent();
             ChangePageProject();
+
+            if (ini.ReadIni("Setting", "ServerIP") != "" && ini.ReadIni("Setting", "ServerPort") != "")
+            {
+                serverIP = ini.ReadIni("Setting", "ServerIP");
+                serverPort = ini.ReadIni("Setting", "ServerPort");
+            }
+
             ConnectToServer();
 
             if (ini.ReadIni("Setting", "fileSaveAddress") == "")
@@ -45,6 +52,12 @@ namespace Co_work
                 sendT.Start();
             }
         }
+
+        public string serverIP = "103.193.189.241";
+        public string serverPort = "2333";
+
+        public string ftpID = "";
+        public string ftpPassword = "";
 
         public void SetDefault()
         {
@@ -64,7 +77,7 @@ namespace Co_work
 
         public void ConnectToServer()
         {
-            var ipPort = "103.193.189.241:2333";
+            var ipPort = serverIP + ":2333";
             var serverIp = ipPort.Split(":")[0];
             var serverPort = int.Parse(ipPort.Split(":")[1]);
             try
@@ -574,6 +587,9 @@ namespace Co_work
                     {
                         string message = Encoding.UTF8.GetString(data, 0, length);
                         var received = TransData<Response.Login>.Convert(message);
+
+                        ftpID = received.Content.Ftp.Account;
+                        ftpPassword = received.Content.Ftp.Password;
 
                         User = received.Content.Employee;
                         isLogined = true;

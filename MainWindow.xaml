@@ -8,7 +8,7 @@
         Title="Co-Work" Height="648" Width="1152"
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowState="Maximized" Closing="Window_Closing">
+        WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowState="Maximized" Closing="Window_Closing" Icon="/Co-work.ico">
     <Grid>
         <Grid Background="White">
             <Grid x:Name="nav"

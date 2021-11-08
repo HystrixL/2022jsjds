@@ -5,13 +5,21 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>Co_work</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\Co-work.ico</ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Co-work.ico" />
     <None Remove="Images\back.ico" />
+    <None Remove="Images\Co-work.ico" />
     <None Remove="Images\file.ico" />
     <None Remove="Images\folder.ico" />
     <None Remove="Images\folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Co-work.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Co-work.ico" />
     <Resource Include="Images\back.ico" />
     <Resource Include="Images\file.ico" />
     <Resource Include="Images\folder.ico" />

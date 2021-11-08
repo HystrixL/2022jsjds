@@ -12,29 +12,66 @@
         <Label Content="文件下载路径"
                HorizontalAlignment="Left"
                VerticalAlignment="Top" 
-               Margin="28,32,0,0"
+               Margin="28,42,0,0"
                FontSize="16"/>
         <TextBox Name="Tb_SaveAddress" 
                    Width="250"
                    Height="25"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top" 
-                   Margin="139,35,0,0"
+                   Margin="139,45,0,0"
                  FontSize="16"/>
         <Button Content=".."
                 FontSize="16"
                 Click="Btn_SaveAddress_Click"
                 Height="25"
                 Width="60" 
-                Margin="394,35,0,0"
+                Margin="394,45,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
         <Button Content="恢复默认"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" 
-                Margin="28,239,0,0" 
+                Margin="28,118,0,0" 
                 Height="30" Width="100"
-                FontSize="16"
+                FontSize="14"
                 Click="Btn_Default_Click"/>
+
+        <CheckBox Content="开发者模式"
+                  Margin="28,189,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top" 
+                  FontSize="16"
+                  Name="Cb_Developer"
+                  Click="Cb_Developer_Click"/>
+
+        <Grid Name="DeveloperGrid"
+              Visibility="Hidden">
+
+            <Label Content="服务端地址：" Margin="45,218,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+            <TextBox Name="Tb_ServerIp" Margin="132,221,0,0"
+                     Width="120"
+                     Height="20"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     TextChanged="Tb_ServerIp_TextChanged"/>
+            <Label Content=":" Margin="252,218,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+            <TextBox Name="Tb_ServerPort" Margin="265,221,0,0"
+                     Width="50"
+                     Height="20"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     TextChanged="Tb_ServerPort_TextChanged"/>
+            <Label Content="重启软件后生效" Margin="132,186,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Foreground="Gray"/>
+
+        </Grid>
+
     </Grid>
 </Page>

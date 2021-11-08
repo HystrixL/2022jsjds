@@ -67,6 +67,9 @@ namespace Co_work.Pages
                             Owner.Owner.User = received.Content.Employee;
                             Owner.Owner.isLogined = true;
 
+                            Owner.Owner.ftpID = received.Content.Ftp.Account;
+                            Owner.Owner.ftpPassword = received.Content.Ftp.Password;
+
                             Dispatcher.Invoke(new Action(delegate
                             {
                                 if (Cb_RememberPassword.IsChecked.Value)

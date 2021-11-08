@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Co_work.Scripts;
 using Co_work.Windows;
 using Co_Work.Local;
 using Co_Work.Network;
@@ -32,6 +33,7 @@ namespace Co_work.Pages
         {
             InitializeComponent();
             Lv_File.ContextMenu = MenuListView();
+            
             //Pb_Upload_Progress.Visibility = Visibility.Hidden;
 
             //string baseAddress = "/Test";
@@ -40,7 +42,7 @@ namespace Co_work.Pages
 
         public Page_ProjectInstance Owner;
 
-        public FtpHelper ftpHelper = new FtpHelper("103.193.189.241", "Administrator", "adxq@9139");
+        public FtpHelper ftpHelper;
 
         public List<string> Address = new List<string>();
 
@@ -88,6 +90,7 @@ namespace Co_work.Pages
 
         public void SetRootAddress()
         {
+            ftpHelper = new FtpHelper(Owner.Owner.Owner.serverIP, Owner.Owner.Owner.ftpID, Owner.Owner.Owner.ftpPassword);
             ftpHelper.CreateDir(Owner.Owner.project[Owner.Owner.selectIndex].GUID);
             string rootAddress = "\\" + Owner.Owner.project[Owner.Owner.selectIndex].GUID;
             Address.Clear();
