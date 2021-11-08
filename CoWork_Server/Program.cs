@@ -1,22 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using Co_Work.Core;
-using Co_Work.Local;
-using Co_Work.Network;
-using Co_Work.Network.TCP;
+﻿using Co_Work.Core;
 
-namespace CoWork_Server
+namespace Co_Work
 {
-    class Program
+    public static class Program
     {
+        public static Config Configs;
+        
         static void Main(string[] args)
         {
-            var serverIp = Tools.GetAddressIP();
-            var serverPort = 2333;
-            Console.WriteLine("本机IP地址为:" + serverIp);
-            TCPServer.Init(serverIp,serverPort);
-            DataBaseManager.Init();
+            
         }
     }
 }

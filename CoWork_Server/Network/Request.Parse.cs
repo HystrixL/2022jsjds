@@ -30,7 +30,7 @@ namespace Co_Work.Network
                     employee = null;
                 }
 
-                var loginResponse = new Response.Login(loginResult, employee);
+                var loginResponse = new Response.Login(loginResult, employee,Program.Configs.Ftp);
                 var loginTransData =
                     new TransData<Response.Login>(loginResponse, client.ClientGuid, transData.Guid);
                 client.SendResponse(loginTransData.ToString());
@@ -219,7 +219,11 @@ namespace Co_Work.Network
 
                         var members = transData.Content.Members.Select(member => EmployeeManager.GetEmployeeFromGuid(member)).ToList();
 
-                        project.Members = members;
+                        project.Members.Clear();
+                        foreach (var member in members)
+                        {
+                            project.Members.Add(member);
+                        }
                         updateProjectResult = Response.UpdateProject.UpdateProjectResultEnum.Succeed;
                     }
                     else

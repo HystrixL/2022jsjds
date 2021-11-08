@@ -10,7 +10,7 @@ namespace Co_Work.Local
     {
         public static DataContext _dataContext;
         
-        public static void Init(string dbPath = "CoWork.db")
+        public static void Init(string dbPath)
         {
             _dataContext = new DataContext(dbPath);
             _dataContext.Database.EnsureCreated();
