@@ -183,29 +183,40 @@ namespace Co_work
 
         public void SendMessageUpdateProjects() //发送更新项目列表请求
         {
-            Dispatcher.Invoke(new Action(delegate
+            if (User != null)
             {
-                Request.GetProjectsInfoFromEmployee getProjects =
-                       new Request.GetProjectsInfoFromEmployee(User.GUID);
-                var message = new TransData<Request.GetProjectsInfoFromEmployee>(getProjects, "ertgwergf", "etyhtgyetyh").ToString();
-                byte[] data = Encoding.UTF8.GetBytes(message);
-                if (isConnected)
+                Dispatcher.Invoke(new Action(delegate
                 {
-                    try
+                    Request.GetProjectsInfoFromEmployee getProjects =
+                           new Request.GetProjectsInfoFromEmployee(User.GUID);
+                    var message = new TransData<Request.GetProjectsInfoFromEmployee>(getProjects, "ertgwergf", "etyhtgyetyh").ToString();
+                    byte[] data = Encoding.UTF8.GetBytes(message);
+                    if (isConnected)
                     {
-                        clientScoket.Send(data);
-                        Thread receiveT;
-                        receiveT = new Thread(page_Project.ReceiveMessageUpdate); //开启线程执行循环接收消息
-                        receiveT.Start();
+                        try
+                        {
+                            clientScoket.Send(data);
+                            Thread receiveT;
+                            receiveT = new Thread(page_Project.ReceiveMessageUpdate); //开启线程执行循环接收消息
+                            receiveT.Start();
+                        }
+                        catch
+                        {
+                            isConnected = false;
+                            MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
+                        }
                     }
-                    catch
-                    {
-                        isConnected = false;
-                        MessageBox.Show("服务器被玩坏了，一定不是Co-work的问题QWQ");
-                    }
-                }
-                else ConnectToServer();
-            }));
+                    else ConnectToServer();
+                }));
+            }
+            else
+            {
+                isLogined = false;
+                ini.WriteIni("Setting", "RememberPassword", "false");
+                ini.WriteIni("TNUOCA", "RESU", "");
+                ini.WriteIni("TNUOCA", "DROWSSAP", "");
+                ini.WriteIni("Setting", "AutoLogin", "false");
+            }
         }
 
         public void SendMessageCreateProject() //发送创建项目请求

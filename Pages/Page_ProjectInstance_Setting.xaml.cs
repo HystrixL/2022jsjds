@@ -158,9 +158,15 @@ namespace Co_work.Pages
 
                         Dispatcher.Invoke(new Action(delegate
                         {
-                            Owner.page_ProjectInstance_Project.DeleteRootAddress();
-                            Owner.Owner.RefreshProject();
-                            Owner.Owner.Owner.ChangePageProject();
+                            if (received.Content.DeleteProjectResult == Response.DeleteProject.DeleteProjectResultEnum.Succeed)
+                            {
+                                Owner.page_ProjectInstance_Project.DeleteRootAddress();
+                                Owner.Owner.RefreshProject();
+                                Owner.Owner.Owner.ChangePageProject();
+                            }
+                            else
+                                MessageBox.Show("权限不足，无法更改");
+
                         }));
 
                         break;

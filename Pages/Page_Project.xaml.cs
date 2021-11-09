@@ -129,7 +129,7 @@ namespace Co_work.Pages
                                 ProjectInfo.Foreground = new SolidColorBrush(Colors.Black);
                                 ProjectInfo.VerticalAlignment = VerticalAlignment.Top;
                                 ProjectInfo.HorizontalAlignment = HorizontalAlignment.Left;
-                                ProjectInfo.MaxWidth = 195;
+                                ProjectInfo.MaxWidth = 190;
                                 ProjectInfo.TextWrapping = TextWrapping.Wrap;
 
                                 ProjectBtn.Content = ProjectInfo;
@@ -153,6 +153,14 @@ namespace Co_work.Pages
                                     Mov2.Left += 210;
                                     Btn_AddProject.Margin = Mov2;
                                     WP.Height = Mov2.Top + 800;
+                                }
+                            }
+
+                            if (page_ProjectInstance != null)
+                            {
+                                if (page_ProjectInstance.page_ProjectInstance_Member != null)
+                                {
+                                    page_ProjectInstance.page_ProjectInstance_Member.RefreshMember();
                                 }
                             }
                         }));

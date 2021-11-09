@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Co_work"
         mc:Ignorable="d"
-        Title="Co-Work" Height="648" Width="1152"
+        Title="Co-work" Height="648" Width="1152"
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen" SizeToContent="Manual" WindowState="Maximized" Closing="Window_Closing" Icon="/Co-work.ico">

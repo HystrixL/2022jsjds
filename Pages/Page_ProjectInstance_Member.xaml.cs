@@ -98,7 +98,7 @@ namespace Co_work.Pages
 
                         Dispatcher.Invoke(new Action(delegate
                         {
-                            RefreshMember();
+                            Owner.Owner.Owner.SendMessageUpdateProjects();
                         }));
 
                         break;
@@ -187,7 +187,7 @@ namespace Co_work.Pages
 
                         Dispatcher.Invoke(new Action(delegate
                         {
-                            RefreshMember();
+                            Owner.Owner.Owner.SendMessageUpdateProjects();
                         }));
 
                         break;

@@ -7,6 +7,12 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Images\Co-work.ico</ApplicationIcon>
     <Win32Resource />
+    <PackageIcon>Co-work.png</PackageIcon>
+    <PackageIconUrl />
+    <Copyright>Hil  TideWind</Copyright>
+    <SignAssembly>false</SignAssembly>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +22,10 @@
     <None Remove="Images\file.ico" />
     <None Remove="Images\folder.ico" />
     <None Remove="Images\folder.png" />
+    <None Include="C:\Users\TideWind\Desktop\Co-work.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

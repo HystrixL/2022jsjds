@@ -90,8 +90,8 @@
         <ListView Name="Lv_File" Margin="300,45,0,0"
                  VerticalAlignment="Top"
                  HorizontalAlignment="Left"
-                 MaxWidth="800" Height="500"
-                  MinWidth="800" 
+                 MaxWidth="801" Height="500"
+                  MinWidth="801" 
                   SelectionMode="Single" Foreground="Black"
                   ItemContainerStyle="{DynamicResource ListViewItemKey}"
                   ItemsSource="{Binding FileList}">
