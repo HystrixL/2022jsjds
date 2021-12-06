@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Co_Work.Core;
+using Co_Work.Core.Project;
 
 namespace Co_Work.Network.TCP
 {
@@ -19,7 +20,7 @@ namespace Co_Work.Network.TCP
             ClientGuid = Guid.NewGuid().ToString();
             _clientSocket = socket;
             _clientSocket.ReceiveBufferSize = 100 * 1024 * 1024;
-            Ip = (_clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
+            Ip = (_clientSocket.RemoteEndPoint as IPEndPoint)?.Address.ToString();
             var t = new Thread(ReceiveRequest);
             t.Start();
         }
@@ -36,8 +37,9 @@ namespace Co_Work.Network.TCP
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine((_clientSocket.RemoteEndPoint as IPEndPoint)?.Address + " 连接已断开");
+                    Console.WriteLine($"[{DateTime.Now}][{(_clientSocket.RemoteEndPoint as IPEndPoint)?.Address}] 连接已断开");
                     ClientManager.RemoveClient(ClientGuid);
+                    break;
                 }
 
                 if (_clientSocket.Poll(10, SelectMode.SelectRead)) //
@@ -48,9 +50,9 @@ namespace Co_Work.Network.TCP
 
                 if (length != 0)
                 {
-                    string request = Encoding.UTF8.GetString(data, 0, length);
-                    Console.WriteLine("来自" + (_clientSocket.RemoteEndPoint as IPEndPoint)?.Address + ":" +
-                                      request);
+                    var request = Encoding.UTF8.GetString(data, 0, length);
+                    if(Program.Configs.DebugMode)
+                        Console.WriteLine($"[{DateTime.Now}][{(_clientSocket.RemoteEndPoint as IPEndPoint)?.Address}]:{request}");
                     Task.Run(() =>
                     {
                         RequestParser requestParser = new RequestParser(request);
@@ -62,8 +64,9 @@ namespace Co_Work.Network.TCP
 
         public void SendResponse(string response) //发送消息
         {
-            Console.WriteLine(response);
-            byte[] data = Encoding.UTF8.GetBytes(response);
+            if (Program.Configs.DebugMode)
+                Console.WriteLine($"[{DateTime.Now}][Server]:{response}");
+            var data = Encoding.UTF8.GetBytes(response);
             _clientSocket.Send(data);
         }
 

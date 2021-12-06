@@ -12,6 +12,7 @@ namespace Co_Work.Core
                 if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
                 {
                     AddressIP = _IPAddress.ToString();
+                    break;
                 }
             }
 

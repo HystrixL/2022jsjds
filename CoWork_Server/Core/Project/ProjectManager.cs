@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Co_Work.Network;
 
 namespace Co_Work.Core.Project
 {

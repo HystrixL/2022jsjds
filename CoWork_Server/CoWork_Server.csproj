@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Co_Work</RootNamespace>
+        <StartupObject>Co_Work.Program</StartupObject>
+        <ApplicationIcon>CoWorkServer.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>

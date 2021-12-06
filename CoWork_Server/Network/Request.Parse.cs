@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Co_Work.Core;
 using Co_Work.Core.Employee;
 using Co_Work.Core.Project;
 using Co_Work.Local;
 using Co_Work.Local.ProjectFile;
 using Co_Work.Network.TCP;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Co_Work.Network
 {

@@ -1,4 +1,5 @@
-﻿using Co_Work.Core;
+﻿using System;
+using Co_Work.Core;
 
 namespace Co_Work
 {
@@ -8,7 +9,7 @@ namespace Co_Work
         
         static void Main(string[] args)
         {
-            
+            Init.RunServer();
         }
     }
 }

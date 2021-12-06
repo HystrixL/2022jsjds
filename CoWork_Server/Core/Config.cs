@@ -17,6 +17,8 @@ namespace Co_Work.Core
         
         [YamlMember(Alias = "Ftp", ApplyNamingConventions = false, Description = "FTP服务端相关设置")]
         public Ftp Ftp { get; set; } = new Ftp();
+        [YamlMember(Alias = "DebugMode", ApplyNamingConventions = false, Description = "调试模式")]
+        public bool DebugMode { get; set; } = false;
     }
 
     public class Ftp

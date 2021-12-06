@@ -2,7 +2,6 @@
 using Co_Work.Core;
 using Co_Work.Core.Employee;
 using Co_Work.Core.Project;
-using Co_Work.Local;
 using Co_Work.Local.ProjectFile;
 
 namespace Co_Work.Network

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Co_Work.Network;
 using Co_Work.Network.TCP;
@@ -73,6 +72,8 @@ namespace Co_Work.Core
                 case nameof(Request.GetProjectInfo):
                     Request.GetProjectInfo.Parse(TransData<Request.GetProjectInfo>.Convert(requestBody),client);
                     break;
+                default:
+                    throw new InvalidOperationException();
             }
         }
     }
