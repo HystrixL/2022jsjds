@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Co_Work.Core.Employee
 {
@@ -8,28 +9,12 @@ namespace Co_Work.Core.Employee
         
         public static Core.Employee.Employee GetEmployeeFromId(string id)
         {
-            foreach (var employee in Employees)
-            {
-                if (employee.ID==id)
-                {
-                    return employee;
-                }
-            }
-
-            return null;
+            return Employees.FirstOrDefault(employee => employee.ID == id);
         }
 
         public static Core.Employee.Employee GetEmployeeFromGuid(string guid)
         {
-            foreach (var employee in Employees)
-            {
-                if (employee.GUID==guid)
-                {
-                    return employee;
-                }
-            }
-
-            return null;
+            return Employees.FirstOrDefault(employee => employee.GUID == guid);
         }
         
     }

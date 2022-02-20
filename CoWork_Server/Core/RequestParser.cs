@@ -73,7 +73,7 @@ namespace Co_Work.Core
                     Request.GetProjectInfo.Parse(TransData<Request.GetProjectInfo>.Convert(requestBody),client);
                     break;
                 default:
-                    throw new InvalidOperationException();
+                    break;
             }
         }
     }

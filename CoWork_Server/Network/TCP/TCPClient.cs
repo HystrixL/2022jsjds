@@ -11,9 +11,9 @@ namespace Co_Work.Network.TCP
 {
     public class Client
     {
-        private Socket _clientSocket;
+        private readonly Socket _clientSocket;
         public string Ip;
-        public string ClientGuid;
+        public readonly string ClientGuid;
 
         public Client(Socket socket)
         {
@@ -27,10 +27,10 @@ namespace Co_Work.Network.TCP
 
         private void ReceiveRequest() //接收消息
         {
-            byte[] data = new byte[1024*1024];
+            var data = new byte[1024*1024];
             while (true)
             {
-                int length = 0;
+                var length = 0;
                 try
                 {
                     length = _clientSocket.Receive(data);
@@ -48,17 +48,16 @@ namespace Co_Work.Network.TCP
                     break;
                 }
 
-                if (length != 0)
+                if (length == 0) continue;
+                
+                var request = Encoding.UTF8.GetString(data, 0, length);
+                if(Program.Configs.DebugMode)
+                    Console.WriteLine($"[{DateTime.Now}][{(_clientSocket.RemoteEndPoint as IPEndPoint)?.Address}]:{request}");
+                Task.Run(() =>
                 {
-                    var request = Encoding.UTF8.GetString(data, 0, length);
-                    if(Program.Configs.DebugMode)
-                        Console.WriteLine($"[{DateTime.Now}][{(_clientSocket.RemoteEndPoint as IPEndPoint)?.Address}]:{request}");
-                    Task.Run(() =>
-                    {
-                        RequestParser requestParser = new RequestParser(request);
-                        requestParser.Parse(this);
-                    });
-                }
+                    var requestParser = new RequestParser(request);
+                    requestParser.Parse(this);
+                });
             }
         }
 
@@ -70,9 +69,6 @@ namespace Co_Work.Network.TCP
             _clientSocket.Send(data);
         }
 
-        public bool Connected //获取该客户端的状态
-        {
-            get { return _clientSocket.Connected; }
-        }
+        public bool Connected => _clientSocket.Connected; //获取该客户端的状态
     }
 }

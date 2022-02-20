@@ -44,7 +44,7 @@ namespace Co_Work.Core
             return string.Join("", originalStr.Reverse());
         }
 
-        class Salt
+        private class Salt
         {
             public string Generate()
             {

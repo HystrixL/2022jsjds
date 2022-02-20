@@ -5,7 +5,7 @@ namespace Co_Work.Network
 {
     public static class ClientManager
     {
-        public static Dictionary<string, Client> ClientLists { get; } = new();
+        private static Dictionary<string, Client> ClientLists { get; } = new();
 
         public static void AddClient(string clientGuid,Client client)
         {

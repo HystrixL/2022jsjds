@@ -7,3 +7,5 @@ API.zip
 CoWork_Server/Properties
 CodeMap1.dgml
 CoWork_Server/Graph1.dgml
+CoWork.db
+CoWork_Server/CoWork_Server.csproj.user

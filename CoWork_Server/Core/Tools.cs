@@ -6,17 +6,15 @@ namespace Co_Work.Core
     {
         public static string GetAddressIP()
         {
-            string AddressIP = string.Empty;
-            foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+            var addressIp = string.Empty;
+            foreach (var ipAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
             {
-                if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
-                {
-                    AddressIP = _IPAddress.ToString();
-                    break;
-                }
+                if (ipAddress.AddressFamily.ToString() != "InterNetwork") continue;
+                addressIp = ipAddress.ToString();
+                break;
             }
 
-            return AddressIP;
+            return addressIp;
         }
     }
 }
